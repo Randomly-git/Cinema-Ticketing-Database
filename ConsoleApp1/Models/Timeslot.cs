@@ -6,13 +6,13 @@ namespace ConsoleApp1.Models
     public class Timeslot
     {
         public string TimeID { get; set; }
-        public TimeSpan StartTime { get; set; }
-        public TimeSpan EndTime { get; set; }
+        public DateTime StartTime { get; set; }
+        public DateTime EndTime { get; set; }
 
         public Timeslot() { }
 
         // 带参数的构造函数
-        public Timeslot(string timeID, TimeSpan startTime, TimeSpan endTime)
+        public Timeslot(string timeID, DateTime startTime, DateTime endTime)
         {
             TimeID = timeID;
             StartTime = startTime;
