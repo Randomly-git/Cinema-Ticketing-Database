@@ -8,7 +8,7 @@ namespace OracleDataInserter
     class Program
     {
         // 数据库连接字符串 - 请修改为您的实际连接信息
-        private const string ConnectionString = "User Id=SYS;Password=Sun20040921;Data Source=127.0.0.1:1521/orcl;DBA Privilege=SYSDBA;";
+        private const string ConnectionString = "User Id=APP_USER;Password=abcd;Data Source=127.0.0.1:1521/orcl;";
 
         static void Main(string[] args)
         {
@@ -99,39 +99,45 @@ namespace OracleDataInserter
                         "INSERT INTO moviehall (hallNo, lines, columns, category) VALUES " +
                         "(2, 12, 18, '杜比厅')");
 
-                    // 3. 插入时段数据（timeslot表没有外键依赖）
+                    // 3. 插入时段数据（包含完整日期时间）
                     Console.WriteLine("插入时段数据...");
                     ExecuteNonQuery(connection, transaction,
                         "INSERT INTO timeslot (timeID, startTime, endTime) VALUES " +
-                        "('MORNING', TO_DATE('09:00:00', 'HH24:MI:SS'), TO_DATE('12:00:00', 'HH24:MI:SS'))");
+                        "('1000', " +
+                        "TO_DATE('2023-02-01 09:00:00', 'YYYY-MM-DD HH24:MI:SS'), " +
+                        "TO_DATE('2023-02-01 12:00:00', 'YYYY-MM-DD HH24:MI:SS'))");
 
                     ExecuteNonQuery(connection, transaction,
                         "INSERT INTO timeslot (timeID, startTime, endTime) VALUES " +
-                        "('AFTERNOON', TO_DATE('13:00:00', 'HH24:MI:SS'), TO_DATE('17:00:00', 'HH24:MI:SS'))");
+                        "('1001', " +
+                        "TO_DATE('2023-02-01 13:00:00', 'YYYY-MM-DD HH24:MI:SS'), " +
+                        "TO_DATE('2023-02-01 17:00:00', 'YYYY-MM-DD HH24:MI:SS'))");
 
                     ExecuteNonQuery(connection, transaction,
                         "INSERT INTO timeslot (timeID, startTime, endTime) VALUES " +
-                        "('EVENING', TO_DATE('18:00:00', 'HH24:MI:SS'), TO_DATE('22:00:00', 'HH24:MI:SS'))");
+                        "('1002', " +
+                        "TO_DATE('2023-02-01 18:00:00', 'YYYY-MM-DD HH24:MI:SS'), " +
+                        "TO_DATE('2023-02-01 22:00:00', 'YYYY-MM-DD HH24:MI:SS'))");
 
                     // 4. 插入折扣数据（依赖timeslot）
                     Console.WriteLine("插入折扣数据...");
                     ExecuteNonQuery(connection, transaction,
                         "INSERT INTO discounts (timeID, discount) VALUES " +
-                        "('MORNING', 0.8)");
+                        "('1000', 0.8)");
 
                     ExecuteNonQuery(connection, transaction,
                         "INSERT INTO discounts (timeID, discount) VALUES " +
-                        "('AFTERNOON', 0.9)");
+                        "('1001', 0.9)");
 
                     // 5. 插入场次数据（依赖film、moviehall和timeslot）
                     Console.WriteLine("插入场次数据...");
                     ExecuteNonQuery(connection, transaction,
-                        "INSERT INTO section (sectionID, filmName, hallNo, timeID, day) VALUES " +
-                        "(1001, '流浪地球2', 1, 'MORNING', TO_DATE('2023-02-01', 'YYYY-MM-DD'))");
+                        "INSERT INTO section (sectionID, filmName, hallNo, timeID) VALUES " +
+                        "(1001, '流浪地球2', 1, '1000')");
 
                     ExecuteNonQuery(connection, transaction,
-                        "INSERT INTO section (sectionID, filmName, hallNo, timeID, day) VALUES " +
-                        "(1002, '满江红', 2, 'EVENING', TO_DATE('2023-02-01', 'YYYY-MM-DD'))");
+                        "INSERT INTO section (sectionID, filmName, hallNo, timeID) VALUES " +
+                        "(1002, '满江红', 2, '1002')");
 
                     // 6. 插入顾客数据（customer表没有外键依赖）
                     Console.WriteLine("插入顾客数据...");
@@ -236,14 +242,14 @@ namespace OracleDataInserter
                         //"(5002, 'C20230002', 'T1002_6_10', SYSDATE, '待支付', '支付宝', 40)");
 
                     // 13. 插入产品订单数据（依赖customer和relatedproduct）
-                    Console.WriteLine("插入产品订单数据...");
-                    ExecuteNonQuery(connection, transaction,
-                        "INSERT INTO orderforproducts (orderID, customerID, productname, purchasenum, day, state, pmethod, price) VALUES " +
-                        "(6001, 'C20230001', '爆米花', 2, SYSDATE, '已支付', '微信支付', 50)");
+                    //Console.WriteLine("插入产品订单数据...");
+                    //ExecuteNonQuery(connection, transaction,
+                        //"INSERT INTO orderforproducts (orderID, customerID, productname, purchasenum, day, state, pmethod, price) VALUES " +
+                        //"(6001, 'C20230001', '爆米花', 2, SYSDATE, '已支付', '微信支付', 50)");
 
-                    ExecuteNonQuery(connection, transaction,
-                        "INSERT INTO orderforproducts (orderID, customerID, productname, purchasenum, day, state, pmethod, price) VALUES " +
-                        "(6002, 'C20230002', '可乐', 1, SYSDATE, '已支付', '支付宝', 15)");
+                    //ExecuteNonQuery(connection, transaction,
+                        //"INSERT INTO orderforproducts (orderID, customerID, productname, purchasenum, day, state, pmethod, price) VALUES " +
+                        //"(6002, 'C20230002', '可乐', 1, SYSDATE, '已支付', '支付宝', 15)");
 
                     // 14. 插入演员数据（依赖film）
                     Console.WriteLine("插入演员数据...");

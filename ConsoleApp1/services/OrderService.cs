@@ -273,21 +273,20 @@ namespace CinemaTicketSystem.Services
             refundFee = 0m;
             refundAmount = 0;
 
-            // 1. 获取订单和票信息（修改后的查询）
+            // 1. 获取订单和票信息
             string getOrderSql = @"
-    SELECT 
-        o.ticketID, 
-        o.price,
-        s.Day AS showDate,
-        TO_CHAR(ts.starttime, 'HH24:MI:SS') AS showTimeStr
-    FROM 
-        orderfortickets o
-        JOIN ticket t ON o.ticketID = t.ticketID
-        JOIN section s ON t.sectionID = s.sectionID
-        JOIN timeslot ts ON s.timeID = ts.timeID
-    WHERE 
-        o.orderID = :orderId 
-        AND o.state = '已支付'";
+SELECT 
+    o.ticketID, 
+    o.price,
+    ts.starttime AS showtime
+FROM 
+    orderfortickets o
+    JOIN ticket t ON o.ticketID = t.ticketID
+    JOIN section s ON t.sectionID = s.sectionID
+    JOIN timeslot ts ON s.timeID = ts.timeID
+WHERE 
+    o.orderID = :orderId 
+    AND o.state = '已支付'";
 
             var orderParam = new OracleParameter("orderId", OracleDbType.Int32)
             {
@@ -303,20 +302,15 @@ namespace CinemaTicketSystem.Services
 
             var row = orderInfo.Rows[0];
             string ticketId = row["ticketID"].ToString();
-            DateTime showDate = Convert.ToDateTime(row["showDate"]);
-            string timeStr = row["showTimestr"].ToString();
-
-            // 解析时间部分
-            TimeSpan showTime = TimeSpan.ParseExact(timeStr, @"hh\:mm\:ss", CultureInfo.InvariantCulture);
-            DateTime showtime = showDate.Date.Add(showTime);
+            DateTime showtime = Convert.ToDateTime(row["showtime"]);
             int paidPrice = Convert.ToInt32(row["price"]);
 
             // 2. 检查电影是否已开始放映
             if (refundTime >= showtime)
             {
                 Console.WriteLine($"[ERROR] 电影已开始放映，无法退票");
-                Console.WriteLine($"\t放映时间: {showtime:yyyy-MM-dd HH:mm}");
-                Console.WriteLine($"\t退票时间: {refundTime:yyyy-MM-dd HH:mm}");
+                Console.WriteLine($"\t开始时间: {showtime:yyyy-MM-dd HH:mm}");
+                Console.WriteLine($"\t当前时间: {refundTime:yyyy-MM-dd HH:mm}");
                 return false;
             }
 
@@ -324,7 +318,7 @@ namespace CinemaTicketSystem.Services
             refundFee = CalculateRefundFee(showtime, refundTime, paidPrice);
             refundAmount = paidPrice - (int)refundFee;
 
-            // 4. 执行退款事务（保持不变）
+            // 4. 执行退款事务
             using (var transaction = _dbService.BeginTransaction())
             {
                 try

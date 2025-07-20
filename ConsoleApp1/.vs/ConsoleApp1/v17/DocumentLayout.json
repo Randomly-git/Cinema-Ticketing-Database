@@ -7,28 +7,28 @@
       "RelativeMoniker": "D:0:0:{7B5B0BC2-7E08-E58C-6436-F53A2B87BA1D}|ConsoleApp1.csproj|solutionrelative:ticketprogram.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{7B5B0BC2-7E08-E58C-6436-F53A2B87BA1D}|ConsoleApp1.csproj|d:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\cinema-ticketing-database\\consoleapp1\\consoleapp1.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
-      "RelativeMoniker": "D:0:0:{7B5B0BC2-7E08-E58C-6436-F53A2B87BA1D}|ConsoleApp1.csproj|solutionrelative:consoleapp1.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{7B5B0BC2-7E08-E58C-6436-F53A2B87BA1D}|ConsoleApp1.csproj|d:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\cinema-ticketing-database\\consoleapp1\\services\\filmservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{7B5B0BC2-7E08-E58C-6436-F53A2B87BA1D}|ConsoleApp1.csproj|solutionrelative:services\\filmservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{7B5B0BC2-7E08-E58C-6436-F53A2B87BA1D}|ConsoleApp1.csproj|d:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\cinema-ticketing-database\\consoleapp1\\services\\orderservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7B5B0BC2-7E08-E58C-6436-F53A2B87BA1D}|ConsoleApp1.csproj|solutionrelative:services\\orderservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{7B5B0BC2-7E08-E58C-6436-F53A2B87BA1D}|ConsoleApp1.csproj|d:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\cinema-ticketing-database\\consoleapp1\\models\\orderfortickets.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7B5B0BC2-7E08-E58C-6436-F53A2B87BA1D}|ConsoleApp1.csproj|solutionrelative:models\\orderfortickets.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{7B5B0BC2-7E08-E58C-6436-F53A2B87BA1D}|ConsoleApp1.csproj|d:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\cinema-ticketing-database\\consoleapp1\\services\\ticketservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{7B5B0BC2-7E08-E58C-6436-F53A2B87BA1D}|ConsoleApp1.csproj|solutionrelative:services\\ticketservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{7B5B0BC2-7E08-E58C-6436-F53A2B87BA1D}|ConsoleApp1.csproj|d:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\cinema-ticketing-database\\consoleapp1\\services\\orderservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7B5B0BC2-7E08-E58C-6436-F53A2B87BA1D}|ConsoleApp1.csproj|solutionrelative:services\\orderservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{7B5B0BC2-7E08-E58C-6436-F53A2B87BA1D}|ConsoleApp1.csproj|d:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\cinema-ticketing-database\\consoleapp1\\models\\section.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{7B5B0BC2-7E08-E58C-6436-F53A2B87BA1D}|ConsoleApp1.csproj|solutionrelative:models\\section.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7B5B0BC2-7E08-E58C-6436-F53A2B87BA1D}|ConsoleApp1.csproj|d:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\cinema-ticketing-database\\consoleapp1\\models\\vipcard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7B5B0BC2-7E08-E58C-6436-F53A2B87BA1D}|ConsoleApp1.csproj|solutionrelative:models\\vipcard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7B5B0BC2-7E08-E58C-6436-F53A2B87BA1D}|ConsoleApp1.csproj|d:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\cinema-ticketing-database\\consoleapp1\\consoleapp1.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{7B5B0BC2-7E08-E58C-6436-F53A2B87BA1D}|ConsoleApp1.csproj|solutionrelative:consoleapp1.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
     },
     {
       "AbsoluteMoniker": "D:0:0:{7B5B0BC2-7E08-E58C-6436-F53A2B87BA1D}|ConsoleApp1.csproj|d:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\cinema-ticketing-database\\consoleapp1\\services\\databaseservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -39,8 +39,8 @@
       "RelativeMoniker": "D:0:0:{7B5B0BC2-7E08-E58C-6436-F53A2B87BA1D}|ConsoleApp1.csproj|solutionrelative:models\\timeslot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{7B5B0BC2-7E08-E58C-6436-F53A2B87BA1D}|ConsoleApp1.csproj|d:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\cinema-ticketing-database\\consoleapp1\\models\\vipcard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7B5B0BC2-7E08-E58C-6436-F53A2B87BA1D}|ConsoleApp1.csproj|solutionrelative:models\\vipcard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{7B5B0BC2-7E08-E58C-6436-F53A2B87BA1D}|ConsoleApp1.csproj|d:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\cinema-ticketing-database\\consoleapp1\\models\\orderfortickets.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7B5B0BC2-7E08-E58C-6436-F53A2B87BA1D}|ConsoleApp1.csproj|solutionrelative:models\\orderfortickets.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{7B5B0BC2-7E08-E58C-6436-F53A2B87BA1D}|ConsoleApp1.csproj|d:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\cinema-ticketing-database\\consoleapp1\\models\\ticket.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -74,13 +74,13 @@
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "FilmService.cs",
               "DocumentMoniker": "D:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\Cinema-Ticketing-Database\\ConsoleApp1\\services\\FilmService.cs",
               "RelativeDocumentMoniker": "services\\FilmService.cs",
               "ToolTip": "D:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\Cinema-Ticketing-Database\\ConsoleApp1\\services\\FilmService.cs",
               "RelativeToolTip": "services\\FilmService.cs",
-              "ViewState": "AgIAABMAAAAAAAAAAAAIwB4AAAAYAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwB8AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-19T10:28:23.391Z",
               "EditorCaption": ""
@@ -100,7 +100,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 5,
               "Title": "VIPCard.cs",
               "DocumentMoniker": "D:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\Cinema-Ticketing-Database\\ConsoleApp1\\Models\\VIPCard.cs",
               "RelativeDocumentMoniker": "Models\\VIPCard.cs",
@@ -108,7 +108,8 @@
               "RelativeToolTip": "Models\\VIPCard.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAADwvwAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-19T09:49:12.829Z"
+              "WhenOpened": "2025-07-19T09:49:12.829Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -160,7 +161,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 9,
               "Title": "OrderForTickets.cs",
               "DocumentMoniker": "D:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\Cinema-Ticketing-Database\\ConsoleApp1\\Models\\OrderForTickets.cs",
               "RelativeDocumentMoniker": "Models\\OrderForTickets.cs",
@@ -168,18 +169,17 @@
               "RelativeToolTip": "Models\\OrderForTickets.cs",
               "ViewState": "AgIAABAAAAAAAAAAAAAgwA4AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-19T07:55:02.118Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-19T07:55:02.118Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 4,
               "Title": "Section.cs",
               "DocumentMoniker": "D:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\Cinema-Ticketing-Database\\ConsoleApp1\\Models\\Section.cs",
               "RelativeDocumentMoniker": "Models\\Section.cs",
               "ToolTip": "D:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\Cinema-Ticketing-Database\\ConsoleApp1\\Models\\Section.cs",
               "RelativeToolTip": "Models\\Section.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAATAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAiAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-19T07:40:14.327Z",
               "EditorCaption": ""
@@ -204,20 +204,20 @@
               "RelativeDocumentMoniker": "services\\OrderService.cs",
               "ToolTip": "D:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\Cinema-Ticketing-Database\\ConsoleApp1\\services\\OrderService.cs",
               "RelativeToolTip": "services\\OrderService.cs",
-              "ViewState": "AgIAAAQBAAAAAAAAAAAYwBgBAAANAAAAAAAAAA==",
+              "ViewState": "AgIAAA4BAAAAAAAAAAAwwCMBAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-19T07:32:09.187Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 2,
               "Title": "TicketService.cs",
               "DocumentMoniker": "D:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\Cinema-Ticketing-Database\\ConsoleApp1\\services\\TicketService.cs",
               "RelativeDocumentMoniker": "services\\TicketService.cs",
               "ToolTip": "D:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\Cinema-Ticketing-Database\\ConsoleApp1\\services\\TicketService.cs",
               "RelativeToolTip": "services\\TicketService.cs",
-              "ViewState": "AgIAAFoAAAAAAAAAAAAAAIwAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAF0AAAAAAAAAAAAAAIwAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-19T07:30:11.959Z",
               "EditorCaption": ""
@@ -230,14 +230,14 @@
               "RelativeDocumentMoniker": "services\\DatabaseService.cs",
               "ToolTip": "D:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\Cinema-Ticketing-Database\\ConsoleApp1\\services\\DatabaseService.cs",
               "RelativeToolTip": "services\\DatabaseService.cs",
-              "ViewState": "AgIAACYAAAAAAAAAAAAAAD0AAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACoAAABEAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-19T07:20:18.965Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 6,
               "Title": "ConsoleApp1.csproj",
               "DocumentMoniker": "D:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\Cinema-Ticketing-Database\\ConsoleApp1\\ConsoleApp1.csproj",
               "RelativeDocumentMoniker": "ConsoleApp1.csproj",
@@ -256,7 +256,7 @@
               "RelativeDocumentMoniker": "ticketprogram.cs",
               "ToolTip": "D:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\Cinema-Ticketing-Database\\ConsoleApp1\\ticketprogram.cs",
               "RelativeToolTip": "ticketprogram.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAANEBAAAfAAAAAAAAAA==",
+              "ViewState": "AgIAALUBAAAAAAAAAAAAANYBAAAvAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-19T07:05:26.502Z",
               "EditorCaption": ""

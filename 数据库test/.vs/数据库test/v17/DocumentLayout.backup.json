@@ -28,9 +28,10 @@
               "RelativeDocumentMoniker": "\u6570\u636E\u5E93test\\\u5E8F\u5217.cs",
               "ToolTip": "D:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\Cinema-Ticketing-Database\\\u6570\u636E\u5E93test\\\u6570\u636E\u5E93test\\\u5E8F\u5217.cs",
               "RelativeToolTip": "\u6570\u636E\u5E93test\\\u5E8F\u5217.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAABIAAAAAAAAAAAAywBIAAAAUAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-19T12:53:13.454Z"
+              "WhenOpened": "2025-07-19T12:53:13.454Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -38,9 +39,9 @@
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\Cinema-Ticketing-Database\\\u6570\u636E\u5E93test\\\u6570\u636E\u5E93test\\Program.cs",
               "RelativeDocumentMoniker": "\u6570\u636E\u5E93test\\Program.cs",
-              "ToolTip": "D:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\Cinema-Ticketing-Database\\\u6570\u636E\u5E93test\\\u6570\u636E\u5E93test\\Program.cs",
-              "RelativeToolTip": "\u6570\u636E\u5E93test\\Program.cs",
-              "ViewState": "AgIAAG0AAAAAAAAAAAAAAIUAAAAvAAAAAAAAAA==",
+              "ToolTip": "D:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\Cinema-Ticketing-Database\\\u6570\u636E\u5E93test\\\u6570\u636E\u5E93test\\Program.cs*",
+              "RelativeToolTip": "\u6570\u636E\u5E93test\\Program.cs*",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAABPAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-16T15:17:23.791Z",
               "EditorCaption": ""

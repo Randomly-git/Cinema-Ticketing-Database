@@ -22,19 +22,19 @@ public class FilmService
     public DataTable GetFilmSections(string filmName, DateTime day)
     {
         string sql = @"
-        SELECT s.sectionID, s.hallNo, s.timeID, 
-               TO_CHAR(s.day, 'YYYY-MM-DD HH24:MI') AS showTime
-        FROM section s
-        JOIN timeslot t ON s.timeID = t.timeID
-        WHERE s.filmName = :filmName 
-        AND TRUNC(s.day) = TRUNC(:day)
-        ORDER BY s.day";
+    SELECT s.sectionID, s.hallNo, s.timeID, 
+           TO_CHAR(t.startTime, 'YYYY-MM-DD HH24:MI') AS showTime
+    FROM section s
+    JOIN timeslot t ON s.timeID = t.timeID
+    WHERE s.filmName = :filmName 
+    AND TRUNC(t.startTime) = TRUNC(:day)
+    ORDER BY t.startTime";
 
         var parameters = new[]
         {
-            new OracleParameter("filmName", OracleDbType.Varchar2, 50) { Value = filmName },
-            new OracleParameter("day", OracleDbType.Date) { Value = day }
-        };
+        new OracleParameter("filmName", OracleDbType.Varchar2, 50) { Value = filmName },
+        new OracleParameter("day", OracleDbType.Date) { Value = day }
+    };
 
         return _dbService.ExecuteQuery(sql, parameters);
     }

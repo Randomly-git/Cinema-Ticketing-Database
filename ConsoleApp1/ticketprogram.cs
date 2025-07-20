@@ -6,7 +6,7 @@ using System.Data;
 class TicketProgram
 {
     // 硬编码的数据库连接字符串
-    private const string ConnectionString = "User Id=SYS;Password=Sun20040921;Data Source=127.0.0.1:1521/orcl;DBA Privilege=SYSDBA;";
+    private const string ConnectionString = "User Id=APP_USER;Password=abcd;Data Source=127.0.0.1:1521/orcl;";
 
     static void Main(string[] args)
     {
@@ -460,7 +460,7 @@ class TicketProgram
         }
 
         // 使用固定时间测试
-        DateTime refundTime = new DateTime(2025, 6, 30, 12, 30, 0);
+        DateTime refundTime = new DateTime(2023, 2, 1, 0, 0, 0);
         Console.WriteLine($"使用测试时间: {refundTime:yyyy-MM-dd HH:mm}");
 
         if (orderService.RefundTicket(orderId, refundTime, out decimal fee, out int refundAmount))
