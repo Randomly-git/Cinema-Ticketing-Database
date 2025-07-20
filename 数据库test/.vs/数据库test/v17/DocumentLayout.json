@@ -1,0 +1,53 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\Cinema-Ticketing-Database\\\u6570\u636E\u5E93test\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{5488F4B0-D75C-41B4-8BB6-140A4785A49B}|\u6570\u636E\u5E93test\\\u6570\u636E\u5E93test.csproj|d:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\cinema-ticketing-database\\\u6570\u636E\u5E93test\\\u6570\u636E\u5E93test\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5488F4B0-D75C-41B4-8BB6-140A4785A49B}|\u6570\u636E\u5E93test\\\u6570\u636E\u5E93test.csproj|solutionrelative:\u6570\u636E\u5E93test\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5488F4B0-D75C-41B4-8BB6-140A4785A49B}|\u6570\u636E\u5E93test\\\u6570\u636E\u5E93test.csproj|d:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\cinema-ticketing-database\\\u6570\u636E\u5E93test\\\u6570\u636E\u5E93test\\\u5E8F\u5217.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5488F4B0-D75C-41B4-8BB6-140A4785A49B}|\u6570\u636E\u5E93test\\\u6570\u636E\u5E93test.csproj|solutionrelative:\u6570\u636E\u5E93test\\\u5E8F\u5217.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "\u5E8F\u5217.cs",
+              "DocumentMoniker": "D:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\Cinema-Ticketing-Database\\\u6570\u636E\u5E93test\\\u6570\u636E\u5E93test\\\u5E8F\u5217.cs",
+              "RelativeDocumentMoniker": "\u6570\u636E\u5E93test\\\u5E8F\u5217.cs",
+              "ToolTip": "D:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\Cinema-Ticketing-Database\\\u6570\u636E\u5E93test\\\u6570\u636E\u5E93test\\\u5E8F\u5217.cs",
+              "RelativeToolTip": "\u6570\u636E\u5E93test\\\u5E8F\u5217.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-19T12:53:13.454Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\Cinema-Ticketing-Database\\\u6570\u636E\u5E93test\\\u6570\u636E\u5E93test\\Program.cs",
+              "RelativeDocumentMoniker": "\u6570\u636E\u5E93test\\Program.cs",
+              "ToolTip": "D:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\Cinema-Ticketing-Database\\\u6570\u636E\u5E93test\\\u6570\u636E\u5E93test\\Program.cs",
+              "RelativeToolTip": "\u6570\u636E\u5E93test\\Program.cs",
+              "ViewState": "AgIAAG0AAAAAAAAAAAAAAIUAAAAvAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-16T15:17:23.791Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
