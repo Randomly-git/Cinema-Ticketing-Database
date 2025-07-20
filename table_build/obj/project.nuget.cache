@@ -1,26 +1,28 @@
 {
   "version": 2,
-  "dgSpecHash": "aMMBFqXrb92QEgTgCV3GZQu0P01wGI9cPB3REO6YEC8TD5rMKga7+Zvg/xEiOnsk9AY+Pgg2AQ9QOrdjVK7foA==",
+  "dgSpecHash": "TO9HuvYIY5w=",
   "success": true,
-  "projectFilePath": "C:\\Users\\13604\\source\\repos\\ConsoleApp1\\ConsoleApp1\\建表代码.csproj",
+  "projectFilePath": "D:\\数据库课程设计\\Cinema-Ticketing-Database\\table_build\\建表代码.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\13604\\.nuget\\packages\\oracle.manageddataaccess.core\\23.9.1\\oracle.manageddataaccess.core.23.9.1.nupkg.sha512",
-    "C:\\Users\\13604\\.nuget\\packages\\oracle.oracleclient\\4.121.2\\oracle.oracleclient.4.121.2.nupkg.sha512",
-    "C:\\Users\\13604\\.nuget\\packages\\system.configuration.configurationmanager\\8.0.0\\system.configuration.configurationmanager.8.0.0.nupkg.sha512",
-    "C:\\Users\\13604\\.nuget\\packages\\system.diagnostics.eventlog\\8.0.0\\system.diagnostics.eventlog.8.0.0.nupkg.sha512",
-    "C:\\Users\\13604\\.nuget\\packages\\system.diagnostics.performancecounter\\8.0.0\\system.diagnostics.performancecounter.8.0.0.nupkg.sha512",
-    "C:\\Users\\13604\\.nuget\\packages\\system.directoryservices.protocols\\8.0.2\\system.directoryservices.protocols.8.0.2.nupkg.sha512",
-    "C:\\Users\\13604\\.nuget\\packages\\system.formats.asn1\\8.0.1\\system.formats.asn1.8.0.1.nupkg.sha512",
-    "C:\\Users\\13604\\.nuget\\packages\\system.memory\\4.6.0\\system.memory.4.6.0.nupkg.sha512",
-    "C:\\Users\\13604\\.nuget\\packages\\system.security.cryptography.pkcs\\8.0.1\\system.security.cryptography.pkcs.8.0.1.nupkg.sha512",
-    "C:\\Users\\13604\\.nuget\\packages\\system.security.cryptography.protecteddata\\8.0.0\\system.security.cryptography.protecteddata.8.0.0.nupkg.sha512"
+    "C:\\Users\\17050\\.nuget\\packages\\oracle.manageddataaccess.core\\23.9.1\\oracle.manageddataaccess.core.23.9.1.nupkg.sha512",
+    "C:\\Users\\17050\\.nuget\\packages\\oracle.oracleclient\\4.121.2\\oracle.oracleclient.4.121.2.nupkg.sha512",
+    "C:\\Users\\17050\\.nuget\\packages\\system.configuration.configurationmanager\\8.0.0\\system.configuration.configurationmanager.8.0.0.nupkg.sha512",
+    "C:\\Users\\17050\\.nuget\\packages\\system.diagnostics.eventlog\\8.0.0\\system.diagnostics.eventlog.8.0.0.nupkg.sha512",
+    "C:\\Users\\17050\\.nuget\\packages\\system.diagnostics.performancecounter\\8.0.0\\system.diagnostics.performancecounter.8.0.0.nupkg.sha512",
+    "C:\\Users\\17050\\.nuget\\packages\\system.directoryservices.protocols\\8.0.2\\system.directoryservices.protocols.8.0.2.nupkg.sha512",
+    "C:\\Users\\17050\\.nuget\\packages\\system.formats.asn1\\8.0.1\\system.formats.asn1.8.0.1.nupkg.sha512",
+    "C:\\Users\\17050\\.nuget\\packages\\system.memory\\4.6.0\\system.memory.4.6.0.nupkg.sha512",
+    "C:\\Users\\17050\\.nuget\\packages\\system.security.cryptography.pkcs\\8.0.1\\system.security.cryptography.pkcs.8.0.1.nupkg.sha512",
+    "C:\\Users\\17050\\.nuget\\packages\\system.security.cryptography.protecteddata\\8.0.0\\system.security.cryptography.protecteddata.8.0.0.nupkg.sha512"
   ],
   "logs": [
     {
       "code": "NU1701",
       "level": "Warning",
-      "warningLevel": 1,
       "message": "已使用“.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1”而不是项目目标框架“net8.0”还原包“Oracle.OracleClient 4.121.2”。此包可能与项目不完全兼容。",
+      "projectPath": "D:\\数据库课程设计\\Cinema-Ticketing-Database\\table_build\\建表代码.csproj",
+      "warningLevel": 1,
+      "filePath": "D:\\数据库课程设计\\Cinema-Ticketing-Database\\table_build\\建表代码.csproj",
       "libraryId": "Oracle.OracleClient",
       "targetGraphs": [
         "net8.0"

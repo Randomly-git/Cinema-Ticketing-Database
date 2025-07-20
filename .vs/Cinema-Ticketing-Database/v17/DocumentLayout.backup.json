@@ -1,0 +1,190 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\Cinema-Ticketing-Database\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\Cinema-Ticketing-Database\\ConsoleApp1\\Models\\Cast.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:ConsoleApp1\\Models\\Cast.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\Cinema-Ticketing-Database\\table_build\\\u5EFA\u8868\u4EE3\u7801.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:table_build\\\u5EFA\u8868\u4EE3\u7801.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\Cinema-Ticketing-Database\\README.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:README.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\Cinema-Ticketing-Database\\ConsoleApp1\\Models\\Customer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:ConsoleApp1\\Models\\Customer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\Cinema-Ticketing-Database\\ConsoleApp1\\Models\\Film.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:ConsoleApp1\\Models\\Film.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\Cinema-Ticketing-Database\\ConsoleApp1\\Models\\Section.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:ConsoleApp1\\Models\\Section.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\Cinema-Ticketing-Database\\ConsoleApp1\\Models\\Timeslot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:ConsoleApp1\\Models\\Timeslot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\Cinema-Ticketing-Database\\ConsoleApp1\\Models\\VIPCard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:ConsoleApp1\\Models\\VIPCard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\Cinema-Ticketing-Database\\ConsoleApp1\\Models\\RelatedProduct.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:ConsoleApp1\\Models\\RelatedProduct.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\Cinema-Ticketing-Database\\ConsoleApp1\\Models\\CustomerPortrait.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:ConsoleApp1\\Models\\CustomerPortrait.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 8,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "\u5EFA\u8868\u4EE3\u7801.csproj",
+              "DocumentMoniker": "D:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\Cinema-Ticketing-Database\\table_build\\\u5EFA\u8868\u4EE3\u7801.csproj",
+              "RelativeDocumentMoniker": "table_build\\\u5EFA\u8868\u4EE3\u7801.csproj",
+              "ToolTip": "D:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\Cinema-Ticketing-Database\\table_build\\\u5EFA\u8868\u4EE3\u7801.csproj",
+              "RelativeToolTip": "table_build\\\u5EFA\u8868\u4EE3\u7801.csproj",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-07-18T04:53:18.469Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "README.md",
+              "DocumentMoniker": "D:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\Cinema-Ticketing-Database\\README.md",
+              "RelativeDocumentMoniker": "README.md",
+              "ToolTip": "D:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\Cinema-Ticketing-Database\\README.md",
+              "RelativeToolTip": "README.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAADwvwAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2025-07-18T04:53:17.496Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Customer.cs",
+              "DocumentMoniker": "D:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\Cinema-Ticketing-Database\\ConsoleApp1\\Models\\Customer.cs",
+              "RelativeDocumentMoniker": "ConsoleApp1\\Models\\Customer.cs",
+              "ToolTip": "D:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\Cinema-Ticketing-Database\\ConsoleApp1\\Models\\Customer.cs",
+              "RelativeToolTip": "ConsoleApp1\\Models\\Customer.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAADwvwAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-18T04:52:58.231Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Film.cs",
+              "DocumentMoniker": "D:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\Cinema-Ticketing-Database\\ConsoleApp1\\Models\\Film.cs",
+              "RelativeDocumentMoniker": "ConsoleApp1\\Models\\Film.cs",
+              "ToolTip": "D:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\Cinema-Ticketing-Database\\ConsoleApp1\\Models\\Film.cs",
+              "RelativeToolTip": "ConsoleApp1\\Models\\Film.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAADwvwAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-18T04:52:57.021Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Section.cs",
+              "DocumentMoniker": "D:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\Cinema-Ticketing-Database\\ConsoleApp1\\Models\\Section.cs",
+              "RelativeDocumentMoniker": "ConsoleApp1\\Models\\Section.cs",
+              "ToolTip": "D:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\Cinema-Ticketing-Database\\ConsoleApp1\\Models\\Section.cs",
+              "RelativeToolTip": "ConsoleApp1\\Models\\Section.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAADwvwAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-18T04:52:56.008Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Timeslot.cs",
+              "DocumentMoniker": "D:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\Cinema-Ticketing-Database\\ConsoleApp1\\Models\\Timeslot.cs",
+              "RelativeDocumentMoniker": "ConsoleApp1\\Models\\Timeslot.cs",
+              "ToolTip": "D:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\Cinema-Ticketing-Database\\ConsoleApp1\\Models\\Timeslot.cs",
+              "RelativeToolTip": "ConsoleApp1\\Models\\Timeslot.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAADwvwAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-18T04:52:55.306Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "VIPCard.cs",
+              "DocumentMoniker": "D:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\Cinema-Ticketing-Database\\ConsoleApp1\\Models\\VIPCard.cs",
+              "RelativeDocumentMoniker": "ConsoleApp1\\Models\\VIPCard.cs",
+              "ToolTip": "D:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\Cinema-Ticketing-Database\\ConsoleApp1\\Models\\VIPCard.cs",
+              "RelativeToolTip": "ConsoleApp1\\Models\\VIPCard.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAADwvwAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-18T04:52:54.441Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "RelatedProduct.cs",
+              "DocumentMoniker": "D:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\Cinema-Ticketing-Database\\ConsoleApp1\\Models\\RelatedProduct.cs",
+              "RelativeDocumentMoniker": "ConsoleApp1\\Models\\RelatedProduct.cs",
+              "ToolTip": "D:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\Cinema-Ticketing-Database\\ConsoleApp1\\Models\\RelatedProduct.cs",
+              "RelativeToolTip": "ConsoleApp1\\Models\\RelatedProduct.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAADwvwAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-18T04:52:52.967Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Cast.cs",
+              "DocumentMoniker": "D:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\Cinema-Ticketing-Database\\ConsoleApp1\\Models\\Cast.cs",
+              "RelativeDocumentMoniker": "ConsoleApp1\\Models\\Cast.cs",
+              "ToolTip": "D:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\Cinema-Ticketing-Database\\ConsoleApp1\\Models\\Cast.cs",
+              "RelativeToolTip": "ConsoleApp1\\Models\\Cast.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAADwvwAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-18T04:52:51.712Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "CustomerPortrait.cs",
+              "DocumentMoniker": "D:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\Cinema-Ticketing-Database\\ConsoleApp1\\Models\\CustomerPortrait.cs",
+              "RelativeDocumentMoniker": "ConsoleApp1\\Models\\CustomerPortrait.cs",
+              "ToolTip": "D:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\Cinema-Ticketing-Database\\ConsoleApp1\\Models\\CustomerPortrait.cs",
+              "RelativeToolTip": "ConsoleApp1\\Models\\CustomerPortrait.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAADwvwAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-18T04:52:45.345Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
