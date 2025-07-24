@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace test.Helpers // 请替换为你的项目命名空间，例如：OracleDbConnectionTest.Helpers
+namespace test.Helpers
 {
     /// 密码哈希和验证的辅助类。
     /// 采用 PBKDF2 算法，增强密码安全性。
