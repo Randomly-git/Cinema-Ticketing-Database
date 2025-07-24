@@ -1,4 +1,4 @@
-﻿using Oracle.ManagedDataAccess.Client; // 确保引用此命名空间
+﻿/*using Oracle.ManagedDataAccess.Client; // 确保引用此命名空间
 
 using test.Models;
 using test.Repositories;
@@ -207,6 +207,175 @@ namespace test
 
 
             Console.WriteLine("\n--- 顾客用户管理模块测试完成。按任意键退出。 ---");
+            Console.ReadKey();
+        }
+    }
+}*/
+
+using System;
+using System.Linq; // 用于 LINQ 扩展方法
+using Oracle.ManagedDataAccess.Client; // 确保引用此命名空间
+using System.Collections.Generic;
+
+// 替换为你的项目实际命名空间
+using test.Models;
+using test.Repositories;
+using test.Services;
+
+namespace test
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("--- Starting Film Overview Query Function Test ---");
+
+            // Define the connection string here directly.
+            // IMPORTANT: Replace '123456' with your actual 'cbc' user's password.
+            // Ensure PORT and SERVICE_NAME match your database configuration.
+            string connectionString = "Data Source=//8.148.76.54:1524/orclpdb1;User Id=cbc;Password=123456;";
+
+            // !!! CRITICAL CONFIGURATION: The actual schema name where your tables reside !!!
+            // In Oracle SQL Developer, confirm the schema name where your FILM, CAST, MOVIEHALL, TIMESLOT, SECTION tables are.
+            // For example: if tables are under 'ADMIN_USER' schema, set to "ADMIN_USER."
+            // If tables are directly under the 'cbc' user's default schema, leave this as an empty string "".
+            string schemaName = "YOUR_ACTUAL_SCHEMA_NAME."; // <-- !!! YOU MUST CHANGE THIS !!!
+
+            // Validate if the connection string is set
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Error: Connection string is empty. Please set the correct connection string in Program.cs!");
+                Console.ResetColor();
+                Console.ReadKey();
+                return;
+            }
+
+            // Initial database connection test (using 'cbc' user)
+            Console.WriteLine("\n--- Initial Database Connection Test (using 'cbc' user) ---");
+            using (OracleConnection testConnection = new OracleConnection(connectionString))
+            {
+                try
+                {
+                    testConnection.Open();
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("Database connection successful!");
+                    Console.ResetColor();
+                }
+                catch (OracleException ex)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"Database connection failed: {ex.Message}");
+                    Console.WriteLine($"Oracle Error Code: {ex.Number}");
+                    Console.WriteLine("Please check: connection string, port, service name, username, password, and cloud server firewall/whitelist settings.");
+                    Console.ResetColor();
+                    Console.ReadKey();
+                    return; // Exit program if connection fails
+                }
+            }
+
+            // Instantiate Film Data Access Layer and Business Logic Layer
+            IFilmRepository filmRepository = new OracleFilmRepository(connectionString);
+            // Note: OracleFilmRepository's SchemaName is a constant. If you need dynamic schema,
+            // you'd adjust the repository's constructor or ensure the constant is correctly set in OracleFilmRepository.cs.
+            // For this test, ensure you've manually set SchemaName in OracleFilmRepository.cs as well.
+
+            IFilmService filmService = new FilmService(filmRepository);
+
+            // --- Test retrieving all films ---
+            Console.WriteLine("\n--- Test Retrieving All Films ---");
+            try
+            {
+                List<Film> films = filmService.GetAvailableFilms();
+                if (films.Any())
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine($"Successfully retrieved {films.Count} film(s):");
+                    Console.ResetColor();
+                    foreach (var film in films)
+                    {
+                        Console.WriteLine($"- {film.ToString()}");
+                    }
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine("No films found. Please ensure the FILM table has data.");
+                    Console.ResetColor();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"Failed to retrieve film list: {ex.Message}");
+                Console.ResetColor();
+            }
+
+            // --- Test retrieving specific film details (including cast and sections) ---
+            Console.WriteLine("\n--- Test Retrieving Specific Film Details ---");
+            // IMPORTANT: Replace "Your Film Name" with an actual film name that exists in your FILM table.
+            string testFilmName = "星际穿越"; // <-- !!! YOU MUST CHANGE THIS !!!
+            try
+            {
+                Film filmDetails = filmService.GetFilmDetails(testFilmName);
+                if (filmDetails != null)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine($"Successfully retrieved details for film '{filmDetails.FilmName}':");
+                    Console.ResetColor();
+                    Console.WriteLine($"- {filmDetails.ToString()}");
+
+                    if (filmDetails.CastMembers.Any())
+                    {
+                        Console.WriteLine("  Cast Members:");
+                        foreach (var cast in filmDetails.CastMembers)
+                        {
+                            Console.WriteLine($"    - {cast.ToString()}");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("  No cast members found.");
+                    }
+
+                    if (filmDetails.Sections.Any())
+                    {
+                        Console.WriteLine("  Current Showtimes:");
+                        foreach (var section in filmDetails.Sections)
+                        {
+                            Console.WriteLine($"    - {section.ToString()}");
+                            if (section.MovieHall != null)
+                            {
+                                Console.WriteLine($"      Hall: {section.MovieHall.HallNo} ({section.MovieHall.Category}, Capacity: {section.MovieHall.Lines * section.MovieHall.ColumnsCount})");
+                            }
+                            if (section.TimeSlot != null)
+                            {
+                                Console.WriteLine($"      Timeslot: {section.TimeSlot.StartTime:hh\\:mm}-{section.TimeSlot.EndTime:hh\\:mm}");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine("  No showtime information found.");
+                        Console.ResetColor();
+                    }
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine($"Film '{testFilmName}' not found. Please ensure this film exists in the FILM table.");
+                    Console.ResetColor();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"Failed to retrieve film details: {ex.Message}");
+                Console.ResetColor();
+            }
+
+            Console.WriteLine("\n--- Film Overview Query Function Test Completed. Press any key to exit. ---");
             Console.ReadKey();
         }
     }

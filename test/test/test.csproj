@@ -86,14 +86,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DatabaseConnectionHelper.cs" />
+    <Compile Include="Models\Cast.cs" />
     <Compile Include="Models\Customer.cs" />
+    <Compile Include="Models\Film.cs" />
+    <Compile Include="Models\MovieHall.cs" />
+    <Compile Include="Models\Section.cs" />
+    <Compile Include="Models\TimeSlot.cs" />
     <Compile Include="Models\UserRoles.cs" />
     <Compile Include="Models\VIPCard.cs" />
     <Compile Include="Helpers\PasswordHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Models\UserBase.cs" />
     <Compile Include="Repositories\ICustomerRepository.cs" />
+    <Compile Include="Repositories\IFilmRepository.cs" />
     <Compile Include="Repositories\OracleCustomerRepository.cs" />
+    <Compile Include="Repositories\OracleFilmRepository.cs" />
+    <Compile Include="Services\FilmService.cs" />
+    <Compile Include="Services\IFilmService.cs" />
     <Compile Include="Services\IUserService.cs" />
     <Compile Include="Services\UserService.cs" />
   </ItemGroup>
