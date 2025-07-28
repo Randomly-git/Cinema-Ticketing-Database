@@ -1,5 +1,5 @@
 ﻿using Oracle.ManagedDataAccess.Client;
-using test.Models; // 引用 Models 命名空间
+using test.Models; 
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -12,9 +12,7 @@ namespace test.Repositories
     public class OracleFilmRepository : IFilmRepository
     {
         private readonly string _connectionString;
-        // !!! 务必替换为你的表实际所在的模式名，例如 "YOUR_ACTUAL_SCHEMA_NAME." !!!
-        // 如果表就在你连接的用户（例如 cbc）的默认模式下，可以留空字符串 ""
-        private const string SchemaName = ""; // <-- !!! 务必修改这里 !!!
+        private const string SchemaName = ""; 
 
         public OracleFilmRepository(string connectionString)
         {
@@ -135,7 +133,6 @@ namespace test.Repositories
             using (var connection = GetConnection())
             {
                 // 联结 section、moviehall 和 timeslot 表以获取完整的场次信息
-                // !!! 修复点：将 MH."COLUMN" 改为 MH.COLUMNS !!!
                 string sql = $@"SELECT S.SECTIONID, S.FILMNAME, S.HALLNO, S.TIMEID,
                                        MH.LINES, MH.COLUMNS, MH.CATEGORY AS HALL_CATEGORY,
                                        TS.""STARTTIME"", TS.""ENDTIME""
@@ -143,7 +140,7 @@ namespace test.Repositories
                                 JOIN {SchemaName}MOVIEHALL MH ON S.HALLNO = MH.HALLNO
                                 JOIN {SchemaName}TIMESLOT TS ON S.TIMEID = TS.TIMEID
                                 WHERE S.FILMNAME = :filmName
-                                ORDER BY TS.""STARTTIME"""; // 排序也移除对 Day 的引用
+                                ORDER BY TS.""STARTTIME"""; 
                 using (var command = new OracleCommand(sql, connection))
                 {
                     command.Parameters.Add(new OracleParameter("filmName", filmName));
@@ -162,7 +159,7 @@ namespace test.Repositories
                                 {
                                     HallNo = Convert.ToInt32(reader["HALLNO"]),
                                     Lines = Convert.ToInt32(reader["LINES"]),
-                                    ColumnsCount = Convert.ToInt32(reader["COLUMNS"]), // 这里读取时也改为 "COLUMNS"
+                                    ColumnsCount = Convert.ToInt32(reader["COLUMNS"]),
                                     Category = reader["HALL_CATEGORY"].ToString()
                                 },
                                 TimeSlot = new TimeSlot // 填充关联的时段信息
@@ -187,7 +184,6 @@ namespace test.Repositories
             MovieHall movieHall = null;
             using (var connection = GetConnection())
             {
-                // !!! 修复点：将 COLUMN 改为 COLUMNS !!!
                 string sql = $"SELECT HALLNO, LINES, COLUMNS, CATEGORY FROM {SchemaName}MOVIEHALL WHERE HALLNO = :hallNo";
                 using (var command = new OracleCommand(sql, connection))
                 {
@@ -200,7 +196,7 @@ namespace test.Repositories
                             {
                                 HallNo = Convert.ToInt32(reader["HALLNO"]),
                                 Lines = Convert.ToInt32(reader["LINES"]),
-                                ColumnsCount = Convert.ToInt32(reader["COLUMNS"]), // 这里读取时也改为 "COLUMNS"
+                                ColumnsCount = Convert.ToInt32(reader["COLUMNS"]),
                                 Category = reader["CATEGORY"].ToString()
                             };
                         }

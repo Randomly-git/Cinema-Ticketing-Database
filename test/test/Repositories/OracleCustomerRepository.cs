@@ -151,7 +151,6 @@ namespace test.Repositories
             VIPCard vipCard = null;
             using (var connection = GetConnection())
             {
-                // 注意：你的文档中 VIP card 表字段名是 pionts，这里使用 POINTS
                 string sql = "SELECT CUSTOMERID, POINTS FROM VIPCARD WHERE CUSTOMERID = :customerId";
                 using (var command = new OracleCommand(sql, connection))
                 {
