@@ -90,6 +90,7 @@
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Film.cs" />
     <Compile Include="Models\MovieHall.cs" />
+    <Compile Include="Models\OrderForTickets.cs" />
     <Compile Include="Models\SeatHall.cs" />
     <Compile Include="Models\Section.cs" />
     <Compile Include="Models\Ticket.cs" />
@@ -101,11 +102,15 @@
     <Compile Include="Models\UserBase.cs" />
     <Compile Include="Repositories\ICustomerRepository.cs" />
     <Compile Include="Repositories\IFilmRepository.cs" />
+    <Compile Include="Repositories\IOrderRepository.cs" />
     <Compile Include="Repositories\IShowingRepository.cs" />
     <Compile Include="Repositories\OracleCustomerRepository.cs" />
     <Compile Include="Repositories\OracleFilmRepository.cs" />
+    <Compile Include="Repositories\OracleOrderRepository.cs" />
     <Compile Include="Repositories\OracleShowingRepository.cs" />
+    <Compile Include="Services\BookingService.cs" />
     <Compile Include="Services\FilmService.cs" />
+    <Compile Include="Services\IBookingService.cs" />
     <Compile Include="Services\IFilmService.cs" />
     <Compile Include="Services\IShowingService.cs" />
     <Compile Include="Services\IUserService.cs" />

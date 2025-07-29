@@ -1,4 +1,4 @@
-﻿namespace test.Models // 请替换为你的项目命名空间，例如：OracleDbConnectionTest.Models
+﻿namespace test.Models 
 {
     /// 定义系统中的用户角色常量。
     public static class UserRoles

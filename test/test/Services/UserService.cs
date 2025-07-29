@@ -27,7 +27,7 @@ namespace test.Services
         /// <returns>认证成功的 Customer 对象，否则为 null。</returns>
         public Customer AuthenticateCustomer(string customerId, string password)
         {
-            var customer = _customerRepository.GetCustomerByID(customerId);
+            var customer = _customerRepository.GetCustomerById(customerId);
             if (customer == null)
             {
                 return null; // 用户不存在
@@ -66,7 +66,7 @@ namespace test.Services
                 throw new InvalidOperationException("手机号已注册。");
             }
             // 检查 CustomerID 是否已存在（如果 CustomerID 是外部生成）
-            if (_customerRepository.GetCustomerByID(customer.CustomerID) != null)
+            if (_customerRepository.GetCustomerById(customer.CustomerID) != null)
             {
                 throw new InvalidOperationException("顾客ID已存在。请尝试其他ID。");
             }
@@ -80,7 +80,7 @@ namespace test.Services
         /// </summary>
         public void UpdateCustomerProfile(Customer customer)
         {
-            var existingCustomer = _customerRepository.GetCustomerByID(customer.CustomerID);
+            var existingCustomer = _customerRepository.GetCustomerById(customer.CustomerID);
             if (existingCustomer == null)
             {
                 throw new ArgumentException("顾客不存在，无法更新。");
@@ -96,7 +96,7 @@ namespace test.Services
         /// </summary>
         public void DeleteCustomerAccount(string customerId)
         {
-            var customer = _customerRepository.GetCustomerByID(customerId);
+            var customer = _customerRepository.GetCustomerById(customerId);
             if (customer == null)
             {
                 throw new ArgumentException("顾客不存在，无法删除。");
@@ -160,7 +160,7 @@ namespace test.Services
             }
 
             // 如果等级发生变化，则更新数据库
-            var customer = _customerRepository.GetCustomerByID(customerId);
+            var customer = _customerRepository.GetCustomerById(customerId);
             if (customer != null && customer.VipLevel != newVipLevel)
             {
                 _customerRepository.UpdateCustomerVipLevel(customerId, newVipLevel);

@@ -1,8 +1,10 @@
 ﻿using Oracle.ManagedDataAccess.Client;
-using test.Models; 
+using Oracle.ManagedDataAccess.Types;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
+using test.Models; 
 
 namespace test.Repositories
 {
@@ -42,12 +44,28 @@ namespace test.Repositories
                     {
                         if (reader.Read())
                         {
+                            decimal normalPrice = 0m;
+                            int normalPriceOrdinal = reader.GetOrdinal("NORMALPRICE");
+                            if (!reader.IsDBNull(normalPriceOrdinal))
+                            {
+                                // 修复点：先读取为字符串，再尝试解析为 decimal
+                                string priceString = reader[normalPriceOrdinal].ToString();
+                                if (!decimal.TryParse(priceString, NumberStyles.Any, CultureInfo.InvariantCulture, out normalPrice))
+                                {
+                                    Console.ForegroundColor = ConsoleColor.Red;
+                                    Console.WriteLine($"严重警告：在读取电影 '{filmName}' 的 NORMALPRICE 时，无法将字符串 '{priceString}' 转换为 decimal 类型。");
+                                    Console.WriteLine("请检查数据库中 FILM 表的 NORMALPRICE 列的数据是否为有效数字，或尝试更新 Oracle.ManagedDataAccess 驱动。");
+                                    Console.ResetColor();
+                                    normalPrice = 0m; // 转换失败时使用默认值
+                                }
+                            }
+
                             film = new Film
                             {
                                 FilmName = reader["FILMNAME"].ToString(),
                                 Genre = reader["GENRE"].ToString(),
                                 FilmLength = Convert.ToInt32(reader["FILMLENGTH"]),
-                                NormalPrice = Convert.ToDecimal(reader["NORMALPRICE"]),
+                                NormalPrice = normalPrice, // 使用转换后的值
                                 ReleaseDate = Convert.ToDateTime(reader["RELEASEDATE"]),
                                 EndDate = reader["ENDDATE"] as DateTime?, // 可空日期
                                 Admissions = Convert.ToInt32(reader["ADMISSIONS"]),
@@ -76,12 +94,28 @@ namespace test.Repositories
                     {
                         while (reader.Read())
                         {
+                            decimal normalPrice = 0m;
+                            int normalPriceOrdinal = reader.GetOrdinal("NORMALPRICE");
+                            if (!reader.IsDBNull(normalPriceOrdinal))
+                            {
+                                // 修复点：先读取为字符串，再尝试解析为 decimal
+                                string priceString = reader[normalPriceOrdinal].ToString();
+                                if (!decimal.TryParse(priceString, NumberStyles.Any, CultureInfo.InvariantCulture, out normalPrice))
+                                {
+                                    Console.ForegroundColor = ConsoleColor.Red;
+                                    Console.WriteLine($"严重警告：在读取电影 '{reader["FILMNAME"]}' 的 NORMALPRICE 时，无法将字符串 '{priceString}' 转换为 decimal 类型。");
+                                    Console.WriteLine("请检查数据库中 FILM 表的 NORMALPRICE 列的数据是否为有效数字，或尝试更新 Oracle.ManagedDataAccess 驱动。");
+                                    Console.ResetColor();
+                                    normalPrice = 0m; // 转换失败时使用默认值
+                                }
+                            }
+
                             films.Add(new Film
                             {
                                 FilmName = reader["FILMNAME"].ToString(),
                                 Genre = reader["GENRE"].ToString(),
                                 FilmLength = Convert.ToInt32(reader["FILMLENGTH"]),
-                                NormalPrice = Convert.ToDecimal(reader["NORMALPRICE"]),
+                                NormalPrice = normalPrice, // 使用转换后的值
                                 ReleaseDate = Convert.ToDateTime(reader["RELEASEDATE"]),
                                 EndDate = reader["ENDDATE"] as DateTime?,
                                 Admissions = Convert.ToInt32(reader["ADMISSIONS"]),

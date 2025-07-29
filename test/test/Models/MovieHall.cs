@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace test.Models // 请替换为你的项目命名空间
+namespace test.Models
 {
     /// 对应数据库中的 moviehall 表，存储影厅信息。
     public class MovieHall

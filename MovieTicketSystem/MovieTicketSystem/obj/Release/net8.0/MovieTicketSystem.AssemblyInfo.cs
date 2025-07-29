@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: Microsoft.AspNetCore.Identity.UI.UIFrameworkAttribute("Bootstrap5")]
 [assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("aspnet-MovieTicketSystem-818717b6-084c-4309-b91b-c5caac564b98")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("MovieTicketSystem")]
-[assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
+[assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d406bd120ef9dcd26467c118e53e8a19d05c09c2")]
 [assembly: System.Reflection.AssemblyProductAttribute("MovieTicketSystem")]

@@ -4,25 +4,26 @@ using test.Models;
 namespace test.Models 
 {
     /// <summary>
-    /// 对应数据库中的 ticket 表，存储票务信息（已售出座位）。
+    /// 对应数据库中的 ticket 表，存储电影票的信息。
+    /// 根据文档字段：TICKETID, PRICE, RATING, SECTIONID, LINENO, COLUMNNO, STATE
+    /// 注意：TicketID 不再直接关联 CustomerID，而是通过 OrderForTickets 表关联。
     /// </summary>
     public class Ticket
     {
-        public string TicketID { get; set; }   // 票ID，PK
-        public int SectionID { get; set; }     // 场次号，FK
-        public string LineNo { get; set; }     // 座位行号，对应数据库 LINENO
-        public int ColumnNo { get; set; }      // 座位列号，对应数据库 COLUMNNO
-        public string State { get; set; }      // 票状态（例如：已售出，已退票），对应数据库 STATE
-        public decimal Price { get; set; }     // 票价，对应数据库 PRICE
-        public int Rating { get; set; }        // 评分（观影后评分），对应数据库 RATING
+        public string TicketID { get; set; }   // 票号，PK
+        public decimal Price { get; set; }     // 票价（实际售价）
+        public int Rating { get; set; }        // 评分（单次观影的评分）
+        public int SectionID { get; set; }     // 场次号，FK 参考 section 表中的 sectionID
+        public string LineNo { get; set; }     // 座位行号
+        public int ColumnNo { get; set; }      // 座位列号
+        public string State { get; set; }      // 状态（已售出、未售出）
 
-        // 导航属性：方便获取关联的场次和顾客信息
+        // 导航属性：方便获取关联的场次信息 (OrderForTickets 的关联在 OrderForTickets 模型中处理)
         public Section Section { get; set; }
-        public Customer Customer { get; set; }
 
         public override string ToString()
         {
-            return $"票ID: {TicketID}, 场次: {SectionID}, 座位: {LineNo}{ColumnNo}, 价格: {Price:C}, 状态: {State}";
+            return $"票号: {TicketID}, 场次: {SectionID}, 座位: {LineNo}{ColumnNo}, 价格: {Price:C}, 状态: {State}";
         }
     }
 }

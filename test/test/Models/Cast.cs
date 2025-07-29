@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace test.Models // 请替换为你的项目命名空间
+namespace test.Models 
 {
     /// 对应数据库中的 cast 表，存储演职人员信息。
     public class Cast
