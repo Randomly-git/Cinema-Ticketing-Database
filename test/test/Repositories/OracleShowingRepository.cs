@@ -34,8 +34,6 @@ namespace test.Repositories
             List<Section> sections = new List<Section>();
             using (var connection = GetConnection())
             {
-                // !!! 局部修改开始 !!!
-                // SQL 查询中彻底移除对 S.DAY 的引用
                 string sql = $@"SELECT S.SECTIONID, S.FILMNAME, S.HALLNO, S.TIMEID,
                                        MH.LINES, MH.COLUMNS, MH.CATEGORY AS HALL_CATEGORY,
                                        TS.""STARTTIME"", TS.""ENDTIME""
@@ -43,22 +41,11 @@ namespace test.Repositories
                                 JOIN {SchemaName}MOVIEHALL MH ON S.HALLNO = MH.HALLNO
                                 JOIN {SchemaName}TIMESLOT TS ON S.TIMEID = TS.TIMEID
                                 WHERE S.FILMNAME = :filmName
-                                ORDER BY TS.""STARTTIME"""; // 移除 S.DAY 排序
-
-                // 移除日期过滤逻辑，因为 SECTION 表中没有 DAY 字段
-                // if (date.HasValue)
-                // {
-                //     sql += " AND TRUNC(S.DAY) = TRUNC(TO_DATE(:queryDate, 'YYYY-MM-DD'))";
-                // }
+                                ORDER BY TS.""STARTTIME"""; 
 
                 using (var command = new OracleCommand(sql, connection))
                 {
                     command.Parameters.Add(new OracleParameter("filmName", filmName));
-                    // 移除对 queryDate 参数的添加
-                    // if (date.HasValue)
-                    // {
-                    //     command.Parameters.Add(new OracleParameter("queryDate", date.Value.ToString("yyyy-MM-dd")));
-                    // }
 
                     using (var reader = command.ExecuteReader())
                     {

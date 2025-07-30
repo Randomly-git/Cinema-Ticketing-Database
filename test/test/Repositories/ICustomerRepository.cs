@@ -10,7 +10,6 @@ namespace test.Repositories
     public interface ICustomerRepository
     {
         Customer GetCustomerById(string customerId); // 根据ID获取顾客信息
-        // UpdateCustomerPoints 已移除，积分更新通过 VIPCard 仓库处理
 
         // 新增：用于注册时获取密码哈希和盐值的方法
         Tuple<string, string> GetCustomerPasswordHashAndSalt(string customerId); // 新增统一方法

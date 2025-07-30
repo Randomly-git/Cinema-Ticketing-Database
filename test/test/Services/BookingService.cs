@@ -56,7 +56,6 @@ namespace test.Services
                     }
 
                     // 2. 获取场次信息以验证和获取票价
-                    // !!! 修复点：直接通过 showingRepository 获取 Section 对象 !!!
                     var section = _showingRepository.GetSectionById(sectionId);
                     if (section == null)
                     {

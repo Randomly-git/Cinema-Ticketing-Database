@@ -14,8 +14,7 @@ namespace test.Repositories
     public class OracleOrderRepository : IOrderRepository
     {
         private readonly string _connectionString;
-        // 根据错误信息，这里设置为 "CBC."
-        private const string SchemaName = ""; // <-- !!! 务必确认这里是你的实际模式名 !!!
+        private const string SchemaName = "";
 
         public OracleOrderRepository(string connectionString)
         {
@@ -101,7 +100,7 @@ namespace test.Repositories
             OrderForTickets order = null;
             using (var connection = GetConnection())
             {
-                // 确保 "PMETHOD" 用双引号包裹
+
                 string sql = $@"SELECT ORDERID, TICKETID, STATE, CUSTOMERID, DAY, ""PMETHOD"", PRICE
                                 FROM {SchemaName}ORDERFORTICKETS
                                 WHERE ORDERID = :orderId";
@@ -120,7 +119,7 @@ namespace test.Repositories
                                 CustomerID = reader["CUSTOMERID"].ToString(),
                                 Day = Convert.ToDateTime(reader["DAY"]),
                                 PaymentMethod = reader["PMETHOD"].ToString(),
-                                TotalPrice = Convert.ToDecimal(reader["PRICE"]) // 假设这里读取 PRICE 字段
+                                TotalPrice = Convert.ToDecimal(reader["PRICE"]) 
                             };
                         }
                     }
@@ -157,7 +156,7 @@ namespace test.Repositories
                                 CustomerID = reader["CUSTOMERID"].ToString(),
                                 Day = Convert.ToDateTime(reader["DAY"]),
                                 PaymentMethod = reader["PMETHOD"].ToString(),
-                                TotalPrice = Convert.ToDecimal(reader["PRICE"]) // 假设这里读取 PRICE 字段
+                                TotalPrice = Convert.ToDecimal(reader["PRICE"])
                             });
                         }
                     }

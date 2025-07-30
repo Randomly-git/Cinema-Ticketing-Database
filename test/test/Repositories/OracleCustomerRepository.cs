@@ -13,7 +13,7 @@ namespace test.Repositories
     public class OracleCustomerRepository : ICustomerRepository
     {
         private readonly string _connectionString;
-        private const string SchemaName = ""; // <-- !!! 务必修改这里 !!!
+        private const string SchemaName = "";
 
         public OracleCustomerRepository(string connectionString)
         {
@@ -35,8 +35,8 @@ namespace test.Repositories
             Customer customer = null;
             using (var connection = GetConnection())
             {
-                // 假设 CUSTOMER 表有 CUSTOMERID, NAME, PHONENUM, VIPLEVEL, PASSWORD_HASH, SALT 字段
-                // 假设 VIPCARD 表有 CUSTOMERID, POINTS
+                // CUSTOMER 表有 CUSTOMERID, NAME, PHONENUM, VIPLEVEL, PASSWORD_HASH, SALT 字段
+                // VIPCARD 表有 CUSTOMERID, POINTS
                 string sql = $@"SELECT C.CUSTOMERID, C.NAME, C.PHONENUM, C.VIPLEVEL, C.PASSWORD_HASH, C.SALT,
                                        VC.POINTS AS VIP_POINTS
                                 FROM {SchemaName}CUSTOMER C

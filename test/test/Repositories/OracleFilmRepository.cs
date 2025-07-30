@@ -98,7 +98,6 @@ namespace test.Repositories
                             int normalPriceOrdinal = reader.GetOrdinal("NORMALPRICE");
                             if (!reader.IsDBNull(normalPriceOrdinal))
                             {
-                                // 修复点：先读取为字符串，再尝试解析为 decimal
                                 string priceString = reader[normalPriceOrdinal].ToString();
                                 if (!decimal.TryParse(priceString, NumberStyles.Any, CultureInfo.InvariantCulture, out normalPrice))
                                 {
