@@ -1,8 +1,23 @@
 ﻿using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
-using System.Configuration; 
+using System.Configuration; // 用于读取App.config
 using System.Linq;
+
+// ====================================================================
+// 1. 数据模型 (Film.cs, MovieHall.cs, TimeSlot.cs, Section.cs)
+//    请确保这些文件已更新为最新版本。
+// ====================================================================
+
+// ====================================================================
+// 2. 排片服务类 (SchedulingService.cs)
+//    请确保该文件是您最新版本。
+// ====================================================================
+
+// ====================================================================
+// 3. 应用程序入口 (Program.cs)
+//    这是您的控制台应用程序的入口点，处理用户输入和输出。
+// ====================================================================
 
 class Program
 {
@@ -34,9 +49,9 @@ class Program
         while (running)
         {
             Console.Clear(); // 清除控制台内容，使界面更整洁
-            Console.WriteLine("--- 电影院排片管理系统 (控制台版 - 临时无日期模式) ---");
+            Console.WriteLine("--- 电影院排片管理系统 (控制台版) ---");
             Console.WriteLine("1. 添加新排片");
-            Console.WriteLine("2. 查看所有排片"); // 修改提示，因为不再按日期过滤
+            Console.WriteLine("2. 查看排片");
             Console.WriteLine("3. 删除排片");
             Console.WriteLine("4. 退出");
             Console.Write("请选择一个操作 (1-4): ");
@@ -70,6 +85,10 @@ class Program
         }
     }
 
+    /// <summary>
+    /// 交互式添加排片功能。
+    /// 现在根据影片时长计算结束时间。
+    /// </summary>
     static void AddSectionInteractive()
     {
         Console.Clear();
@@ -85,7 +104,7 @@ class Program
         Console.WriteLine("\n可用电影:");
         for (int i = 0; i < films.Count; i++)
         {
-            Console.WriteLine($"{i + 1}. {films[i].FilmName}");
+            Console.WriteLine($"{i + 1}. {films[i].FilmName} (时长: {films[i].FilmLength} 分钟)");
         }
         Console.Write("请输入电影编号: ");
         if (!int.TryParse(Console.ReadLine(), out int filmIndex) || filmIndex < 1 || filmIndex > films.Count)
@@ -93,7 +112,8 @@ class Program
             Console.WriteLine("无效的电影编号。");
             return;
         }
-        string filmName = films[filmIndex - 1].FilmName;
+        Film selectedFilm = films[filmIndex - 1]; // 获取选中的Film对象
+        string filmName = selectedFilm.FilmName;
 
         // 获取影厅列表并显示
         var halls = _schedulingService.GetAllMovieHalls();
@@ -115,62 +135,69 @@ class Program
         }
         int hallNo = halls[hallIndex - 1].HallNo;
 
-        // 获取时段列表并显示
-        var timeSlots = _schedulingService.GetAllTimeSlots();
-        if (!timeSlots.Any())
+        // 输入开始日期和时间
+        Console.Write("请输入排片开始日期和时间 (YYYY-MM-DD HH24:MI): ");
+        if (!DateTime.TryParse(Console.ReadLine(), out DateTime scheduleStartTime))
         {
-            Console.WriteLine("数据库中没有可用的时段。请先添加时段信息。");
+            Console.WriteLine("无效的开始日期时间格式。");
             return;
         }
-        Console.WriteLine("\n可用时段:");
-        for (int i = 0; i < timeSlots.Count; i++)
-        {
-            Console.WriteLine($"{i + 1}. {timeSlots[i].TimeID} ({timeSlots[i].StartTime:hh\\:mm}-{timeSlots[i].EndTime:hh\\:mm})");
-        }
-        Console.Write("请输入时段编号: ");
-        if (!int.TryParse(Console.ReadLine(), out int timeSlotIndex) || timeSlotIndex < 1 || timeSlotIndex > timeSlots.Count)
-        {
-            Console.WriteLine("无效的时段编号。");
-            return;
-        }
-        string timeID = timeSlots[timeSlotIndex - 1].TimeID;
 
-        var result = _schedulingService.AddSection(filmName, hallNo, timeID);
+        // 计算结束时间
+        DateTime scheduleEndTime = scheduleStartTime.AddMinutes(selectedFilm.FilmLength);
+        Console.WriteLine($"计算出的结束时间为: {scheduleEndTime:yyyy-MM-dd HH:mm}");
+
+
+        // 调用服务添加排片
+        var result = _schedulingService.AddSection(filmName, hallNo, scheduleStartTime, scheduleEndTime);
         Console.WriteLine(result.Message);
     }
 
-
+    /// <summary>
+    /// 交互式查看排片功能。
+    /// </summary>
     static void ViewSectionsInteractive()
     {
         Console.Clear();
-        Console.WriteLine("--- 查看所有排片 (临时模式，不按日期过滤) ---");
-       
-        List<Section> sections = _schedulingService.GetSectionsByDateRange(DateTime.MinValue, DateTime.MaxValue); // 传递占位符日期
+        Console.WriteLine("--- 查看排片 ---");
+        Console.Write("请输入查询开始日期 (YYYY-MM-DD，留空默认为今天): ");
+        string startDateStr = Console.ReadLine();
+        DateTime startDate = string.IsNullOrEmpty(startDateStr) ? DateTime.Today : (DateTime.TryParse(startDateStr, out DateTime sDate) ? sDate : DateTime.Today);
+
+        Console.Write("请输入查询结束日期 (YYYY-MM-DD，留空默认为未来30天): ");
+        string endDateStr = Console.ReadLine();
+        DateTime endDate = string.IsNullOrEmpty(endDateStr) ? DateTime.Today.AddDays(30) : (DateTime.TryParse(endDateStr, out DateTime eDate) ? eDate : DateTime.Today.AddDays(30));
+
+        List<Section> sections = _schedulingService.GetSectionsByDateRange(startDate, endDate);
 
         if (sections.Count == 0)
         {
-            Console.WriteLine("数据库中没有排片信息。");
+            Console.WriteLine($"在 {startDate:yyyy-MM-dd} 到 {endDate:yyyy-MM-dd} 之间没有排片信息。");
         }
         else
         {
-            Console.WriteLine("\n以下是所有排片信息：");
-            Console.WriteLine("----------------------------------------------------------------------------------------------------");
-            Console.WriteLine("{0,-10} {1,-20} {2,-10} {3,-10} {4,-10} {5,-10}", "场次ID", "电影名称", "影厅号", "时段ID", "开始", "结束");
-            Console.WriteLine("----------------------------------------------------------------------------------------------------");
+            Console.WriteLine($"\n以下是 {startDate:yyyy-MM-dd} 到 {endDate:yyyy-MM-dd} 的排片信息：");
+            Console.WriteLine("--------------------------------------------------------------------------------------------------------------------");
+            Console.WriteLine("{0,-10} {1,-20} {2,-10} {3,-10} {4,-20} {5,-20} {6,-10}", "场次ID", "电影名称", "影厅号", "时段ID", "开始时间", "结束时间", "影厅类型");
+            Console.WriteLine("--------------------------------------------------------------------------------------------------------------------");
             foreach (var section in sections)
             {
-                Console.WriteLine("{0,-10} {1,-20} {2,-10} {3,-10} {4,-10:hh\\:mm} {5,-10:hh\\:mm}",
+                Console.WriteLine("{0,-10} {1,-20} {2,-10} {3,-10} {4,-20:yyyy-MM-dd HH:mm} {5,-20:yyyy-MM-dd HH:mm} {6,-10}",
                                   section.SectionID,
                                   (section.FilmName.Length > 18 ? section.FilmName.Substring(0, 15) + "..." : section.FilmName), // 截断长电影名
                                   section.HallNo,
                                   section.TimeID,
-                                  section.StartTime,
-                                  section.EndTime);
+                                  section.ScheduleStartTime,
+                                  section.ScheduleEndTime,
+                                  section.HallCategory);
             }
-            Console.WriteLine("----------------------------------------------------------------------------------------------------");
+            Console.WriteLine("--------------------------------------------------------------------------------------------------------------------");
         }
     }
 
+    /// <summary>
+    /// 交互式删除排片功能。
+    /// </summary>
     static void DeleteSectionInteractive()
     {
         Console.Clear();
