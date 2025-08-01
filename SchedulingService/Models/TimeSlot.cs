@@ -2,7 +2,6 @@
 
 /// <summary>
 /// 时段模型
-/// 根据最新理解，STARTTIME和ENDTIME存储完整的日期和时间。
 /// </summary>
 public class TimeSlot
 {

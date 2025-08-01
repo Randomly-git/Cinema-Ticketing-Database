@@ -2,7 +2,6 @@
 
 /// <summary>
 /// 场次模型 (Section)
-/// SECTION表通过关联TIMESLOT表获取完整的时间信息。
 /// </summary>
 public class Section
 {
