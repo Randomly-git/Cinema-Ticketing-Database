@@ -1,7 +1,8 @@
 ﻿using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
-using System.Linq; // 用于简化集合操作
+using System.Configuration;
+using System.Linq;
 
 /// <summary>
 /// 影片排片服务类，负责管理电影场次的增删改查。
@@ -31,20 +32,17 @@ public class SchedulingService
         using (OracleConnection connection = new OracleConnection(_connectionString))
         {
             connection.Open();
-            string sql = "SELECT FILMNAME, FILMLENGTH FROM FILM";
+            string sql = "SELECT filmName, filmLength FROM film";
             using (OracleCommand command = new OracleCommand(sql, connection))
             {
-                command.BindByName = true; // 显式按名称绑定
                 using (OracleDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        // 健壮性检查：处理 FILMLENGTH 可能为 DBNull 的情况
-                        int filmLength = reader["FILMLENGTH"] == DBNull.Value ? 0 : Convert.ToInt32(reader["FILMLENGTH"]);
                         films.Add(new Film
                         {
-                            FilmName = reader["FILMNAME"].ToString(),
-                            FilmLength = filmLength
+                            FilmName = reader["filmName"].ToString(),
+                            FilmLength = Convert.ToInt32(reader["filmLength"])
                         });
                     }
                 }
@@ -63,57 +61,25 @@ public class SchedulingService
         using (OracleConnection connection = new OracleConnection(_connectionString))
         {
             connection.Open();
-            string sql = "SELECT HALLNO, LINES, \"COLUMNS\", CATEGORY FROM MOVIEHALL";
+            string sql = "SELECT hallNo, lines, columns, category FROM moviehall";
             using (OracleCommand command = new OracleCommand(sql, connection))
             {
-                command.BindByName = true; // 显式按名称绑定
                 using (OracleDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read())
                     {
                         halls.Add(new MovieHall
                         {
-                            HallNo = Convert.ToInt32(reader["HALLNO"]),
-                            Lines = Convert.ToInt32(reader["LINES"]),
-                            Columns = Convert.ToInt32(reader["COLUMNS"]),
-                            Category = reader["CATEGORY"].ToString()
+                            HallNo = Convert.ToInt32(reader["hallNo"]),
+                            Lines = Convert.ToInt32(reader["lines"]),
+                            Columns = Convert.ToInt32(reader["columns"]),
+                            Category = reader["category"].ToString()
                         });
                     }
                 }
             }
         }
         return halls;
-    }
-
-    /// <summary>
-    /// 获取所有时段列表。此方法现在返回TIMESLOT表中所有具体的日期时间时段。
-    /// </summary>
-    /// <returns>时段对象列表。</returns>
-    public List<TimeSlot> GetAllTimeSlots()
-    {
-        List<TimeSlot> slots = new List<TimeSlot>();
-        using (OracleConnection connection = new OracleConnection(_connectionString))
-        {
-            connection.Open();
-            string sql = "SELECT TIMEID, STARTTIME, ENDTIME FROM TIMESLOT ORDER BY STARTTIME";
-            using (OracleCommand command = new OracleCommand(sql, connection))
-            {
-                command.BindByName = true; // 显式按名称绑定
-                using (OracleDataReader reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        slots.Add(new TimeSlot
-                        {
-                            TimeID = reader["TIMEID"].ToString(),
-                            StartTime = Convert.ToDateTime(reader["STARTTIME"]),
-                            EndTime = Convert.ToDateTime(reader["ENDTIME"])
-                        });
-                    }
-                }
-            }
-        }
-        return slots;
     }
 
     // --- 核心排片功能 ---
@@ -123,32 +89,10 @@ public class SchedulingService
     /// </summary>
     /// <param name="filmName">电影名称。</param>
     /// <param name="hallNo">影厅号。</param>
-    /// <param name="scheduleStartTime">场次开始的完整日期和时间。</param>
-    /// <param name="scheduleEndTime">场次结束的完整日期和时间。</param>
+    /// <param name="scheduleStartTime">排片开始时间。</param>
     /// <returns>一个元组，表示操作是否成功以及相应的消息。</returns>
-    public (bool Success, string Message) AddSection(string filmName, int hallNo, DateTime scheduleStartTime, DateTime scheduleEndTime)
+    public (bool Success, string Message) AddSection(string filmName, int hallNo, DateTime scheduleStartTime)
     {
-        // 1. 验证电影、影厅是否存在
-        if (!GetAllFilms().Any(f => f.FilmName == filmName))
-        {
-            return (false, "指定的电影不存在。");
-        }
-        if (!GetAllMovieHalls().Any(mh => mh.HallNo == hallNo))
-        {
-            return (false, "指定的影厅不存在。");
-        }
-        // 2. 验证时间范围是否有效 (结束时间必须晚于开始时间)
-        if (scheduleStartTime >= scheduleEndTime)
-        {
-            return (false, "开始时间必须早于结束时间。");
-        }
-
-        // 3. 检查排片冲突 (同一个影厅在同一天的时间段不能重叠)
-        if (IsSectionConflicting(hallNo, scheduleStartTime, scheduleEndTime))
-        {
-            return (false, "排片冲突：该影厅在指定日期和时间段已有排片。");
-        }
-
         using (OracleConnection connection = new OracleConnection(_connectionString))
         {
             OracleTransaction transaction = null;
@@ -157,43 +101,64 @@ public class SchedulingService
                 connection.Open();
                 transaction = connection.BeginTransaction();
 
-                // 4. 生成新的 TIMEID 并插入到 TIMESLOT 表
-                string getNextTimeIdSql = "SELECT TIMESLOT_SEQ.NEXTVAL FROM DUAL";
-                string newTimeID;
-                using (OracleCommand timeIdCommand = new OracleCommand(getNextTimeIdSql, connection))
+                // 1. 获取电影时长以计算结束时间
+                string filmLengthSql = "SELECT filmLength FROM film WHERE filmName = :filmName";
+                int filmLength;
+                using (OracleCommand filmCmd = new OracleCommand(filmLengthSql, connection))
                 {
-                    timeIdCommand.Transaction = transaction;
-                    timeIdCommand.BindByName = true; // 显式按名称绑定
-                    newTimeID = Convert.ToInt32(timeIdCommand.ExecuteScalar()).ToString();
+                    filmCmd.Transaction = transaction;
+                    filmCmd.Parameters.Add(new OracleParameter("filmName", filmName));
+                    var result = filmCmd.ExecuteScalar();
+                    if (result == null)
+                    {
+                        return (false, "指定的电影不存在。");
+                    }
+                    filmLength = Convert.ToInt32(result);
                 }
 
-                string insertTimeSlotSql = "INSERT INTO TIMESLOT (TIMEID, STARTTIME, ENDTIME) VALUES (:timeID, :startTime, :endTime)";
-                using (OracleCommand insertTimeSlotCmd = new OracleCommand(insertTimeSlotSql, connection))
+                DateTime scheduleEndTime = scheduleStartTime.AddMinutes(filmLength);
+
+                // 2. 检查排片冲突
+                if (IsSectionConflicting(hallNo, scheduleStartTime, scheduleEndTime, connection, transaction))
                 {
-                    insertTimeSlotCmd.Transaction = transaction;
-                    insertTimeSlotCmd.BindByName = true; // 显式按名称绑定
-                    insertTimeSlotCmd.Parameters.Add(new OracleParameter("timeID", newTimeID));
-                    insertTimeSlotCmd.Parameters.Add(new OracleParameter("startTime", scheduleStartTime));
-                    insertTimeSlotCmd.Parameters.Add(new OracleParameter("endTime", scheduleEndTime));
-                    insertTimeSlotCmd.ExecuteNonQuery();
+                    return (false, "排片冲突：该影厅在指定时段已有排片。");
                 }
 
-                // 5. 获取新的 SECTIONID
-                string getNextSectionIdSql = "SELECT SECTION_SEQ.NEXTVAL FROM DUAL";
+                // 3. 为timeslot表获取新的timeID
+                string getTimeIdSeqSql = "SELECT TIMESLOT_SEQ.NEXTVAL FROM DUAL";
+                int nextTimeId;
+                using (OracleCommand timeIdCmd = new OracleCommand(getTimeIdSeqSql, connection))
+                {
+                    timeIdCmd.Transaction = transaction;
+                    nextTimeId = Convert.ToInt32(timeIdCmd.ExecuteScalar());
+                }
+                string newTimeID = $"TS{nextTimeId}";
+
+                // 4. 插入新记录到timeslot表
+                string insertTimeslotSql = "INSERT INTO timeslot (timeID, startTime, endTime) VALUES (:timeID, :startTime, :endTime)";
+                using (OracleCommand insertTimeslotCmd = new OracleCommand(insertTimeslotSql, connection))
+                {
+                    insertTimeslotCmd.Transaction = transaction;
+                    insertTimeslotCmd.Parameters.Add(new OracleParameter("timeID", newTimeID));
+                    insertTimeslotCmd.Parameters.Add(new OracleParameter("startTime", scheduleStartTime));
+                    insertTimeslotCmd.Parameters.Add(new OracleParameter("endTime", scheduleEndTime));
+                    insertTimeslotCmd.ExecuteNonQuery();
+                }
+
+                // 5. 为section表获取新的sectionID
+                string getSectionIdSeqSql = "SELECT SECTION_SEQ.NEXTVAL FROM DUAL";
                 int nextSectionId;
-                using (OracleCommand sectionIdCommand = new OracleCommand(getNextSectionIdSql, connection))
+                using (OracleCommand sectionIdCmd = new OracleCommand(getSectionIdSeqSql, connection))
                 {
-                    sectionIdCommand.Transaction = transaction;
-                    sectionIdCommand.BindByName = true; // 显式按名称绑定
-                    nextSectionId = Convert.ToInt32(sectionIdCommand.ExecuteScalar());
+                    sectionIdCmd.Transaction = transaction;
+                    nextSectionId = Convert.ToInt32(sectionIdCmd.ExecuteScalar());
                 }
 
-                // 6. 插入新的场次记录到 SECTION 表，引用新的 TIMEID
-                string insertSectionSql = "INSERT INTO SECTION (SECTIONID, FILMNAME, HALLNO, TIMEID) VALUES (:sectionID, :filmName, :hallNo, :timeID)";
+                // 6. 插入新记录到section表
+                string insertSectionSql = "INSERT INTO section (sectionID, filmName, hallNo, timeID) VALUES (:sectionID, :filmName, :hallNo, :timeID)";
                 using (OracleCommand insertSectionCmd = new OracleCommand(insertSectionSql, connection))
                 {
                     insertSectionCmd.Transaction = transaction;
-                    insertSectionCmd.BindByName = true; // 显式按名称绑定
                     insertSectionCmd.Parameters.Add(new OracleParameter("sectionID", nextSectionId));
                     insertSectionCmd.Parameters.Add(new OracleParameter("filmName", filmName));
                     insertSectionCmd.Parameters.Add(new OracleParameter("hallNo", hallNo));
@@ -202,7 +167,7 @@ public class SchedulingService
                 }
 
                 transaction.Commit();
-                return (true, $"排片成功！场次号: {nextSectionId}, 时间ID: {newTimeID}");
+                return (true, $"排片成功！场次号: {nextSectionId}, 时段号: {newTimeID}");
             }
             catch (OracleException ex)
             {
@@ -218,39 +183,36 @@ public class SchedulingService
     }
 
     /// <summary>
-    /// 检查指定影厅在特定日期和时间段是否存在排片冲突。
-    /// 冲突逻辑：新时间段与现有时间段是否有重叠。
+    /// 检查指定影厅、时段的排片是否存在冲突。
     /// </summary>
-    private bool IsSectionConflicting(int hallNo, DateTime newStartTime, DateTime newEndTime)
+    /// <param name="hallNo">影厅号。</param>
+    /// <param name="newStartTime">新排片的开始时间。</param>
+    /// <param name="newEndTime">新排片的结束时间。</param>
+    /// <param name="connection">当前数据库连接。</param>
+    /// <param name="transaction">当前事务。</param>
+    /// <returns>如果存在冲突则返回true，否则返回false。</returns>
+    private bool IsSectionConflicting(int hallNo, DateTime newStartTime, DateTime newEndTime, OracleConnection connection, OracleTransaction transaction)
     {
-        using (OracleConnection connection = new OracleConnection(_connectionString))
-        {
-            connection.Open();
-            string sql = @"
-                SELECT COUNT(*)
-                FROM SECTION s
-                JOIN TIMESLOT ts ON s.TIMEID = ts.TIMEID
-                WHERE s.HALLNO = :hallNo
-                AND TRUNC(ts.STARTTIME) = TRUNC(:newStartTime)
-                AND (
-                    (:newStartTime < ts.ENDTIME AND :newEndTime > ts.STARTTIME)
-                )";
-            using (OracleCommand command = new OracleCommand(sql, connection))
-            {
-                command.BindByName = true; // 显式按名称绑定
-                command.Parameters.Add(new OracleParameter("hallNo", hallNo));
-                command.Parameters.Add(new OracleParameter("newStartTime", newStartTime));
-                command.Parameters.Add(new OracleParameter("newEndTime", newEndTime));
+        string sql = @"
+            SELECT COUNT(*)
+            FROM section s
+            JOIN timeslot ts ON s.timeID = ts.timeID
+            WHERE s.hallNo = :hallNo
+            AND (ts.startTime < :newEndTime AND ts.endTime > :newStartTime)";
 
-                int count = Convert.ToInt32(command.ExecuteScalar());
-                return count > 0;
-            }
+        using (OracleCommand command = new OracleCommand(sql, connection))
+        {
+            command.Transaction = transaction;
+            command.Parameters.Add(new OracleParameter("hallNo", hallNo));
+            command.Parameters.Add(new OracleParameter("newStartTime", newStartTime));
+            command.Parameters.Add(new OracleParameter("newEndTime", newEndTime));
+            int count = Convert.ToInt32(command.ExecuteScalar());
+            return count > 0;
         }
     }
 
     /// <summary>
     /// 查询指定日期范围内的所有排片。
-    /// 现在将联接TIMESLOT表以获取具体的开始和结束时间。
     /// </summary>
     /// <param name="startDate">查询开始日期。</param>
     /// <param name="endDate">查询结束日期。</param>
@@ -263,29 +225,24 @@ public class SchedulingService
             connection.Open();
             string sql = @"
                 SELECT
-                    s.SECTIONID,
-                    s.FILMNAME,
-                    s.HALLNO,
-                    s.TIMEID,
-                    mh.CATEGORY AS HALLCATEGORY,
-                    ts.STARTTIME AS SCHEDULESTARTTIME,
-                    ts.ENDTIME AS SCHEDULEENDTIME
+                    s.sectionID, s.filmName, s.hallNo, s.timeID,
+                    mh.category AS HallCategory,
+                    ts.startTime, ts.endTime
                 FROM
-                    SECTION s
+                    section s
                 JOIN
-                    MOVIEHALL mh ON s.HALLNO = mh.HALLNO
+                    moviehall mh ON s.hallNo = mh.hallNo
                 JOIN
-                    TIMESLOT ts ON s.TIMEID = ts.TIMEID
+                    timeslot ts ON s.timeID = ts.timeID
                 WHERE
-                    TRUNC(ts.STARTTIME) BETWEEN TRUNC(:startDate) AND TRUNC(:endDate)
+                    ts.startTime BETWEEN :startDate AND :endDate
                 ORDER BY
-                    ts.STARTTIME, s.HALLNO, s.SECTIONID";
+                    ts.startTime, s.hallNo";
 
             using (OracleCommand command = new OracleCommand(sql, connection))
             {
-                command.BindByName = true; // 显式按名称绑定
                 command.Parameters.Add(new OracleParameter("startDate", startDate.Date));
-                command.Parameters.Add(new OracleParameter("endDate", endDate.Date));
+                command.Parameters.Add(new OracleParameter("endDate", endDate.Date.AddDays(1).AddSeconds(-1)));
 
                 using (OracleDataReader reader = command.ExecuteReader())
                 {
@@ -293,13 +250,13 @@ public class SchedulingService
                     {
                         sections.Add(new Section
                         {
-                            SectionID = Convert.ToInt32(reader["SECTIONID"]),
-                            FilmName = reader["FILMNAME"].ToString(),
-                            HallNo = Convert.ToInt32(reader["HALLNO"]),
-                            TimeID = reader["TIMEID"].ToString(),
-                            HallCategory = reader["HALLCATEGORY"].ToString(),
-                            ScheduleStartTime = Convert.ToDateTime(reader["SCHEDULESTARTTIME"]),
-                            ScheduleEndTime = Convert.ToDateTime(reader["SCHEDULEENDTIME"])
+                            SectionID = Convert.ToInt32(reader["sectionID"]),
+                            FilmName = reader["filmName"].ToString(),
+                            HallNo = Convert.ToInt32(reader["hallNo"]),
+                            TimeID = reader["timeID"].ToString(),
+                            HallCategory = reader["HallCategory"].ToString(),
+                            ScheduleStartTime = Convert.ToDateTime(reader["startTime"]),
+                            ScheduleEndTime = Convert.ToDateTime(reader["endTime"])
                         });
                     }
                 }
@@ -310,7 +267,6 @@ public class SchedulingService
 
     /// <summary>
     /// 根据场次ID删除排片。
-    /// 现在会删除SECTION和对应的TIMESLOT记录。
     /// </summary>
     /// <param name="sectionId">要删除的场次ID。</param>
     /// <returns>一个元组，表示操作是否成功以及相应的消息。</returns>
@@ -325,80 +281,64 @@ public class SchedulingService
                 transaction = connection.BeginTransaction();
 
                 // 1. 检查该场次是否有已售出的票，如果有，则不允许删除
-                string checkTicketsSql = "SELECT COUNT(*) FROM TICKET WHERE SECTIONID = :sectionID AND STATE = '已售出'";
+                string checkTicketsSql = "SELECT COUNT(*) FROM ticket WHERE sectionID = :sectionID AND state = '已售出'";
                 using (OracleCommand checkCmd = new OracleCommand(checkTicketsSql, connection))
                 {
                     checkCmd.Transaction = transaction;
-                    checkCmd.BindByName = true; // 显式按名称绑定
                     checkCmd.Parameters.Add(new OracleParameter("sectionID", sectionId));
                     int soldTicketsCount = Convert.ToInt32(checkCmd.ExecuteScalar());
                     if (soldTicketsCount > 0)
                     {
                         transaction.Rollback();
-                        return (false, "该场次已有已售出的电影票，不允许删除排片。请先处理相关订单。");
+                        return (false, "该场次已有已售出的电影票，不允许删除排片。");
                     }
                 }
 
-                // 2. 获取对应的 TIMEID
-                string getTimeIdSql = "SELECT TIMEID FROM SECTION WHERE SECTIONID = :sectionID";
-                string timeIdToDelete = null;
+                // 2. 获取对应的timeID
+                string getTimeIdSql = "SELECT timeID FROM section WHERE sectionID = :sectionID";
+                string timeID;
                 using (OracleCommand getTimeIdCmd = new OracleCommand(getTimeIdSql, connection))
                 {
                     getTimeIdCmd.Transaction = transaction;
-                    getTimeIdCmd.BindByName = true; // 显式按名称绑定
                     getTimeIdCmd.Parameters.Add(new OracleParameter("sectionID", sectionId));
-                    object result = getTimeIdCmd.ExecuteScalar();
-                    if (result != null)
-                    {
-                        timeIdToDelete = result.ToString();
-                    }
-                }
-
-                if (timeIdToDelete == null)
-                {
-                    transaction.Rollback();
-                    return (false, "删除失败：未找到指定场次对应的时段信息。");
-                }
-
-                // 3. 删除 TICKET 表中依赖该 SECTIONID 的记录（如果存在未售出的）
-                string deleteTicketsSql = "DELETE FROM TICKET WHERE SECTIONID = :sectionID";
-                using (OracleCommand deleteTicketsCmd = new OracleCommand(deleteTicketsSql, connection))
-                {
-                    deleteTicketsCmd.Transaction = transaction;
-                    deleteTicketsCmd.BindByName = true; // 显式按名称绑定
-                    deleteTicketsCmd.Parameters.Add(new OracleParameter("sectionID", sectionId));
-                    deleteTicketsCmd.ExecuteNonQuery();
-                }
-
-                // 4. 删除 SECTION 表中的场次记录
-                string deleteSectionSql = "DELETE FROM SECTION WHERE SECTIONID = :sectionID";
-                using (OracleCommand deleteSectionCmd = new OracleCommand(deleteSectionSql, connection))
-                {
-                    deleteSectionCmd.Transaction = transaction;
-                    deleteSectionCmd.BindByName = true; // 显式按名称绑定
-                    deleteSectionCmd.Parameters.Add(new OracleParameter("sectionID", sectionId));
-                    int rowsAffected = deleteSectionCmd.ExecuteNonQuery();
-
-                    if (rowsAffected > 0)
-                    {
-                        // 5. 删除 TIMESLOT 表中对应的记录 (假设TIMEID是SECTION独有的)
-                        string deleteTimeSlotSql = "DELETE FROM TIMESLOT WHERE TIMEID = :timeID";
-                        using (OracleCommand deleteTimeSlotCmd = new OracleCommand(deleteTimeSlotSql, connection))
-                        {
-                            deleteTimeSlotCmd.Transaction = transaction;
-                            deleteTimeSlotCmd.BindByName = true; // 显式按名称绑定
-                            deleteTimeSlotCmd.Parameters.Add(new OracleParameter("timeID", timeIdToDelete));
-                            deleteTimeSlotCmd.ExecuteNonQuery();
-                        }
-                        transaction.Commit();
-                        return (true, "排片删除成功。");
-                    }
-                    else
+                    var result = getTimeIdCmd.ExecuteScalar();
+                    if (result == null)
                     {
                         transaction.Rollback();
                         return (false, "排片删除失败：未找到指定场次。");
                     }
+                    timeID = result.ToString();
                 }
+
+                // 3. 删除 ticket 表中依赖该场次的记录
+                string deleteTicketsSql = "DELETE FROM ticket WHERE sectionID = :sectionID";
+                using (OracleCommand deleteTicketsCmd = new OracleCommand(deleteTicketsSql, connection))
+                {
+                    deleteTicketsCmd.Transaction = transaction;
+                    deleteTicketsCmd.Parameters.Add(new OracleParameter("sectionID", sectionId));
+                    deleteTicketsCmd.ExecuteNonQuery();
+                }
+
+                // 4. 删除 section 表中的场次记录
+                string deleteSectionSql = "DELETE FROM section WHERE sectionID = :sectionID";
+                using (OracleCommand command = new OracleCommand(deleteSectionSql, connection))
+                {
+                    command.Transaction = transaction;
+                    command.Parameters.Add(new OracleParameter("sectionID", sectionId));
+                    command.ExecuteNonQuery();
+                }
+
+                // 5. 删除 timeslot 表中的时段记录
+                string deleteTimeslotSql = "DELETE FROM timeslot WHERE timeID = :timeID";
+                using (OracleCommand deleteTimeslotCmd = new OracleCommand(deleteTimeslotSql, connection))
+                {
+                    deleteTimeslotCmd.Transaction = transaction;
+                    deleteTimeslotCmd.Parameters.Add(new OracleParameter("timeID", timeID));
+                    deleteTimeslotCmd.ExecuteNonQuery();
+                }
+
+                transaction.Commit();
+                return (true, "排片删除成功。");
             }
             catch (OracleException ex)
             {

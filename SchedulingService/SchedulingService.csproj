@@ -87,12 +87,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\Cast.cs" />
     <Compile Include="Models\Flim.cs" />
     <Compile Include="Models\MovieHall.cs" />
     <Compile Include="Models\Section.cs" />
+    <Compile Include="Models\Ticket.cs" />
     <Compile Include="Models\TimeSlot.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QueryService.cs" />
     <Compile Include="SchedulingService.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
