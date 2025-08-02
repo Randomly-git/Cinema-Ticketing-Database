@@ -267,6 +267,95 @@ namespace test.Repositories
             }
             return timeSlot;
         }
+
+
+        //管理员部分
+        public void AddFilm(Film film)
+        {
+            using (var connection = new OracleConnection(_connectionString))
+            {
+                connection.Open();
+                string sql = $@"INSERT INTO {SchemaName}FILM 
+                       (FILMNAME, GENRE, FILMLENGTH, NORMALPRICE, RELEASEDATE, 
+                        ENDDATE, ADMISSIONS, BOXOFFICE, SCORE)
+                       VALUES 
+                       (:filmname, :genre, :filmlength, :normalprice, :releasedate,
+                        :enddate, :admissions, :boxoffice, :score)";
+
+                using (var command = new OracleCommand(sql, connection))
+                {
+                    // 映射电影属性到数据库字段（移除FILMID相关逻辑）
+                    command.Parameters.Add(new OracleParameter("filmname", film.FilmName));
+                    command.Parameters.Add(new OracleParameter("genre", film.Genre));
+                    command.Parameters.Add(new OracleParameter("filmlength", film.FilmLength));
+                    command.Parameters.Add(new OracleParameter("normalprice", film.NormalPrice));
+                    command.Parameters.Add(new OracleParameter("releasedate", film.ReleaseDate));
+                    command.Parameters.Add(new OracleParameter("enddate", film.EndDate));
+                    command.Parameters.Add(new OracleParameter("admissions", film.Admissions));
+                    command.Parameters.Add(new OracleParameter("boxoffice", film.BoxOffice));
+                    command.Parameters.Add(new OracleParameter("score", film.Score));
+
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void UpdateFilm(Film film)
+        {
+            using (var connection = new OracleConnection(_connectionString))
+            {
+                connection.Open();
+                // 使用FILMNAME作为更新条件（假设它是唯一标识）
+                string sql = $@"UPDATE {SchemaName}FILM SET
+                       GENRE = :genre,
+                       FILMLENGTH = :filmlength,
+                       NORMALPRICE = :normalprice,
+                       RELEASEDATE = :releasedate,
+                       ENDDATE = :enddate,
+                       SCORE = :score
+                       WHERE FILMNAME = :filmname";
+
+                using (var command = new OracleCommand(sql, connection))
+                {
+                    command.Parameters.Add(new OracleParameter("genre", film.Genre));
+                    command.Parameters.Add(new OracleParameter("filmlength", film.FilmLength));
+                    command.Parameters.Add(new OracleParameter("normalprice", film.NormalPrice));
+                    command.Parameters.Add(new OracleParameter("releasedate", film.ReleaseDate));
+                    command.Parameters.Add(new OracleParameter("enddate", film.EndDate));
+                    command.Parameters.Add(new OracleParameter("score", film.Score));
+                    // 使用FILMNAME作为查询条件（替代原FILMID）
+                    command.Parameters.Add(new OracleParameter("filmname", film.FilmName));
+
+                    int rowsAffected = command.ExecuteNonQuery();
+                    if (rowsAffected == 0)
+                    {
+                        throw new KeyNotFoundException("电影不存在");
+                    }
+                }
+            }
+        }
+
+        
+
+        public bool HasRelatedSections(string filmName)
+        {
+            // 调整为使用FILMNAME关联场次表
+            using (var connection = new OracleConnection(_connectionString))
+            {
+                connection.Open();
+                string sql = $@"SELECT COUNT(1) FROM {SchemaName}SECTIONS
+                       WHERE FILMNAME = :filmname AND SHOWTIME > SYSDATE";
+
+                using (var command = new OracleCommand(sql, connection))
+                {
+                    command.Parameters.Add(new OracleParameter("filmname", filmName));
+                    return Convert.ToInt32(command.ExecuteScalar()) > 0;
+                }
+            }
+        }
+
+
+
     }
 }
 

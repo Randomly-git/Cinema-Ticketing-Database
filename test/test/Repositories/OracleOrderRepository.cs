@@ -164,6 +164,62 @@ namespace test.Repositories
             }
             return orders;
         }
+
+        public List<OrderForTickets> GetAllOrders(DateTime? startDate = null, DateTime? endDate = null)
+        {
+            List<OrderForTickets> orders = new List<OrderForTickets>();
+            using (var connection = GetConnection())
+            {
+                // 基础SQL查询
+                string sql = $@"SELECT ORDERID, TICKETID, STATE, CUSTOMERID, DAY, ""PMETHOD"", PRICE
+                        FROM {SchemaName}ORDERFORTICKETS
+                        WHERE 1=1";
+
+                // 添加日期筛选条件（可选）
+                if (startDate.HasValue)
+                {
+                    sql += " AND DAY >= :startDate";
+                }
+                if (endDate.HasValue)
+                {
+                    sql += " AND DAY <= :endDate";
+                }
+
+                // 按日期和订单ID降序排序
+                sql += " ORDER BY DAY DESC, ORDERID DESC";
+
+                using (var command = new OracleCommand(sql, connection))
+                {
+                    // 添加参数
+                    if (startDate.HasValue)
+                    {
+                        command.Parameters.Add(new OracleParameter("startDate", startDate.Value));
+                    }
+                    if (endDate.HasValue)
+                    {
+                        command.Parameters.Add(new OracleParameter("endDate", endDate.Value));
+                    }
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            orders.Add(new OrderForTickets
+                            {
+                                OrderID = Convert.ToInt32(reader["ORDERID"]),
+                                TicketID = reader["TICKETID"].ToString(),
+                                State = reader["STATE"].ToString(),
+                                CustomerID = reader["CUSTOMERID"].ToString(),
+                                Day = Convert.ToDateTime(reader["DAY"]),
+                                PaymentMethod = reader["PMETHOD"].ToString(),
+                                TotalPrice = Convert.ToDecimal(reader["PRICE"])
+                            });
+                        }
+                    }
+                }
+            }
+            return orders;
+        }
     }
 }
 

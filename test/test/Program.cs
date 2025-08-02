@@ -271,6 +271,136 @@ namespace test // 确保这个命名空间与你的项目命名空间一致
 
             Console.WriteLine("\n--- 电影院购票管理系统测试完成。按任意键退出。 ---");
             Console.ReadKey();
+
+            // --- 管理员服务测试 ---
+            Console.WriteLine("\n--- 测试管理员服务 ---");
+
+            // 实例化管理员相关服务
+            IAdministratorRepository adminRepository = new OracleAdministratorRepository(connectionString);
+            IAdministratorService adminService = new AdministratorService(adminRepository, orderRepository, filmRepository);
+
+            // 测试管理员账号信息
+            string testAdminId = "ADMIN001";
+            string testAdminPassword = "adminPass123";
+            string testAdminName = "系统管理员";
+            string testAdminPhone = "11111111";
+
+            // 清理旧测试数据
+            try
+            {
+                adminService.DeleteAdministrator(testAdminId);
+                Console.WriteLine($"已清理旧管理员账号 {testAdminId}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"清理旧管理员失败: {ex.Message}");
+            }
+
+            // 1. 测试管理员注册
+            try
+            {
+                Administrator newAdmin = new Administrator
+                {
+                    AdminID = testAdminId,
+                    AdminName = testAdminName,
+                    PhoneNum = testAdminPhone
+                };
+                adminService.RegisterAdministrator(newAdmin, testAdminPassword);
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"管理员 {testAdminId} 注册成功");
+                Console.ResetColor();
+            }
+            catch (Exception ex)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"管理员注册失败: {ex.Message}");
+                Console.ResetColor();
+            }
+
+            // 2. 测试管理员登录
+            Administrator loggedInAdmin = null;
+            try
+            {
+                loggedInAdmin = adminService.AuthenticateAdministrator(testAdminId, testAdminPassword);
+                if (loggedInAdmin != null)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine($"管理员 {loggedInAdmin.AdminName} 登录成功");
+                    Console.WriteLine($"角色验证: {adminService.IsAdministratorInRole(loggedInAdmin, UserRoles.Administrator)}");
+                    Console.ResetColor();
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("管理员登录失败: 账号或密码错误");
+                    Console.ResetColor();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"登录异常: {ex.Message}");
+                Console.ResetColor();
+            }
+
+            // 3. 测试电影管理功能（需管理员登录）
+            if (loggedInAdmin != null)
+            {
+                // 3.1 添加测试电影
+                var testFilm = new Film
+                {
+                    FilmName = "测试电影",
+                    Genre = "剧情",
+                    FilmLength = 120,
+                    ReleaseDate = DateTime.Now,
+                    NormalPrice = 50m,
+                    Admissions = 0,
+                    BoxOffice = 0,
+                    Score = 0
+             
+
+                };
+
+                try
+                {
+                    adminService.AddFilm(testFilm);
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine($"电影《{testFilm.FilmName}》添加成功");
+                    Console.ResetColor();
+                }
+                catch (Exception ex)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"添加电影失败: {ex.Message}");
+                    Console.ResetColor();
+                }
+
+                // 3.2 更新电影信息
+                try
+                {
+                    testFilm.NormalPrice = 60m; // 修改票价
+                    adminService.UpdateFilm(testFilm);
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine($"电影《{testFilm.FilmName}》信息更新成功");
+                    Console.ResetColor();
+                }
+                catch (Exception ex)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"更新电影失败: {ex.Message}");
+                    Console.ResetColor();
+                }
+
+                
+            }
+            else
+            {
+                Console.WriteLine("管理员未登录，跳过电影管理测试");
+            }
+
+
+
+
         }
     }
 }
