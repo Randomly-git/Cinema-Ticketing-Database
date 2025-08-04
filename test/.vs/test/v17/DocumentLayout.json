@@ -3,28 +3,84 @@
   "WorkspaceRootPath": "D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|d:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\cinema-ticketing-database\\test\\test\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|solutionrelative:test\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|d:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\cinema-ticketing-database\\test\\test\\models\\customer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|solutionrelative:test\\models\\customer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|d:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\cinema-ticketing-database\\test\\test\\services\\iadministratorservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|solutionrelative:test\\services\\iadministratorservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|d:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\cinema-ticketing-database\\test\\test\\services\\administratorservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|solutionrelative:test\\services\\administratorservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|d:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\cinema-ticketing-database\\test\\test\\repositories\\iadministratorrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|solutionrelative:test\\repositories\\iadministratorrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\repositories\\oracleorderrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|solutionrelative:test\\repositories\\oracleorderrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\repositories\\oraclefilmrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|solutionrelative:test\\repositories\\oraclefilmrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\repositories\\iorderrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|solutionrelative:test\\repositories\\iorderrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|d:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\cinema-ticketing-database\\test\\test\\repositories\\ifilmrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|solutionrelative:test\\repositories\\ifilmrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|d:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\cinema-ticketing-database\\test\\test\\models\\administrator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|solutionrelative:test\\models\\administrator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|d:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\cinema-ticketing-database\\test\\test\\repositories\\oracleadministratorrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|solutionrelative:test\\repositories\\oracleadministratorrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\models\\vipcard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|solutionrelative:test\\models\\vipcard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|d:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\cinema-ticketing-database\\test\\test\\services\\showingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\services\\bookingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|solutionrelative:test\\services\\bookingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\repositories\\oraclecustomerrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|solutionrelative:test\\repositories\\oraclecustomerrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\repositories\\icustomerrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|solutionrelative:test\\repositories\\icustomerrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\services\\showingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|solutionrelative:test\\services\\showingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|solutionrelative:test\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\services\\ishowingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|solutionrelative:test\\services\\ishowingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\models\\cast.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|solutionrelative:test\\models\\cast.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\services\\ibookingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|solutionrelative:test\\services\\ibookingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\models\\customer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|solutionrelative:test\\models\\customer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|solutionrelative:test\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\repositories\\ishowingrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -35,24 +91,12 @@
       "RelativeMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|solutionrelative:test\\services\\filmservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|d:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\cinema-ticketing-database\\test\\test\\repositories\\oraclecustomerrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|solutionrelative:test\\repositories\\oraclecustomerrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\models\\userroles.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|solutionrelative:test\\models\\userroles.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\models\\seathall.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|solutionrelative:test\\models\\seathall.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\repositories\\oraclefilmrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|solutionrelative:test\\repositories\\oraclefilmrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\repositories\\icustomerrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|solutionrelative:test\\repositories\\icustomerrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\models\\section.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -63,20 +107,8 @@
       "RelativeMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|solutionrelative:test\\repositories\\oracleshowingrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\repositories\\oracleorderrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|solutionrelative:test\\repositories\\oracleorderrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\services\\bookingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|solutionrelative:test\\services\\bookingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\models\\ticket.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|solutionrelative:test\\models\\ticket.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\repositories\\iorderrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|solutionrelative:test\\repositories\\iorderrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\models\\orderfortickets.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -85,14 +117,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\helpers\\passwordhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|solutionrelative:test\\helpers\\passwordhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\services\\ishowingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|solutionrelative:test\\services\\ishowingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\models\\cast.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|solutionrelative:test\\models\\cast.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\models\\moviehall.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -120,37 +144,19 @@
               "RelativeDocumentMoniker": "test\\Program.cs",
               "ToolTip": "D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\Program.cs",
               "RelativeToolTip": "test\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFMAAAANAAAAAAAAAA==",
+              "ViewState": "AgIAABQAAAAAAAAAAAAAwCUAAABqAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-28T03:53:45.896Z",
               "IsPinned": true,
               "EditorCaption": ""
             },
             {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Customer.cs",
-              "DocumentMoniker": "D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\Models\\Customer.cs",
-              "RelativeDocumentMoniker": "test\\Models\\Customer.cs",
-              "ToolTip": "D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\Models\\Customer.cs",
-              "RelativeToolTip": "test\\Models\\Customer.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-01T07:08:12.317Z",
-              "EditorCaption": ""
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
             },
             {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "ShowingService.cs",
-              "DocumentMoniker": "D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\Services\\ShowingService.cs",
-              "RelativeDocumentMoniker": "test\\Services\\ShowingService.cs",
-              "ToolTip": "D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\Services\\ShowingService.cs",
-              "RelativeToolTip": "test\\Services\\ShowingService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-01T07:08:02.615Z",
-              "EditorCaption": ""
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
             },
             {
               "$type": "Bookmark",
@@ -159,6 +165,108 @@
             {
               "$type": "Document",
               "DocumentIndex": 7,
+              "Title": "IFilmRepository.cs",
+              "DocumentMoniker": "D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\Repositories\\IFilmRepository.cs",
+              "RelativeDocumentMoniker": "test\\Repositories\\IFilmRepository.cs",
+              "ToolTip": "D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\Repositories\\IFilmRepository.cs",
+              "RelativeToolTip": "test\\Repositories\\IFilmRepository.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAA1wBsAAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-04T02:20:56.965Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "IAdministratorService.cs",
+              "DocumentMoniker": "D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\Services\\IAdministratorService.cs",
+              "RelativeDocumentMoniker": "test\\Services\\IAdministratorService.cs",
+              "ToolTip": "D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\Services\\IAdministratorService.cs",
+              "RelativeToolTip": "test\\Services\\IAdministratorService.cs",
+              "ViewState": "AgIAAA8AAAAAAAAAAAA1wA4AAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-04T02:04:09.502Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "AdministratorService.cs",
+              "DocumentMoniker": "D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\Services\\AdministratorService.cs",
+              "RelativeDocumentMoniker": "test\\Services\\AdministratorService.cs",
+              "ToolTip": "D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\Services\\AdministratorService.cs",
+              "RelativeToolTip": "test\\Services\\AdministratorService.cs",
+              "ViewState": "AgIAAHMAAAAAAAAAAAAAABEAAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-04T02:03:34.883Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "OracleAdministratorRepository.cs",
+              "DocumentMoniker": "D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\Repositories\\OracleAdministratorRepository.cs",
+              "RelativeDocumentMoniker": "test\\Repositories\\OracleAdministratorRepository.cs",
+              "ToolTip": "D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\Repositories\\OracleAdministratorRepository.cs",
+              "RelativeToolTip": "test\\Repositories\\OracleAdministratorRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAKYAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-04T02:02:49.134Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "IAdministratorRepository.cs",
+              "DocumentMoniker": "D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\Repositories\\IAdministratorRepository.cs",
+              "RelativeDocumentMoniker": "test\\Repositories\\IAdministratorRepository.cs",
+              "ToolTip": "D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\Repositories\\IAdministratorRepository.cs",
+              "RelativeToolTip": "test\\Repositories\\IAdministratorRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-04T02:02:05.375Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Administrator.cs",
+              "DocumentMoniker": "D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\Models\\Administrator.cs",
+              "RelativeDocumentMoniker": "test\\Models\\Administrator.cs",
+              "ToolTip": "D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\Models\\Administrator.cs",
+              "RelativeToolTip": "test\\Models\\Administrator.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-04T02:01:01.758Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "Customer.cs",
+              "DocumentMoniker": "D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\Models\\Customer.cs",
+              "RelativeDocumentMoniker": "test\\Models\\Customer.cs",
+              "ToolTip": "D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\Models\\Customer.cs",
+              "RelativeToolTip": "test\\Models\\Customer.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-01T07:08:12.317Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "ShowingService.cs",
+              "DocumentMoniker": "D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\Services\\ShowingService.cs",
+              "RelativeDocumentMoniker": "test\\Services\\ShowingService.cs",
+              "ToolTip": "D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\Services\\ShowingService.cs",
+              "RelativeToolTip": "test\\Services\\ShowingService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAC0AAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-01T07:08:02.615Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
               "Title": "FilmService.cs",
               "DocumentMoniker": "D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\Services\\FilmService.cs",
               "RelativeDocumentMoniker": "test\\Services\\FilmService.cs",
@@ -166,12 +274,11 @@
               "RelativeToolTip": "test\\Services\\FilmService.cs",
               "ViewState": "AgIAABsAAAAAAAAAAAAYwC0AAAAVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-30T03:16:12.663Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-30T03:16:12.663Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 22,
               "Title": "UserRoles.cs",
               "DocumentMoniker": "D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\Models\\UserRoles.cs",
               "RelativeDocumentMoniker": "test\\Models\\UserRoles.cs",
@@ -179,12 +286,11 @@
               "RelativeToolTip": "test\\Models\\UserRoles.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-30T03:16:04.233Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-30T03:16:04.233Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 10,
               "Title": "VIPCard.cs",
               "DocumentMoniker": "D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\Models\\VIPCard.cs",
               "RelativeDocumentMoniker": "test\\Models\\VIPCard.cs",
@@ -192,12 +298,11 @@
               "RelativeToolTip": "test\\Models\\VIPCard.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-30T03:16:03.444Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-30T03:16:03.444Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 21,
+              "DocumentIndex": 15,
               "Title": "IShowingService.cs",
               "DocumentMoniker": "D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\Services\\IShowingService.cs",
               "RelativeDocumentMoniker": "test\\Services\\IShowingService.cs",
@@ -209,57 +314,56 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 5,
               "Title": "OracleFilmRepository.cs",
               "DocumentMoniker": "D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\Repositories\\OracleFilmRepository.cs",
               "RelativeDocumentMoniker": "test\\Repositories\\OracleFilmRepository.cs",
               "ToolTip": "D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\Repositories\\OracleFilmRepository.cs",
               "RelativeToolTip": "test\\Repositories\\OracleFilmRepository.cs",
-              "ViewState": "AgIAAB4AAAAAAAAAAAAYwAkAAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAEcBAAAAAAAAAAAkwE8BAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-28T07:28:51.519Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "UserService.cs",
-              "DocumentMoniker": "D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\Services\\UserService.cs",
-              "RelativeDocumentMoniker": "test\\Services\\UserService.cs",
-              "ToolTip": "D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\Services\\UserService.cs*",
-              "RelativeToolTip": "test\\Services\\UserService.cs*",
-              "ViewState": "AgIAADYAAAAAAAAAAAAYwEsAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-28T07:06:34.399Z",
+              "WhenOpened": "2025-07-28T07:28:51.519Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 19,
+              "Title": "UserService.cs",
+              "DocumentMoniker": "D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\Services\\UserService.cs",
+              "RelativeDocumentMoniker": "test\\Services\\UserService.cs",
+              "ToolTip": "D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\Services\\UserService.cs",
+              "RelativeToolTip": "test\\Services\\UserService.cs",
+              "ViewState": "AgIAADYAAAAAAAAAAAAYwEsAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-28T07:06:34.399Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
               "Title": "BookingService.cs",
               "DocumentMoniker": "D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\Services\\BookingService.cs",
               "RelativeDocumentMoniker": "test\\Services\\BookingService.cs",
               "ToolTip": "D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\Services\\BookingService.cs",
               "RelativeToolTip": "test\\Services\\BookingService.cs",
-              "ViewState": "AgIAAHUAAAAAAAAAAAAYwDkAAAAoAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADkAAAAoAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-28T06:41:22.591Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 17,
               "Title": "IBookingService.cs",
               "DocumentMoniker": "D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\Services\\IBookingService.cs",
               "RelativeDocumentMoniker": "test\\Services\\IBookingService.cs",
               "ToolTip": "D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\Services\\IBookingService.cs",
               "RelativeToolTip": "test\\Services\\IBookingService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAB8AAAAAAAAAA==",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-28T06:40:16.995Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-28T06:40:16.995Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
+              "DocumentIndex": 28,
               "Title": "PasswordHelper.cs",
               "DocumentMoniker": "D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\Helpers\\PasswordHelper.cs",
               "RelativeDocumentMoniker": "test\\Helpers\\PasswordHelper.cs",
@@ -271,31 +375,33 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 4,
               "Title": "OracleOrderRepository.cs",
               "DocumentMoniker": "D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\Repositories\\OracleOrderRepository.cs",
               "RelativeDocumentMoniker": "test\\Repositories\\OracleOrderRepository.cs",
               "ToolTip": "D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\Repositories\\OracleOrderRepository.cs",
               "RelativeToolTip": "test\\Repositories\\OracleOrderRepository.cs",
-              "ViewState": "AgIAAIwAAAAAAAAAAAAuwKkAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAMMAAAAAAAAAAAAkwN0AAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-28T06:37:50.347Z"
+              "WhenOpened": "2025-07-28T06:37:50.347Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 6,
               "Title": "IOrderRepository.cs",
               "DocumentMoniker": "D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\Repositories\\IOrderRepository.cs",
               "RelativeDocumentMoniker": "test\\Repositories\\IOrderRepository.cs",
               "ToolTip": "D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\Repositories\\IOrderRepository.cs",
               "RelativeToolTip": "test\\Repositories\\IOrderRepository.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAZAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAABxAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-28T06:37:17.141Z"
+              "WhenOpened": "2025-07-28T06:37:17.141Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 23,
               "Title": "SeatHall.cs",
               "DocumentMoniker": "D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\Models\\SeatHall.cs",
               "RelativeDocumentMoniker": "test\\Models\\SeatHall.cs",
@@ -303,12 +409,11 @@
               "RelativeToolTip": "test\\Models\\SeatHall.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAbAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-28T06:25:37.421Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-28T06:25:37.421Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 25,
               "Title": "OracleShowingRepository.cs",
               "DocumentMoniker": "D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\Repositories\\OracleShowingRepository.cs",
               "RelativeDocumentMoniker": "test\\Repositories\\OracleShowingRepository.cs",
@@ -320,7 +425,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 20,
               "Title": "IShowingRepository.cs",
               "DocumentMoniker": "D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\Repositories\\IShowingRepository.cs",
               "RelativeDocumentMoniker": "test\\Repositories\\IShowingRepository.cs",
@@ -328,25 +433,23 @@
               "RelativeToolTip": "test\\Repositories\\IShowingRepository.cs",
               "ViewState": "AgIAAAYAAAAAAAAAAAAAABEAAAA8AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-28T06:31:20.692Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-28T06:31:20.692Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 12,
               "Title": "OracleCustomerRepository.cs",
               "DocumentMoniker": "D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\Repositories\\OracleCustomerRepository.cs",
               "RelativeDocumentMoniker": "test\\Repositories\\OracleCustomerRepository.cs",
               "ToolTip": "D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\Repositories\\OracleCustomerRepository.cs",
               "RelativeToolTip": "test\\Repositories\\OracleCustomerRepository.cs",
-              "ViewState": "AgIAABYAAAAAAAAAAAAQwCkAAAA7AAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEYAAAAdAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-28T06:29:32.33Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-28T06:29:32.33Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 13,
               "Title": "ICustomerRepository.cs",
               "DocumentMoniker": "D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\Repositories\\ICustomerRepository.cs",
               "RelativeDocumentMoniker": "test\\Repositories\\ICustomerRepository.cs",
@@ -358,7 +461,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 19,
+              "DocumentIndex": 27,
               "Title": "OrderForTickets.cs",
               "DocumentMoniker": "D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\Models\\OrderForTickets.cs",
               "RelativeDocumentMoniker": "test\\Models\\OrderForTickets.cs",
@@ -370,7 +473,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 26,
               "Title": "Ticket.cs",
               "DocumentMoniker": "D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\Models\\Ticket.cs",
               "RelativeDocumentMoniker": "test\\Models\\Ticket.cs",
@@ -382,7 +485,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 24,
               "Title": "Section.cs",
               "DocumentMoniker": "D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\Models\\Section.cs",
               "RelativeDocumentMoniker": "test\\Models\\Section.cs",
@@ -394,7 +497,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 22,
+              "DocumentIndex": 16,
               "Title": "Cast.cs",
               "DocumentMoniker": "D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\Models\\Cast.cs",
               "RelativeDocumentMoniker": "test\\Models\\Cast.cs",
@@ -406,7 +509,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 23,
+              "DocumentIndex": 29,
               "Title": "MovieHall.cs",
               "DocumentMoniker": "D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\Models\\MovieHall.cs",
               "RelativeDocumentMoniker": "test\\Models\\MovieHall.cs",
@@ -418,7 +521,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 24,
+              "DocumentIndex": 30,
               "Title": "Film.cs",
               "DocumentMoniker": "D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\Models\\Film.cs",
               "RelativeDocumentMoniker": "test\\Models\\Film.cs",

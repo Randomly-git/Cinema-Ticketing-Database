@@ -86,6 +86,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DatabaseConnectionHelper.cs" />
+    <Compile Include="Models\Administrator.cs" />
     <Compile Include="Models\Cast.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Film.cs" />
@@ -100,16 +101,20 @@
     <Compile Include="Helpers\PasswordHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Models\UserBase.cs" />
+    <Compile Include="Repositories\IAdministratorRepository.cs" />
     <Compile Include="Repositories\ICustomerRepository.cs" />
     <Compile Include="Repositories\IFilmRepository.cs" />
     <Compile Include="Repositories\IOrderRepository.cs" />
     <Compile Include="Repositories\IShowingRepository.cs" />
+    <Compile Include="Repositories\OracleAdministratorRepository.cs" />
     <Compile Include="Repositories\OracleCustomerRepository.cs" />
     <Compile Include="Repositories\OracleFilmRepository.cs" />
     <Compile Include="Repositories\OracleOrderRepository.cs" />
     <Compile Include="Repositories\OracleShowingRepository.cs" />
+    <Compile Include="Services\AdministratorService.cs" />
     <Compile Include="Services\BookingService.cs" />
     <Compile Include="Services\FilmService.cs" />
+    <Compile Include="Services\IAdministratorService.cs" />
     <Compile Include="Services\IBookingService.cs" />
     <Compile Include="Services\IFilmService.cs" />
     <Compile Include="Services\IShowingService.cs" />

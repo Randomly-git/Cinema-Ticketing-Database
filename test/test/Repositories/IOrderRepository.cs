@@ -14,5 +14,7 @@ namespace test.Repositories
         OrderForTickets GetOrderForTicketsById(int orderId); // 根据订单ID获取电影票订单
         List<OrderForTickets> GetOrdersForCustomer(string customerId); // 获取某个顾客的所有电影票订单
         // 可以添加更新订单状态、退票等方法
+
+        List<OrderForTickets> GetAllOrders(DateTime? startDate = null, DateTime? endDate = null);//管理员特权方法：获取所有订单
     }
 }
