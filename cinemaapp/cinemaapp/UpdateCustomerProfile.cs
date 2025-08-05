@@ -77,7 +77,12 @@ namespace cinemaapp
 
             try
             {
+                // 更新数据库
                 Program._userService.UpdateCustomerProfile(_customer);
+
+                // 重新从数据库获取最新用户数据（刷新全局引用）
+                Program._loggedInCustomer = Program._customerRepository.GetCustomerById(_customer.CustomerID);
+
                 MessageBox.Show("资料更新成功", "成功", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 this.DialogResult = DialogResult.OK;
                 this.Close();
@@ -87,6 +92,7 @@ namespace cinemaapp
                 MessageBox.Show($"更新失败：{ex.Message}", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+    
     }
 }
 

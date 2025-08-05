@@ -30,3 +30,4 @@ D:\Ddesktop\cinemaapp\cinemaapp\obj\Debug\net8.0-windows\cinemaapp.RegisterAdmin
 D:\Ddesktop\cinemaapp\cinemaapp\obj\Debug\net8.0-windows\cinemaapp.DeleteCustomerAccount.resources
 D:\Ddesktop\cinemaapp\cinemaapp\obj\Debug\net8.0-windows\cinemaapp.ViewFilmShowings.resources
 D:\Ddesktop\cinemaapp\cinemaapp\obj\Debug\net8.0-windows\cinemaapp.UpdateCustomerProfile.resources
+D:\Ddesktop\cinemaapp\cinemaapp\obj\Debug\net8.0-windows\cinemaapp.ViewAllOrders.resources

@@ -228,7 +228,8 @@ namespace cinemaapp
         //查看订单
         private void ViewAllOrders()
         {
-            MessageBox.Show("查看订单 - 功能未实现");
+            var form = new ViewAllOrders();
+            form.ShowDialog();
         }
 
     }

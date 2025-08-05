@@ -22,6 +22,9 @@
     <Compile Update="UpdateCustomerProfile.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="ViewAllOrders.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="ViewFilmShowings.cs">
       <SubType>Form</SubType>
     </Compile>
