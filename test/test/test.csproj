@@ -91,7 +91,9 @@
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Film.cs" />
     <Compile Include="Models\MovieHall.cs" />
+    <Compile Include="Models\OrderForProduct.cs" />
     <Compile Include="Models\OrderForTickets.cs" />
+    <Compile Include="Models\RelatedProduct.cs" />
     <Compile Include="Models\SeatHall.cs" />
     <Compile Include="Models\Section.cs" />
     <Compile Include="Models\Ticket.cs" />
@@ -104,12 +106,16 @@
     <Compile Include="Repositories\IAdministratorRepository.cs" />
     <Compile Include="Repositories\ICustomerRepository.cs" />
     <Compile Include="Repositories\IFilmRepository.cs" />
+    <Compile Include="Repositories\IOrderForProductRepository.cs" />
     <Compile Include="Repositories\IOrderRepository.cs" />
+    <Compile Include="Repositories\IRelatedProductRepository.cs" />
     <Compile Include="Repositories\IShowingRepository.cs" />
     <Compile Include="Repositories\OracleAdministratorRepository.cs" />
     <Compile Include="Repositories\OracleCustomerRepository.cs" />
     <Compile Include="Repositories\OracleFilmRepository.cs" />
+    <Compile Include="Repositories\OracleOrderForProductRepository.cs" />
     <Compile Include="Repositories\OracleOrderRepository.cs" />
+    <Compile Include="Repositories\OracleRelatedProductRepository.cs" />
     <Compile Include="Repositories\OracleShowingRepository.cs" />
     <Compile Include="Services\AdministratorService.cs" />
     <Compile Include="Services\BookingService.cs" />
@@ -117,8 +123,10 @@
     <Compile Include="Services\IAdministratorService.cs" />
     <Compile Include="Services\IBookingService.cs" />
     <Compile Include="Services\IFilmService.cs" />
+    <Compile Include="Services\IProductService.cs" />
     <Compile Include="Services\IShowingService.cs" />
     <Compile Include="Services\IUserService.cs" />
+    <Compile Include="Services\ProductService.cs" />
     <Compile Include="Services\ShowingService.cs" />
     <Compile Include="Services\UserService.cs" />
   </ItemGroup>
