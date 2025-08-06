@@ -268,6 +268,7 @@ namespace test.Repositories
             return timeSlot;
         }
 
+
         //管理员部分
         public void AddFilm(Film film)
         {
@@ -334,6 +335,8 @@ namespace test.Repositories
             }
         }
 
+        
+
         public bool HasRelatedSections(string filmName)
         {
             // 调整为使用FILMNAME关联场次表
@@ -350,6 +353,9 @@ namespace test.Repositories
                 }
             }
         }
+
+
+
     }
 }
 

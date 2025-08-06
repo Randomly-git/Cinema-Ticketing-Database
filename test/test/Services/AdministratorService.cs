@@ -15,7 +15,7 @@ namespace test.Services
         private readonly IFilmRepository _filmRepository; // 新增电影仓库依赖
 
         // 构造函数注入仓储依赖
-        public AdministratorService(IAdministratorRepository administratorRepository, IOrderRepository orderRepository, IFilmRepository filmRepository)
+        public AdministratorService(IAdministratorRepository administratorRepository, IOrderRepository orderRepository,IFilmRepository filmRepository)
         {
             _administratorRepository = administratorRepository;
             _orderRepository = orderRepository;
@@ -158,7 +158,7 @@ namespace test.Services
             _filmRepository.UpdateFilm(film);
         }
 
-
+       
 
 
     }

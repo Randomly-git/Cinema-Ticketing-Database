@@ -939,40 +939,8 @@ namespace test
             }
         }
 
-        // 移除了 ViewAllCustomers 方法，因为它在提供的 IAdministratorService 接口中不存在。
-        // static void ViewAllCustomers()
-        // {
-        //    ...
-        // }
-
-        /// <summary>
-        /// 从控制台获取隐藏输入的密码。
-        /// </summary>
-        /// <returns>用户输入的字符串。</returns>
-        static string GetHiddenConsoleInput()
-        {
-            StringBuilder input = new StringBuilder();
-            while (true)
-            {
-                ConsoleKeyInfo key = Console.ReadKey(true); // true 表示不显示按下的键
-
-                if (key.Key == ConsoleKey.Enter)
-                {
-                    Console.WriteLine(); // 换行
-                    break;
-                }
-                if (key.Key == ConsoleKey.Backspace && input.Length > 0)
-                {
-                    input.Remove(input.Length - 1, 1);
-                    Console.Write("\b \b"); // 删除一个字符
-                }
-                else if (char.IsLetterOrDigit(key.KeyChar) || char.IsPunctuation(key.KeyChar) || char.IsSymbol(key.KeyChar))
-                {
-                    input.Append(key.KeyChar);
-                    Console.Write("*"); // 显示星号
-                }
-            }
-            return input.ToString();
+            Console.WriteLine("\n--- 电影院购票管理系统测试完成。按任意键退出。 ---");
+            Console.ReadKey();
         }
     }
 }

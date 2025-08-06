@@ -51,7 +51,7 @@ namespace test.Repositories
             return admin;
         }
 
-
+    
         /// 根据手机号获取管理员
 
         public Administrator GetAdministratorByPhoneNum(string phoneNum)
