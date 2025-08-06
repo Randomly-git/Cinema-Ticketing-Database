@@ -2,13 +2,13 @@
 using System;
 using System.Collections.Generic; // 用于 List<T> 和 Dictionary<TKey, TValue>
 using System.Configuration;
-using System.Linq; 
+using System.Linq;
 using test.Models;
 using test.Repositories;
 using test.Services;
 using System.Text;
 
-namespace test 
+namespace test
 {
     class Program
     {
@@ -81,7 +81,6 @@ namespace test
             _filmService = new FilmService(_filmRepository);
             _showingService = new ShowingService(showingRepository, _filmRepository);
             _bookingService = new BookingService(showingRepository, _filmRepository, _customerRepository, _orderRepository, connectionString);
-            // 根据提供的 IAdministratorService 接口和错误信息，AdministratorService 构造函数应接受 3 个参数
             _adminService = new AdministratorService(adminRepository, _orderRepository, _filmRepository); // 新增管理员服务
 
             RunMainMenu();
@@ -89,7 +88,6 @@ namespace test
             Console.WriteLine("\n--- 电影院管理系统已退出。按任意键退出。 ---");
             Console.ReadKey();
         }
-
         /// <summary>
         /// 运行主菜单循环。
         /// </summary>
@@ -107,7 +105,8 @@ namespace test
                 {
                     Console.WriteLine("1. 顾客注册");
                     Console.WriteLine("2. 顾客登录");
-                    Console.WriteLine("3. 管理员登录"); // 新增管理员登录选项
+                    Console.WriteLine("3. 管理员注册"); // 新增管理员注册选项
+                    Console.WriteLine("4. 管理员登录"); // 管理员登录选项
                 }
                 else if (_loggedInCustomer != null)
                 {
@@ -122,10 +121,9 @@ namespace test
                 else if (_loggedInAdmin != null)
                 {
                     Console.WriteLine($"当前管理员: {_loggedInAdmin.AdminName} (ID: {_loggedInAdmin.AdminID})");
-                    Console.WriteLine("1. 电影管理 (增/改)"); // 移除了删除功能
+                    Console.WriteLine("1. 电影管理 (增/改)");
                     Console.WriteLine("2. 查看所有订单");
-                    // 移除了 "3. 查看所有顾客"，因为 IAdministratorService 接口中没有此方法
-                    Console.WriteLine("3. 管理员登出"); // 原来的 5 变成了 3
+                    Console.WriteLine("3. 管理员登出");
                 }
                 Console.WriteLine("0. 退出系统");
                 Console.WriteLine("======================================");
@@ -145,7 +143,10 @@ namespace test
                             case "2":
                                 LoginCustomer();
                                 break;
-                            case "3": // 管理员登录
+                            case "3": // 管理员注册
+                                RegisterAdministrator();
+                                break;
+                            case "4": // 管理员登录
                                 LoginAdministrator();
                                 break;
                             case "0":
@@ -202,8 +203,7 @@ namespace test
                             case "2":
                                 ViewAllOrders();
                                 break;
-                            // 移除了 case "3": ViewAllCustomers(); break;
-                            case "3": // 原来的 5 变成了 3
+                            case "3":
                                 LogoutAdministrator();
                                 break;
                             case "0":
@@ -496,7 +496,7 @@ namespace test
                     for (int i = 0; i < sections.Count; i++)
                     {
                         var section = sections[i];
-                        Console.WriteLine($"{i + 1}. 场次ID: {section.SectionID}, 影厅: {section.MovieHall.HallNo} ({section.MovieHall.Category}), 时段: {section.TimeSlot.StartTime:hh\\:mm}-{section.TimeSlot.EndTime:hh\\:mm}"); 
+                        Console.WriteLine($"{i + 1}. 场次ID: {section.SectionID}, 影厅: {section.MovieHall.HallNo} ({section.MovieHall.Category}), 时段: {section.TimeSlot.StartTime:hh\\:mm}-{section.TimeSlot.EndTime:hh\\:mm}");
                     }
                 }
                 else if (filmChoice == 0)
@@ -652,6 +652,52 @@ namespace test
         // ====================================================================
 
         /// <summary>
+        /// 管理员注册功能。
+        /// </summary>
+        static void RegisterAdministrator()
+        {
+            Console.WriteLine("\n--- 注册新管理员 ---");
+            Console.Write("请输入新管理员的ID (例如: ADMIN002): ");
+            string adminId = Console.ReadLine();
+            Console.Write("请输入新管理员的姓名: ");
+            string name = Console.ReadLine();
+            Console.Write("请输入新管理员的手机号: ");
+            string phoneNum = Console.ReadLine();
+            Console.Write("请输入密码: ");
+            string password = GetHiddenConsoleInput();
+            Console.Write("请再次输入密码确认: ");
+            string confirmPassword = GetHiddenConsoleInput();
+
+            if (password != confirmPassword)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("两次输入的密码不一致，请重试。");
+                Console.ResetColor();
+                return;
+            }
+
+            try
+            {
+                Administrator newAdmin = new Administrator
+                {
+                    AdminID = adminId,
+                    AdminName = name,
+                    PhoneNum = phoneNum
+                };
+                _adminService.RegisterAdministrator(newAdmin, password);
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"管理员 {newAdmin.AdminName} (ID: {newAdmin.AdminID}) 注册成功！");
+                Console.ResetColor();
+            }
+            catch (Exception ex)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"管理员注册失败: {ex.Message}");
+                Console.ResetColor();
+            }
+        }
+
+        /// <summary>
         /// 管理员登录功能。
         /// </summary>
         static void LoginAdministrator()
@@ -716,7 +762,6 @@ namespace test
                 Console.WriteLine("======================================");
                 Console.WriteLine("1. 添加新电影");
                 Console.WriteLine("2. 更新电影信息");
-                // 移除了 "3. 删除电影"，因为 IAdministratorService 接口中没有此方法
                 Console.WriteLine("0. 返回主菜单");
                 Console.WriteLine("======================================");
                 Console.Write("请选择一个操作: ");
@@ -732,7 +777,6 @@ namespace test
                         case "2":
                             UpdateFilm();
                             break;
-                        // 移除了 case "3": DeleteFilm(); break;
                         case "0":
                             managingFilms = false;
                             break;
@@ -901,12 +945,6 @@ namespace test
             }
         }
 
-        // 移除了 DeleteFilm 方法，因为它在提供的 IAdministratorService 接口中不存在。
-        // static void DeleteFilm()
-        // {
-        //    ...
-        // }
-
         /// <summary>
         /// 管理员：查看所有订单。
         /// </summary>
@@ -939,11 +977,39 @@ namespace test
             }
         }
 
-            Console.WriteLine("\n--- 电影院购票管理系统测试完成。按任意键退出。 ---");
-            Console.ReadKey();
+        /// <summary>
+        /// 从控制台获取隐藏输入的密码。
+        /// </summary>
+        /// <returns>用户输入的字符串。</returns>
+        static string GetHiddenConsoleInput()
+        {
+            StringBuilder input = new StringBuilder();
+            while (true)
+            {
+                ConsoleKeyInfo key = Console.ReadKey(true); // true 表示不显示按下的键
+
+                if (key.Key == ConsoleKey.Enter)
+                {
+                    Console.WriteLine(); // 换行
+                    break;
+                }
+                if (key.Key == ConsoleKey.Backspace && input.Length > 0)
+                {
+                    input.Remove(input.Length - 1, 1);
+                    Console.Write("\b \b"); // 删除一个字符
+                }
+                else if (char.IsLetterOrDigit(key.KeyChar) || char.IsPunctuation(key.KeyChar) || char.IsSymbol(key.KeyChar))
+                {
+                    input.Append(key.KeyChar);
+                    Console.Write("*"); // 显示星号
+                }
+            }
+            return input.ToString();
         }
     }
 }
+
+
 
 
 
