@@ -6,8 +6,8 @@ namespace test.Models // 请替换为你的项目命名空间
     public class TimeSlot
     {
         public string TimeID { get; set; }   // 时段号，PK
-        public TimeSpan StartTime { get; set; } // 电影开场时间
-        public TimeSpan EndTime { get; set; }   // 电影散场时间
+        public DateTime StartTime { get; set; } // 电影开场时间
+        public DateTime EndTime { get; set; }   // 电影散场时间
 
         public override string ToString()
         {

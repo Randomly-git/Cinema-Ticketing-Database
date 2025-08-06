@@ -16,14 +16,16 @@ namespace test.Services
         private readonly IFilmRepository _filmRepository; // 仍然需要 FilmRepository 来获取电影的 NormalPrice
         private readonly ICustomerRepository _customerRepository;
         private readonly IOrderRepository _orderRepository; // 订单仓库
+        private readonly DatabaseService _dbService;
         private readonly string _connectionString; // 需要连接字符串来创建事务
 
-        public BookingService(IShowingRepository showingRepository, IFilmRepository filmRepository, ICustomerRepository customerRepository, IOrderRepository orderRepository, string connectionString)
+        public BookingService(IShowingRepository showingRepository, IFilmRepository filmRepository, ICustomerRepository customerRepository, IOrderRepository orderRepository, DatabaseService dbService, string connectionString)
         {
             _showingRepository = showingRepository;
             _filmRepository = filmRepository;
             _customerRepository = customerRepository;
             _orderRepository = orderRepository;
+            _dbService = dbService;
             _connectionString = connectionString;
         }
 
@@ -119,6 +121,123 @@ namespace test.Services
                     throw new InvalidOperationException($"购票失败: {ex.Message}", ex);
                 }
             }
+        }
+        public bool RefundTicket(int orderId, DateTime refundTime, out decimal refundFee, out int refundAmount)
+        {
+            refundFee = 0m;
+            refundAmount = 0;
+
+            // 1. 获取订单和票信息
+            string getOrderSql = @"
+SELECT 
+    o.ticketID, 
+    o.price,
+    ts.starttime AS showtime
+FROM 
+    orderfortickets o
+    JOIN ticket t ON o.ticketID = t.ticketID
+    JOIN section s ON t.sectionID = s.sectionID
+    JOIN timeslot ts ON s.timeID = ts.timeID
+WHERE 
+    o.orderID = :orderId 
+    AND o.state = '有效'";
+
+            var orderParam = new OracleParameter("orderId", OracleDbType.Int32)
+            {
+                Value = orderId
+            };
+
+            var orderInfo = _dbService.ExecuteQuery(getOrderSql, orderParam);
+            if (orderInfo.Rows.Count == 0)
+            {
+                Console.WriteLine("[ERROR] 未找到可退款的订单");
+                return false;
+            }
+
+            var row = orderInfo.Rows[0];
+            string ticketId = row["ticketID"].ToString();
+            DateTime showtime = Convert.ToDateTime(row["showtime"]);
+            int paidPrice = Convert.ToInt32(row["price"]);
+
+            // 2. 检查电影是否已开始放映
+            if (refundTime >= showtime)
+            {
+                Console.WriteLine($"[ERROR] 电影已开始放映，无法退票");
+                Console.WriteLine($"\t开始时间: {showtime:yyyy-MM-dd HH:mm}");
+                Console.WriteLine($"\t当前时间: {refundTime:yyyy-MM-dd HH:mm}");
+                return false;
+            }
+
+            // 3. 计算手续费和退款金额
+            refundFee = CalculateRefundFee(showtime, refundTime, paidPrice);
+            refundAmount = paidPrice - (int)refundFee;
+
+            // 4. 执行退款事务
+            using (var transaction = _dbService.BeginTransaction())
+            {
+                try
+                {
+                    // 4.1 仅更新订单状态
+                    string updateOrderSql = "UPDATE orderfortickets SET state = '失效' WHERE orderID = :orderId";
+                    var updateParam = new OracleParameter("orderId", OracleDbType.Int32) { Value = orderId };
+
+                    if (_dbService.ExecuteNonQuery(updateOrderSql, updateParam) <= 0)
+                    {
+                        transaction.Rollback();
+                        Console.WriteLine("[ERROR] 更新订单状态失败");
+                        return false;
+                    }
+
+                    // 4.2 释放座位
+                    if (!ReleaseTicket(ticketId))
+                    {
+                        transaction.Rollback();
+                        Console.WriteLine("[ERROR] 释放座位失败");
+                        return false;
+                    }
+
+                    transaction.Commit();
+                    Console.WriteLine($"[SUCCESS] 退票成功，应退款金额: {refundAmount}元");
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    Console.WriteLine($"[ERROR] 退票过程中发生异常: {ex.Message}");
+                    return false;
+                }
+            }
+        }
+        private decimal CalculateRefundFee(DateTime showtime, DateTime refundTime, int paidPrice)
+        {
+            TimeSpan timeLeft = showtime - refundTime;
+            decimal feeRate;
+
+            if (timeLeft.TotalHours > 24)
+            {
+                feeRate = 0.1m; // 24小时以上收取10%手续费
+            }
+            else if (timeLeft.TotalHours > 2)
+            {
+                feeRate = 0.3m; // 2-24小时收取30%手续费
+            }
+            else
+            {
+                feeRate = 0.5m; // 2小时内收取50%手续费
+            }
+
+            return paidPrice * feeRate;
+        }
+
+        public bool ReleaseTicket(string ticketId)
+        {
+            string sql = "UPDATE ticket SET state = '已退票' WHERE ticketID = :ticketId";
+            var parameter = new OracleParameter("ticketId", OracleDbType.Varchar2, 40)
+            {
+                Value = ticketId
+            };
+
+            return _dbService.ExecuteNonQuery(sql, parameter) > 0;
         }
     }
 }

@@ -8,6 +8,11 @@ using test.Repositories;
 using test.Services;
 using System.Text;
 using System.Windows.Forms;
+using System.Data;
+using System.Globalization;
+using System.Linq;
+
+
 
 
 namespace cinemaapp
@@ -24,10 +29,8 @@ namespace cinemaapp
         public static IShowingService _showingService;
         public static IBookingService _bookingService;
         public static IAdministratorService _adminService;
-<<<<<<< Updated upstream
-=======
         public static DatabaseService _dbService;
->>>>>>> Stashed changes
+        public static ISchedulingService _schedulingService;
 
         // 仓库实例
         public static ICustomerRepository _customerRepository;
@@ -69,18 +72,14 @@ namespace cinemaapp
             IShowingRepository showingRepository = new OracleShowingRepository(connectionString);
             IAdministratorRepository adminRepository = new OracleAdministratorRepository(connectionString); // 管理员仓库
 
+            _dbService = new DatabaseService(connectionString);
             _userService = new UserService(_customerRepository);
             _filmService = new FilmService(_filmRepository);
             _showingService = new ShowingService(showingRepository, _filmRepository);
-<<<<<<< Updated upstream
-            _bookingService = new BookingService(showingRepository, _filmRepository, _customerRepository, _orderRepository, connectionString);
-=======
-            //
             _bookingService = new BookingService(showingRepository, _filmRepository, _customerRepository, _orderRepository, _dbService, connectionString);
-
-            //
->>>>>>> Stashed changes
             _adminService = new AdministratorService(adminRepository, _orderRepository, _filmRepository); // 管理员服务
+            _schedulingService = new SchedulingService(connectionString);
+
 
             // ✅ 启动主窗体（MainForm）
             Application.EnableVisualStyles();

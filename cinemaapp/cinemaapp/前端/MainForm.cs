@@ -53,34 +53,39 @@ namespace cinemaapp
             {
                 Label lblUser = new Label()
                 {
-                    Text = $"当前用户: {_loggedInCustomer.Name} (等级: {_loggedInCustomer.VipLevel}, 积分: {_loggedInCustomer.VIPCard?.Points ?? 0})",
+                    Text = $"当前用户: {_loggedInCustomer.Name} (ID: {_loggedInCustomer.CustomerID}, 等级: {_loggedInCustomer.VipLevel}, 积分: {_loggedInCustomer.VIPCard?.Points ?? 0})",
                     Location = new Point(30, 70),
                     AutoSize = true
                 };
                 this.Controls.Add(lblUser);
 
-                AddButton("更新个人资料", 110, UpdateCustomerProfile);
-                AddButton("查看电影排挡", 160, ViewFilmShowings);
-                AddButton("购票", 210, PurchaseTicketMenu);
-                AddButton("购买周边 (未实现)", 260, () => MessageBox.Show("功能未实现"));
-                AddButton("删除我的账户", 310, DeleteCustomerAccount);
-                AddButton("用户登出", 360, LogoutCustomer);
-                AddButton("退出系统", 410, () => this.Close());
+                AddButton("1. 更新个人资料", 110, UpdateCustomerProfile);
+                AddButton("2. 查看电影相关信息", 150, FilmDashBoard);
+                AddButton("3. 购票", 190, PurchaseTicketMenu);
+                AddButton("4. 查看所有有效订单", 230, DisplayCustomerPaidOrders);
+                AddButton("5. 退票", 270, ProcessTicketRefund);
+                AddButton("6. 购买周边 (未实现)", 310, () => MessageBox.Show("功能尚未实现"));
+                AddButton("7. 删除我的账户", 350, DeleteCustomerAccount);
+                AddButton("8. 用户登出", 390, LogoutCustomer);
+                AddButton("0. 退出系统", 430, () => this.Close());
             }
             else if (_loggedInAdmin != null)
             {
                 Label lblAdmin = new Label()
                 {
-                    Text = $"当前管理员: {_loggedInAdmin.AdminName}",
+                    Text = $"当前管理员: {_loggedInAdmin.AdminName} (ID: {_loggedInAdmin.AdminID})",
                     Location = new Point(30, 70),
                     AutoSize = true
                 };
                 this.Controls.Add(lblAdmin);
 
-                AddButton("电影管理 (增/改)", 110, ManageFilmsMenu);
-                AddButton("查看所有订单", 160, ViewAllOrders);
-                AddButton("管理员登出", 210, LogoutAdministrator);
-                AddButton("退出系统", 260, () => this.Close());
+                AddButton("1. 电影管理 (增/改)", 110, ManageFilmsMenu);
+                AddButton("2. 查看所有订单", 160, ViewAllOrders);
+                AddButton("3. 添加新排片", 210, AddSectionInteractive);
+                AddButton("4. 查看排片", 260, ViewSectionsInteractive);
+                AddButton("5. 删除排片", 310, DeleteSectionInteractive);
+                AddButton("6. 管理员登出", 360, LogoutAdministrator);
+                AddButton("0. 退出系统", 410, () => this.Close());
             }
         }
 
@@ -105,7 +110,9 @@ namespace cinemaapp
             };
             this.Controls.Add(btn);
         }
-
+        /// <summary>
+        /// 登录与账户信息
+        /// </summary>
         //顾客注册
         private void RegisterCustomer()
         {
@@ -183,19 +190,6 @@ namespace cinemaapp
             }
         }
 
-
-        //查看电影排挡
-        private void ViewFilmShowings()
-        {
-            MessageBox.Show("查看电影排挡 - 功能未实现");
-        }
-
-        //购票
-        private void PurchaseTicketMenu()
-        {
-            MessageBox.Show("购票 - 功能未实现");
-        }
-
         //删除账户
         private void DeleteCustomerAccount()
         {
@@ -218,6 +212,28 @@ namespace cinemaapp
 
 
 
+        //查看电影排挡
+        private void FilmDashBoard()
+        {
+            using (var form = new FilmDashboard())
+            {
+                form.ShowDialog();
+            }
+        }
+
+
+
+        //购票
+        private void PurchaseTicketMenu()
+        {
+            MessageBox.Show("购票 - 功能未实现");
+        }
+
+
+
+
+
+
 
         //电影管理
         private void ManageFilmsMenu()
@@ -231,6 +247,58 @@ namespace cinemaapp
             var form = new ViewAllOrders();
             form.ShowDialog();
         }
+
+
+
+
+
+
+
+
+        // 4. 查看所有有效订单
+        private void DisplayCustomerPaidOrders()
+        {
+            MessageBox.Show("查看所有有效订单 - 功能未实现");
+        }
+
+        // 5. 退票
+        private void ProcessTicketRefund()
+        {
+            MessageBox.Show("退票 - 功能未实现");
+        }
+
+
+
+
+
+
+
+
+
+        // 2. 查看所有订单（已实现或正在实现）
+
+        // 3. 添加新排片
+        private void AddSectionInteractive()
+        {
+            MessageBox.Show("添加新排片 - 功能未实现");
+        }
+
+        // 4. 查看排片
+        private void ViewSectionsInteractive()
+        {
+            MessageBox.Show("查看排片 - 功能未实现");
+        }
+
+        // 5. 删除排片
+        private void DeleteSectionInteractive()
+        {
+            MessageBox.Show("删除排片 - 功能未实现");
+        }
+
+
+
+
+
 
     }
 }

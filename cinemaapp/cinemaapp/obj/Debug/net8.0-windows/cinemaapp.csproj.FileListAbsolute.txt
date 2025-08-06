@@ -28,6 +28,6 @@ D:\Ddesktop\cinemaapp\cinemaapp\obj\Debug\net8.0-windows\cinemaapp.LoginCustomer
 D:\Ddesktop\cinemaapp\cinemaapp\obj\Debug\net8.0-windows\cinemaapp.RegisterCustomer.resources
 D:\Ddesktop\cinemaapp\cinemaapp\obj\Debug\net8.0-windows\cinemaapp.RegisterAdministrator.resources
 D:\Ddesktop\cinemaapp\cinemaapp\obj\Debug\net8.0-windows\cinemaapp.DeleteCustomerAccount.resources
-D:\Ddesktop\cinemaapp\cinemaapp\obj\Debug\net8.0-windows\cinemaapp.ViewFilmShowings.resources
 D:\Ddesktop\cinemaapp\cinemaapp\obj\Debug\net8.0-windows\cinemaapp.UpdateCustomerProfile.resources
 D:\Ddesktop\cinemaapp\cinemaapp\obj\Debug\net8.0-windows\cinemaapp.ViewAllOrders.resources
+D:\Ddesktop\cinemaapp\cinemaapp\obj\Debug\net8.0-windows\cinemaapp.FilmDashboard.resources

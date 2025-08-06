@@ -1,34 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-<<<<<<< Updated upstream
-    <Compile Update="DeleteCustomerAccount.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="LoginAdministrator.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="LoginCustomer.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="MainForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="RegisterAdministrator.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="RegisterCustomer.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="UpdateCustomerProfile.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="ViewAllOrders.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="ViewFilmShowings.cs">
-=======
     <Compile Update="前端\DeleteCustomerAccount.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="前端\FilmDashBoard.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="前端\LoginAdministrator.cs">
@@ -50,10 +26,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="前端\ViewAllOrders.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="前端\ViewFilmShowings.cs">
->>>>>>> Stashed changes
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>

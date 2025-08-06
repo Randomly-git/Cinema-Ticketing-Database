@@ -14,6 +14,14 @@ namespace test.Repositories
         MovieHall GetMovieHallByHallNo(int hallNo); // 根据影厅号获取影厅信息
         TimeSlot GetTimeSlotByID(string timeId); // 根据时段ID获取时段信息
 
+        (decimal BoxOffice, int TicketsSold, decimal OccupancyRate) GetMovieStatistics(string filmName);  // 查询影片的排档和撤档信息，以及当前正在上映的场次。
+
+        List<Cast> GetCastCrewDetails(string memberName); // 查询影片概况信息，包括类型、演职人员、评分、票房和当前场次。
+
+        Film GetMovieOverview(string filmName); // 根据演职人员姓名，查询其参演的所有电影。
+
+        (Film FilmInfo, List<Section> Sessions) GetMovieSchedulingInfo(string filmName); // 查询指定电影的数据统计信息，包括票价、总票房、已售票数和上座率。
+
         //管理员特权部分
 
 

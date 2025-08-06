@@ -11,6 +11,10 @@ namespace test.Models
         public int HallNo { get; set; }      // 影厅号，FK
         public string TimeID { get; set; }   // 时段号，FK
 
+        public DateTime ScheduleStartTime { get; set; } // 场次开始时间 (包含日期和时间, 从TIMESLOT联查)
+        public DateTime ScheduleEndTime { get; set; } // 场次结束时间 (包含日期和时间, 从TIMESLOT联查)
+        public string HallCategory { get; set; } // 影厅种类 (从MovieHall联查得到)
+
         // 导航属性：方便获取关联的电影、影厅和时段信息
         public Film Film { get; set; }
         public MovieHall MovieHall { get; set; }

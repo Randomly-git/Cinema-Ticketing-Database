@@ -40,11 +40,32 @@ namespace test.Repositories
 
             try
             {
+                // First get the next sequence value for ORDERID
+                string getOrderIdSql = $"SELECT {SchemaName}ORDERFORTICKETS_SEQ.NEXTVAL FROM DUAL";
+                using (var getOrderIdCommand = new OracleCommand(getOrderIdSql, connection))
+                {
+                    if (transaction != null)
+                    {
+                        getOrderIdCommand.Transaction = transaction;
+                    }
+                    object result = getOrderIdCommand.ExecuteScalar();
+                    if (result != DBNull.Value && result != null)
+                    {
+                        order.OrderID = Convert.ToInt32(result);
+                    }
+                    else
+                    {
+                        throw new Exception("Failed to generate ORDERID from sequence");
+                    }
+                }
+
+                // Now insert the record with the generated ORDERID
                 string sql = $@"INSERT INTO {SchemaName}ORDERFORTICKETS
-                               (TICKETID, STATE, CUSTOMERID, DAY, ""PMETHOD"", PRICE)
-                               VALUES (:ticketId, :state, :customerId, :day, :paymentMethod, :totalPrice)";
+                       (ORDERID, TICKETID, STATE, CUSTOMERID, DAY, ""PMETHOD"", PRICE)
+                       VALUES (:orderId, :ticketId, :state, :customerId, :day, :paymentMethod, :totalPrice)";
 
                 command = new OracleCommand(sql, connection);
+                command.Parameters.Add(new OracleParameter("orderId", order.OrderID));
                 command.Parameters.Add(new OracleParameter("ticketId", order.TicketID));
                 command.Parameters.Add(new OracleParameter("state", order.State));
                 command.Parameters.Add(new OracleParameter("customerId", order.CustomerID));
@@ -57,27 +78,15 @@ namespace test.Repositories
                     command.Transaction = transaction;
                 }
 
-                command.ExecuteNonQuery();
+                int rowsAffected = command.ExecuteNonQuery();
 
-                // 通过 SELECT MAX(ORDERID) 获取生成的 ORDERID
-                // 这种方法在并发环境下不安全，仅用于调试目的。
-                string getMaxOrderIdSql = $"SELECT MAX(ORDERID) FROM {SchemaName}ORDERFORTICKETS";
-                using (var getMaxOrderIdCommand = new OracleCommand(getMaxOrderIdSql, connection))
+                if (rowsAffected == 1)
                 {
-                    if (transaction != null)
-                    {
-                        getMaxOrderIdCommand.Transaction = transaction;
-                    }
-                    object result = getMaxOrderIdCommand.ExecuteScalar();
-                    if (result != DBNull.Value && result != null)
-                    {
-                        order.OrderID = Convert.ToInt32(result);
-                        Console.WriteLine($"订单记录（含所有字段）插入成功，并通过 MAX(ORDERID) 获取到Order ID: {order.OrderID}。");
-                    }
-                    else
-                    {
-                        Console.WriteLine("警告：未能通过 MAX(ORDERID) 获取 Order ID。请检查表是否为空或插入失败。");
-                    }
+                    Console.WriteLine($"订单记录插入成功，Order ID: {order.OrderID}。");
+                }
+                else
+                {
+                    throw new Exception($"插入失败，影响行数: {rowsAffected}");
                 }
             }
             finally
@@ -131,19 +140,22 @@ namespace test.Repositories
         /// <summary>
         /// 获取某个顾客的所有电影票订单。
         /// </summary>
-        public List<OrderForTickets> GetOrdersForCustomer(string customerId)
+        public List<OrderForTickets> GetOrdersForCustomer(string customerId, bool onlyValid = false)
         {
             List<OrderForTickets> orders = new List<OrderForTickets>();
             using (var connection = GetConnection())
             {
-                // 确保 "PMETHOD" 用双引号包裹
+                // 构建SQL查询
                 string sql = $@"SELECT ORDERID, TICKETID, STATE, CUSTOMERID, DAY, ""PMETHOD"", PRICE
-                                FROM {SchemaName}ORDERFORTICKETS
-                                WHERE CUSTOMERID = :customerId
-                                ORDER BY DAY DESC, ORDERID DESC";
+                       FROM {SchemaName}ORDERFORTICKETS
+                       WHERE CUSTOMERID = :customerId
+                       {(onlyValid ? "AND STATE = '有效'" : "")}
+                       ORDER BY DAY DESC, ORDERID DESC";
+
                 using (var command = new OracleCommand(sql, connection))
                 {
                     command.Parameters.Add(new OracleParameter("customerId", customerId));
+
                     using (var reader = command.ExecuteReader())
                     {
                         while (reader.Read())

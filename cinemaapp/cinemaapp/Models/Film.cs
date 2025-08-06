@@ -11,11 +11,11 @@ namespace test.Models
         public string Genre { get; set; }    // 电影类型
         public int FilmLength { get; set; }  // 电影时长（分钟）
         public decimal NormalPrice { get; set; } // 标准票价
-        public DateTime ReleaseDate { get; set; } // 上映日期
+        public DateTime? ReleaseDate { get; set; } // 上映日期
         public DateTime? EndDate { get; set; } // 撤档日期，可为空
         public int Admissions { get; set; }  // 观影人次
-        public int BoxOffice { get; set; }   // 票房
-        public int Score { get; set; }       // 评分（所有观影人次平均评分）
+        public decimal BoxOffice { get; set; }   // 票房
+        public decimal Score { get; set; }       // 评分（所有观影人次平均评分）
 
         // 导航属性：方便获取演职人员和场次信息
         public List<Cast> CastMembers { get; set; } = new List<Cast>();

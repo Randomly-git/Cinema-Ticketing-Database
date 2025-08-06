@@ -35,17 +35,23 @@ namespace test.Repositories
             using (var connection = GetConnection())
             {
                 string sql = $@"SELECT S.SECTIONID, S.FILMNAME, S.HALLNO, S.TIMEID,
-                                       MH.LINES, MH.COLUMNS, MH.CATEGORY AS HALL_CATEGORY,
-                                       TS.""STARTTIME"", TS.""ENDTIME""
-                                FROM {SchemaName}SECTION S
-                                JOIN {SchemaName}MOVIEHALL MH ON S.HALLNO = MH.HALLNO
-                                JOIN {SchemaName}TIMESLOT TS ON S.TIMEID = TS.TIMEID
-                                WHERE S.FILMNAME = :filmName
-                                ORDER BY TS.""STARTTIME"""; 
+                               MH.LINES, MH.COLUMNS, MH.CATEGORY AS HALL_CATEGORY,
+                               TS.""STARTTIME"", TS.""ENDTIME""
+                        FROM {SchemaName}SECTION S
+                        JOIN {SchemaName}MOVIEHALL MH ON S.HALLNO = MH.HALLNO
+                        JOIN {SchemaName}TIMESLOT TS ON S.TIMEID = TS.TIMEID
+                        WHERE S.FILMNAME = :filmName
+                        {(date.HasValue ? "AND TRUNC(TS.\"STARTTIME\") = TRUNC(:screeningDate)" : "")}
+                        ORDER BY TS.""STARTTIME""";
 
                 using (var command = new OracleCommand(sql, connection))
                 {
                     command.Parameters.Add(new OracleParameter("filmName", filmName));
+
+                    if (date.HasValue)
+                    {
+                        command.Parameters.Add(new OracleParameter("screeningDate", date.Value));
+                    }
 
                     using (var reader = command.ExecuteReader())
                     {
@@ -57,7 +63,6 @@ namespace test.Repositories
                                 FilmName = reader["FILMNAME"].ToString(),
                                 HallNo = Convert.ToInt32(reader["HALLNO"]),
                                 TimeID = reader["TIMEID"].ToString(),
-                                // 彻底移除对 Day 字段的读取和赋值
                                 MovieHall = new MovieHall
                                 {
                                     HallNo = Convert.ToInt32(reader["HALLNO"]),
@@ -68,8 +73,8 @@ namespace test.Repositories
                                 TimeSlot = new TimeSlot
                                 {
                                     TimeID = reader["TIMEID"].ToString(),
-                                    StartTime = Convert.ToDateTime(reader["STARTTIME"]).TimeOfDay,
-                                    EndTime = Convert.ToDateTime(reader["ENDTIME"]).TimeOfDay
+                                    StartTime = Convert.ToDateTime(reader["STARTTIME"]),
+                                    EndTime = Convert.ToDateTime(reader["ENDTIME"])
                                 }
                             });
                         }
@@ -200,12 +205,12 @@ namespace test.Repositories
             using (var connection = GetConnection())
             {
                 string sql = $@"SELECT S.SECTIONID, S.FILMNAME, S.HALLNO, S.TIMEID,
-                                       MH.LINES, MH.COLUMNS, MH.CATEGORY AS HALL_CATEGORY,
-                                       TS.""STARTTIME"", TS.""ENDTIME""
-                                FROM {SchemaName}SECTION S
-                                JOIN {SchemaName}MOVIEHALL MH ON S.HALLNO = MH.HALLNO
-                                JOIN {SchemaName}TIMESLOT TS ON S.TIMEID = TS.TIMEID
-                                WHERE S.SECTIONID = :sectionId"; // 根据 sectionId 查询
+                               MH.LINES, MH.COLUMNS, MH.CATEGORY AS HALL_CATEGORY,
+                               TS.""STARTTIME"", TS.""ENDTIME""
+                        FROM {SchemaName}SECTION S
+                        JOIN {SchemaName}MOVIEHALL MH ON S.HALLNO = MH.HALLNO
+                        JOIN {SchemaName}TIMESLOT TS ON S.TIMEID = TS.TIMEID
+                        WHERE S.SECTIONID = :sectionId";
 
                 using (var command = new OracleCommand(sql, connection))
                 {
@@ -230,8 +235,9 @@ namespace test.Repositories
                                 TimeSlot = new TimeSlot
                                 {
                                     TimeID = reader["TIMEID"].ToString(),
-                                    StartTime = Convert.ToDateTime(reader["STARTTIME"]).TimeOfDay,
-                                    EndTime = Convert.ToDateTime(reader["ENDTIME"]).TimeOfDay
+                                    // 修改为直接使用 DateTime 而不取 TimeOfDay
+                                    StartTime = Convert.ToDateTime(reader["STARTTIME"]),
+                                    EndTime = Convert.ToDateTime(reader["ENDTIME"])
                                 }
                             };
                         }

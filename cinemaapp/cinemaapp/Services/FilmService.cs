@@ -57,6 +57,26 @@ namespace test.Services
         {
             return _filmRepository.GetSectionsByFilmName(filmName);
         }
+
+        // FilmService.cs
+        public List<Film> GetFilmStatistics(string orderBy)
+        {
+            var films = _filmRepository.GetAllFilms();
+
+            return orderBy switch
+            {
+                "score" => films.OrderByDescending(f => f.Score).ToList(),
+                "admissions" => films.OrderByDescending(f => f.Admissions).ToList(),
+                "filmLength" => films.OrderByDescending(f => f.FilmLength).ToList(),
+                "releaseDate" => films.OrderByDescending(f => f.ReleaseDate ?? DateTime.MinValue).ToList(),
+                "normalPrice" => films.OrderByDescending(f => f.NormalPrice).ToList(),
+                _ => films.OrderByDescending(f => f.BoxOffice).ToList(),
+            };
+        }
+
+
+
     }
+
 }
 
