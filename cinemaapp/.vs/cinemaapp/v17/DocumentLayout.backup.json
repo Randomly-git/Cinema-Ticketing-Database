@@ -3,6 +3,7 @@
   "WorkspaceRootPath": "D:\\Ddesktop\\cinemaapp\\",
   "Documents": [
     {
+<<<<<<< Updated upstream
       "AbsoluteMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|d:\\ddesktop\\cinemaapp\\cinemaapp\\viewallorders.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|solutionrelative:cinemaapp\\viewallorders.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -19,10 +20,19 @@
       "RelativeMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|solutionrelative:cinemaapp\\updatecustomerprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+=======
+>>>>>>> Stashed changes
       "AbsoluteMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|d:\\ddesktop\\cinemaapp\\cinemaapp\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|solutionrelative:cinemaapp\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+<<<<<<< Updated upstream
+=======
+      "AbsoluteMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|d:\\ddesktop\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|solutionrelative:cinemaapp\\\u524D\u7AEF\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+>>>>>>> Stashed changes
       "AbsoluteMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|d:\\ddesktop\\cinemaapp\\cinemaapp\\cinemaapp.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
       "RelativeMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|solutionrelative:cinemaapp\\cinemaapp.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
     }
@@ -34,6 +44,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
+<<<<<<< Updated upstream
           "SelectedChildIndex": 0,
           "Children": [
             {
@@ -86,16 +97,36 @@
               "ViewState": "AgIAAEQAAAAAAAAAAADwv1AAAAA2AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-08-05T03:59:49.995Z",
+=======
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "MainForm.cs",
+              "DocumentMoniker": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\MainForm.cs",
+              "RelativeDocumentMoniker": "cinemaapp\\\u524D\u7AEF\\MainForm.cs",
+              "ToolTip": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\MainForm.cs",
+              "RelativeToolTip": "cinemaapp\\\u524D\u7AEF\\MainForm.cs",
+              "ViewState": "AgIAAIoAAAAAAAAAAAA5wJEAAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-06T02:25:59.151Z",
+>>>>>>> Stashed changes
               "EditorCaption": ""
             },
             {
               "$type": "Document",
+<<<<<<< Updated upstream
               "DocumentIndex": 4,
+=======
+              "DocumentIndex": 0,
+>>>>>>> Stashed changes
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\Program.cs",
               "RelativeDocumentMoniker": "cinemaapp\\Program.cs",
               "ToolTip": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\Program.cs",
               "RelativeToolTip": "cinemaapp\\Program.cs",
+<<<<<<< Updated upstream
               "ViewState": "AgIAAAwAAAAAAAAAAAAAABEAAAAwAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-08-05T03:22:33.469Z"
@@ -111,6 +142,25 @@
               "ViewState": "AgIAAAAAAAAAAAAAAADwvwcAAAArAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
               "WhenOpened": "2025-08-05T03:23:52.549Z"
+=======
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAA0AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-05T03:22:33.469Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "cinemaapp.csproj",
+              "DocumentMoniker": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\cinemaapp.csproj",
+              "RelativeDocumentMoniker": "cinemaapp\\cinemaapp.csproj",
+              "ToolTip": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\cinemaapp.csproj*",
+              "RelativeToolTip": "cinemaapp\\cinemaapp.csproj*",
+              "ViewState": "AgIAAAAAAAAAAAAAAADwvwcAAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-08-05T03:23:52.549Z",
+              "EditorCaption": ""
+>>>>>>> Stashed changes
             }
           ]
         }

@@ -24,6 +24,10 @@ namespace cinemaapp
         public static IShowingService _showingService;
         public static IBookingService _bookingService;
         public static IAdministratorService _adminService;
+<<<<<<< Updated upstream
+=======
+        public static DatabaseService _dbService;
+>>>>>>> Stashed changes
 
         // 仓库实例
         public static ICustomerRepository _customerRepository;
@@ -68,7 +72,14 @@ namespace cinemaapp
             _userService = new UserService(_customerRepository);
             _filmService = new FilmService(_filmRepository);
             _showingService = new ShowingService(showingRepository, _filmRepository);
+<<<<<<< Updated upstream
             _bookingService = new BookingService(showingRepository, _filmRepository, _customerRepository, _orderRepository, connectionString);
+=======
+            //
+            _bookingService = new BookingService(showingRepository, _filmRepository, _customerRepository, _orderRepository, _dbService, connectionString);
+
+            //
+>>>>>>> Stashed changes
             _adminService = new AdministratorService(adminRepository, _orderRepository, _filmRepository); // 管理员服务
 
             // ✅ 启动主窗体（MainForm）
