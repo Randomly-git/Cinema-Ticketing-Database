@@ -16,34 +16,29 @@ namespace test
         private static Customer _loggedInCustomer = null;
         private static Administrator _loggedInAdmin = null; // 管理员登录状态
 
-
-
         // 服务实例
         private static IUserService _userService;
         private static IFilmService _filmService;
         private static IShowingService _showingService;
         private static IBookingService _bookingService;
         private static IAdministratorService _adminService; // 管理员服务
-
-        //********
-        private static IProductService _productService; // 新增：周边产品服务
-        //********
+        //******************
+        private static IProductService _productService; // 周边产品服务
+        //******************
 
         // 仓库实例 (某些操作可能需要直接访问，例如管理员删除)
         private static ICustomerRepository _customerRepository;
-        private static IOrderRepository _orderRepository; // 订单仓库
-        private static IFilmRepository _filmRepository; // 电影仓库
-        
-        //********
+        private static IOrderRepository _orderRepository; // 新增：订单仓库
+        private static IFilmRepository _filmRepository; // 新增：电影仓库
+        //*************************
         private static IRelatedProductRepository _relatedProductRepository; // 新增：周边产品仓库
         private static IOrderForProductRepository _orderForProductRepository; // 新增：周边产品订单仓库
-        //********
+        //*************************
 
 
         static void Main(string[] args)
         {
             Console.WriteLine("--- 启动电影院管理系统 ---");
-
 
             string connectionString = "Data Source=//8.148.76.54:1524/orclpdb1;User Id=cbc;Password=123456";
 
@@ -86,25 +81,26 @@ namespace test
             _filmRepository = new OracleFilmRepository(connectionString);
             IShowingRepository showingRepository = new OracleShowingRepository(connectionString);
             IAdministratorRepository adminRepository = new OracleAdministratorRepository(connectionString); // 新增管理员仓库
-            //**********
+            //**********************************
             _relatedProductRepository = new OracleRelatedProductRepository(connectionString); // 实例化周边产品仓库
             _orderForProductRepository = new OracleOrderForProductRepository(connectionString); // 实例化周边产品订单仓库
-            //**********
+            //**********************************
 
             _userService = new UserService(_customerRepository);
             _filmService = new FilmService(_filmRepository);
             _showingService = new ShowingService(showingRepository, _filmRepository);
             _bookingService = new BookingService(showingRepository, _filmRepository, _customerRepository, _orderRepository, connectionString);
-            _adminService = new AdministratorService(adminRepository, _orderRepository, _filmRepository); // 新增管理员服务
-            //**********
+            _adminService = new AdministratorService(adminRepository, _orderRepository, _filmRepository);
+            //**********************************
             _productService = new ProductService(_relatedProductRepository, _orderForProductRepository); // 实例化周边产品服务
-            //**********
+            //**********************************
 
             RunMainMenu();
 
             Console.WriteLine("\n--- 电影院管理系统已退出。按任意键退出。 ---");
             Console.ReadKey();
         }
+
         /// <summary>
         /// 运行主菜单循环。
         /// </summary>
@@ -122,8 +118,8 @@ namespace test
                 {
                     Console.WriteLine("1. 顾客注册");
                     Console.WriteLine("2. 顾客登录");
-                    Console.WriteLine("3. 管理员注册"); // 新增管理员注册选项
-                    Console.WriteLine("4. 管理员登录"); // 管理员登录选项
+                    Console.WriteLine("3. 管理员注册");
+                    Console.WriteLine("4. 管理员登录");
                 }
                 else if (_loggedInCustomer != null)
                 {
@@ -131,7 +127,7 @@ namespace test
                     Console.WriteLine("1. 更新个人资料");
                     Console.WriteLine("2. 查看电影排挡");
                     Console.WriteLine("3. 购票");
-                    Console.WriteLine("4. 购买周边");
+                    Console.WriteLine("4. 购买周边"); 
                     Console.WriteLine("5. 删除我的账户");
                     Console.WriteLine("6. 用户登出");
                 }
@@ -160,10 +156,10 @@ namespace test
                             case "2":
                                 LoginCustomer();
                                 break;
-                            case "3": // 管理员注册
+                            case "3":
                                 RegisterAdministrator();
                                 break;
-                            case "4": // 管理员登录
+                            case "4":
                                 LoginAdministrator();
                                 break;
                             case "0":
@@ -189,11 +185,9 @@ namespace test
                             case "3":
                                 PurchaseTicketMenu();
                                 break;
-                            //********************************************
                             case "4":
-                                PurchaseProductMenu(); // 调用购买周边菜单
+                                PurchaseProductMenu(); 
                                 break;
-                            //*******************************************
                             case "5":
                                 DeleteCustomerAccount();
                                 // 如果账户被删除，则退出循环，因为用户已登出
@@ -594,7 +588,7 @@ namespace test
                 for (int i = 0; i < sections.Count; i++)
                 {
                     var section = sections[i];
-                    Console.WriteLine($"{i + 1}. 场次ID: {section.SectionID}, 影厅: {section.MovieHall.HallNo}, 时段: {section.TimeSlot.StartTime:hh\\:mm}-{section.TimeSlot.EndTime:hh\\:mm}"); 
+                    Console.WriteLine($"{i + 1}. 场次ID: {section.SectionID}, 影厅: {section.MovieHall.HallNo}, 时段: {section.TimeSlot.StartTime:hh\\:mm}-{section.TimeSlot.EndTime:hh\\:mm}");
                 }
 
                 Console.Write("请输入场次序号 (0 返回主菜单): ");
@@ -666,7 +660,7 @@ namespace test
             }
         }
 
-        //*****************************************************
+        //*************************************************************************
         /// <summary>
         /// 购买周边产品功能菜单。
         /// </summary>
@@ -736,57 +730,11 @@ namespace test
                 Console.ResetColor();
             }
         }
-        //*********************************************************************
+        //******************************************************************************************
 
         // ====================================================================
         // 管理员相关功能
         // ====================================================================
-
-        /// <summary>
-        /// 管理员注册功能。
-        /// </summary>
-        static void RegisterAdministrator()
-        {
-            Console.WriteLine("\n--- 注册新管理员 ---");
-            Console.Write("请输入新管理员的ID (例如: ADMIN002): ");
-            string adminId = Console.ReadLine();
-            Console.Write("请输入新管理员的姓名: ");
-            string name = Console.ReadLine();
-            Console.Write("请输入新管理员的手机号: ");
-            string phoneNum = Console.ReadLine();
-            Console.Write("请输入密码: ");
-            string password = GetHiddenConsoleInput();
-            Console.Write("请再次输入密码确认: ");
-            string confirmPassword = GetHiddenConsoleInput();
-
-            if (password != confirmPassword)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("两次输入的密码不一致，请重试。");
-                Console.ResetColor();
-                return;
-            }
-
-            try
-            {
-                Administrator newAdmin = new Administrator
-                {
-                    AdminID = adminId,
-                    AdminName = name,
-                    PhoneNum = phoneNum
-                };
-                _adminService.RegisterAdministrator(newAdmin, password);
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine($"管理员 {newAdmin.AdminName} (ID: {newAdmin.AdminID}) 注册成功！");
-                Console.ResetColor();
-            }
-            catch (Exception ex)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine($"管理员注册失败: {ex.Message}");
-                Console.ResetColor();
-            }
-        }
 
         /// <summary>
         /// 管理员注册功能。
@@ -1145,7 +1093,7 @@ namespace test
         }
     }
 }
-}
+
 
 
 
