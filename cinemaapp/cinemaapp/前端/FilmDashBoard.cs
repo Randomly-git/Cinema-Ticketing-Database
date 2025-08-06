@@ -14,6 +14,11 @@ namespace cinemaapp
 
         private ComboBox cmbShowingsFilms;
         private DataGridView dgvShowings;
+        private TextBox txtFilmSearch;  // 搜索框
+        private List<Film> allShowingsFilms = new(); // 用于搜索过滤
+        private TextBox txtShowingsSearch; // 搜索框
+
+        private List<Film> allFilms;  // 全部电影列表缓存
 
         private ComboBox cmbOverviewFilms;
         private TextBox txtOverview;
@@ -22,6 +27,7 @@ namespace cinemaapp
         private Button btnSearchCast;
         private ListBox lstCastResults;
         private ListBox lstCastMovies;
+        private DataGridView dgvCastResults;  
 
         private DataGridView dgvStatistics;
         private IFilmService _filmService;
@@ -32,8 +38,31 @@ namespace cinemaapp
             InitializeComponent();
             LoadShowingsFilms();
             LoadOverviewFilms();
+            AttachStatisticsRowClickEvent();  // 绑定事件
         }
 
+        private void AttachStatisticsRowClickEvent()
+        {
+            dgvStatistics.CellDoubleClick += DgvStatistics_CellDoubleClick;
+        }
+
+        private void DgvStatistics_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return; // 忽略标题行等无效点击
+
+            // 取出点击行的电影名，假设数据源里列名是 FilmName
+            var filmName = dgvStatistics.Rows[e.RowIndex].Cells["FilmName"].Value?.ToString();
+            if (string.IsNullOrEmpty(filmName)) return;
+
+            // 找到影片概况页签索引
+            var overviewTabIndex = tabControl.TabPages.IndexOfKey("影片概况");
+            if (overviewTabIndex < 0) return;
+
+            tabControl.SelectedIndex = overviewTabIndex;
+
+            JumpToFilmOverview(filmName);
+
+        }
         private void InitializeComponent()
         {
             this.Text = "影片综合管理";
@@ -55,6 +84,16 @@ namespace cinemaapp
         {
             var tab = new TabPage("查看排挡");
 
+            // 搜索框
+            txtShowingsSearch = new TextBox
+            {
+                Location = new Point(680, 20), // 靠右对齐
+                Width = 170,
+                PlaceholderText = "搜索影片..."
+            };
+            txtShowingsSearch.TextChanged += TxtShowingsSearch_TextChanged;
+
+            // 影片下拉框
             cmbShowingsFilms = new ComboBox
             {
                 Location = new Point(20, 20),
@@ -63,6 +102,7 @@ namespace cinemaapp
             };
             cmbShowingsFilms.SelectedIndexChanged += (s, e) => LoadShowingsForSelectedFilm();
 
+            // 排挡表格
             dgvShowings = new DataGridView
             {
                 Location = new Point(20, 60),
@@ -72,26 +112,46 @@ namespace cinemaapp
                 SelectionMode = DataGridViewSelectionMode.FullRowSelect
             };
 
+            tab.Controls.Add(txtShowingsSearch);
             tab.Controls.Add(cmbShowingsFilms);
             tab.Controls.Add(dgvShowings);
             return tab;
         }
+
 
         //
         private void LoadShowingsFilms()
         {
             try
             {
-                var films = Program._filmService.GetAvailableFilms();
-                cmbShowingsFilms.DataSource = films;
+                allShowingsFilms = Program._filmService.GetAvailableFilms();
+                cmbShowingsFilms.DataSource = allShowingsFilms;
                 cmbShowingsFilms.DisplayMember = "FilmName";
-               
             }
             catch (Exception ex)
             {
                 MessageBox.Show("加载电影列表失败：" + ex.Message);
             }
         }
+
+        private void TxtShowingsSearch_TextChanged(object sender, EventArgs e)
+        {
+            string keyword = txtShowingsSearch.Text.Trim().ToLower();
+
+            var filtered = string.IsNullOrEmpty(keyword)
+                ? allShowingsFilms
+                : allShowingsFilms.Where(f => f.FilmName.ToLower().Contains(keyword)).ToList();
+
+            cmbShowingsFilms.DataSource = filtered;
+            cmbShowingsFilms.DisplayMember = "FilmName";
+
+            // 自动选择第一项（如果存在）
+            if (filtered.Any())
+            {
+                cmbShowingsFilms.SelectedIndex = 0;
+            }
+        }
+
 
         private void LoadShowingsForSelectedFilm()
         {
@@ -118,41 +178,71 @@ namespace cinemaapp
         //影片概况
         private TabPage CreateFilmOverviewTab()
         {
-            var tab = new TabPage("影片概况");
-            var panel = new FlowLayoutPanel { Dock = DockStyle.Fill, AutoScroll = true };
+            var tab = new TabPage("影片概况") { Name = "影片概况" };
 
-            cmbOverviewFilms = new ComboBox { Width = 300, DropDownStyle = ComboBoxStyle.DropDownList };
+            var panel = new Panel { Dock = DockStyle.Fill, AutoScroll = true };
+
+            // 搜索框（右上角）
+            txtFilmSearch = new TextBox
+            {
+                Width = 300,
+                PlaceholderText = "输入电影名搜索...",
+                Anchor = AnchorStyles.Top | AnchorStyles.Right,
+                Location = new Point(panel.Width - 310, 10)  // 右边预留10像素边距
+            };
+            txtFilmSearch.TextChanged += TxtFilmSearch_TextChanged;
+
+            // 影片下拉框（左上角）
+            cmbOverviewFilms = new ComboBox
+            {
+                Width = 300,
+                DropDownStyle = ComboBoxStyle.DropDownList,
+                Location = new Point(10, 10)  // 左边预留10像素
+            };
             cmbOverviewFilms.SelectedIndexChanged += (s, e) => ShowFilmOverview();
 
+            // 文本框显示影片信息（居中偏下）
             txtOverview = new TextBox
             {
                 Multiline = true,
                 ReadOnly = true,
                 Width = 800,
                 Height = 400,
-                ScrollBars = ScrollBars.Vertical
+                ScrollBars = ScrollBars.Vertical,
+                Location = new Point(10, 50)
             };
 
+            // 添加控件
+            panel.Controls.Add(txtFilmSearch);
             panel.Controls.Add(cmbOverviewFilms);
             panel.Controls.Add(txtOverview);
             tab.Controls.Add(panel);
+
+            // 响应 Panel Resize（动态更新搜索框位置）
+            panel.Resize += (s, e) =>
+            {
+                txtFilmSearch.Location = new Point(panel.Width - txtFilmSearch.Width - 10, 10);
+            };
+
             return tab;
         }
+
+
 
         private void LoadOverviewFilms()
         {
             try
             {
-                var films = Program._filmService.GetAvailableFilms();
-                cmbOverviewFilms.DataSource = films;
+                allFilms = Program._filmService.GetAvailableFilms().ToList();
+                cmbOverviewFilms.DataSource = allFilms;
                 cmbOverviewFilms.DisplayMember = "FilmName";
-                
             }
             catch (Exception ex)
             {
                 MessageBox.Show("加载影片列表失败：" + ex.Message);
             }
         }
+
 
         private void ShowFilmOverview()
         {
@@ -167,14 +257,57 @@ namespace cinemaapp
                            $"票房: {film.BoxOffice}\r\n" +
                            $"观影人次: {film.Admissions}\r\n";
 
+            // 取出演员列表（假设方法在Program._filmRepository里）
+            var castList = Program._filmRepository.GetCastByFilmName(film.FilmName);
+
+            if (castList.Any())
+            {
+                overview += "\r\n参演演员及角色:\r\n";
+                foreach (var cast in castList)
+                {
+                    overview += $"{cast.MemberName} 饰 {cast.Role}\r\n";
+                }
+            }
+            else
+            {
+                overview += "\r\n暂无演员信息。\r\n";
+            }
+
             txtOverview.Text = overview;
         }
 
+        private void TxtFilmSearch_TextChanged(object sender, EventArgs e)
+        {
+            string keyword = txtFilmSearch.Text.Trim().ToLower();
+
+            if (string.IsNullOrEmpty(keyword))
+            {
+                // 显示全部电影
+                cmbOverviewFilms.DataSource = allFilms;
+            }
+            else
+            {
+                var filtered = allFilms
+                    .Where(f => f.FilmName.ToLower().Contains(keyword))
+                    .ToList();
+
+                cmbOverviewFilms.DataSource = filtered;
+            }
+
+            cmbOverviewFilms.DisplayMember = "FilmName";
+
+            // 如果搜索结果中只有一个电影，可以自动选中
+            if (cmbOverviewFilms.Items.Count == 1)
+            {
+                cmbOverviewFilms.SelectedIndex = 0;
+            }
+        }
+
+  
+
+
+
         //查看演员演过的电影
-
-
-        private DataGridView dgvCastResults;  // 成员变量
-
         private TabPage CreateCastTab()
         {
             var tab = new TabPage("演职人员");
@@ -237,6 +370,33 @@ namespace cinemaapp
             }
         }
 
+        private void JumpToFilmOverview(string filmName)
+        {
+            // 清除搜索框，避免过滤
+            txtFilmSearch.TextChanged -= TxtFilmSearch_TextChanged;
+            txtFilmSearch.Text = "";
+            txtFilmSearch.TextChanged += TxtFilmSearch_TextChanged;
+
+            // 重新加载所有电影数据到下拉框
+            cmbOverviewFilms.DataSource = allFilms;
+            cmbOverviewFilms.DisplayMember = "FilmName";
+
+            // 查找目标影片
+            for (int i = 0; i < cmbOverviewFilms.Items.Count; i++)
+            {
+                if (cmbOverviewFilms.Items[i] is Film film && film.FilmName == filmName)
+                {
+                    cmbOverviewFilms.SelectedIndex = i;
+                    break;
+                }
+            }
+
+            // 切换到“影片概况”Tab
+            tabControl.SelectedTab = tabControl.TabPages["影片概况"];
+
+            // 强制刷新影片信息
+            ShowFilmOverview();
+        }
 
 
 
