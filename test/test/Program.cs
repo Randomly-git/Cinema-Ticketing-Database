@@ -1,4 +1,4 @@
-﻿using Oracle.ManagedDataAccess.Client; 
+using Oracle.ManagedDataAccess.Client; 
 using System;
 using System.Collections.Generic; // 用于 List<T> 和 Dictionary<TKey, TValue>
 using System.Configuration;
@@ -789,6 +789,52 @@ namespace test
         }
 
         /// <summary>
+        /// 管理员注册功能。
+        /// </summary>
+        static void RegisterAdministrator()
+        {
+            Console.WriteLine("\n--- 注册新管理员 ---");
+            Console.Write("请输入新管理员的ID (例如: ADMIN002): ");
+            string adminId = Console.ReadLine();
+            Console.Write("请输入新管理员的姓名: ");
+            string name = Console.ReadLine();
+            Console.Write("请输入新管理员的手机号: ");
+            string phoneNum = Console.ReadLine();
+            Console.Write("请输入密码: ");
+            string password = GetHiddenConsoleInput();
+            Console.Write("请再次输入密码确认: ");
+            string confirmPassword = GetHiddenConsoleInput();
+
+            if (password != confirmPassword)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("两次输入的密码不一致，请重试。");
+                Console.ResetColor();
+                return;
+            }
+
+            try
+            {
+                Administrator newAdmin = new Administrator
+                {
+                    AdminID = adminId,
+                    AdminName = name,
+                    PhoneNum = phoneNum
+                };
+                _adminService.RegisterAdministrator(newAdmin, password);
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"管理员 {newAdmin.AdminName} (ID: {newAdmin.AdminID}) 注册成功！");
+                Console.ResetColor();
+            }
+            catch (Exception ex)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"管理员注册失败: {ex.Message}");
+                Console.ResetColor();
+            }
+        }
+
+        /// <summary>
         /// 管理员登录功能。
         /// </summary>
         static void LoginAdministrator()
@@ -1098,6 +1144,7 @@ namespace test
             return input.ToString();
         }
     }
+}
 }
 
 
