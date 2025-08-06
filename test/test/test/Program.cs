@@ -594,6 +594,7 @@ namespace test
 
             try
             {
+                // 1. 选择电影
                 List<Film> films = _filmService.GetAvailableFilms();
                 if (!films.Any())
                 {
@@ -620,32 +621,11 @@ namespace test
                 }
                 Film selectedFilm = films[filmChoice - 1];
 
-                // 获取用户输入的日期
-                DateTime selectedDate;
-                while (true)
-                {
-                    Console.Write("请输入查询日期(格式: yyyy-MM-dd，或直接回车查询今天场次): ");
-                    string dateInput = Console.ReadLine();
+                // 2. 选择日期
+                DateTime selectedDate = GetUserSelectedDate();
 
-                    if (string.IsNullOrWhiteSpace(dateInput))
-                    {
-                        selectedDate = DateTime.Today;
-                        break;
-                    }
-
-                    if (DateTime.TryParse(dateInput, out selectedDate))
-                    {
-                        break;
-                    }
-
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("日期格式不正确，请重新输入！");
-                    Console.ResetColor();
-                }
-
-                // 查询指定日期的场次
+                // 3. 选择场次
                 List<Section> sections = _showingService.GetFilmShowings(selectedFilm.FilmName, selectedDate);
-
                 if (!sections.Any())
                 {
                     Console.ForegroundColor = ConsoleColor.Yellow;
@@ -654,102 +634,22 @@ namespace test
                     return;
                 }
 
-                Console.WriteLine("请选择一个场次：");
-                for (int i = 0; i < sections.Count; i++)
-                {
-                    var section = sections[i];
-                    Console.WriteLine($"{i + 1}. 场次ID: {section.SectionID}, 影厅: {section.MovieHall.HallNo}, 时段: {section.TimeSlot.StartTime:hh\\:mm}-{section.TimeSlot.EndTime:hh\\:mm}"); 
-                }
+                Section selectedSection = SelectSection(sections);
+                if (selectedSection == null) return;
 
-                Console.Write("请输入场次序号 (0 返回主菜单): ");
-                if (!int.TryParse(Console.ReadLine(), out int sectionChoice) || sectionChoice <= 0 || sectionChoice > sections.Count)
-                {
-                    if (sectionChoice == 0) return;
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("无效的场次选择。");
-                    Console.ResetColor();
-                    return;
-                }
-                Section selectedSection = sections[sectionChoice - 1];
+                // 4. 显示完整座位表
+                DisplayFullSeatMap(selectedSection);
 
-                Console.WriteLine($"\n--- 场次 ID: {selectedSection.SectionID} 的可用座位 ---");
-                Dictionary<string, List<string>> availableSeats = _showingService.GetAvailableSeats(selectedSection);
-                if (!availableSeats.Any())
-                {
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine($"场次 ID: {selectedSection.SectionID} 没有可用座位。");
-                    Console.ResetColor();
-                    return;
-                }
+                // 5. 选择座位
+                var (lineNo, columnNo) = SelectSeat(selectedSection);
+                if (lineNo == null) return;
 
-                Console.WriteLine("可用座位：");
-                foreach (var row in availableSeats.OrderBy(r => r.Key))
-                {
-                    Console.WriteLine($"  行 {row.Key}: {string.Join(", ", row.Value)}");
-                }
+                // 6. 支付流程
+                string paymentMethod = SelectPaymentMethod();
+                if (paymentMethod == null) return;
 
-                Console.Write("请输入要购买的座位行号 (例如: A): ");
-                string lineNo = Console.ReadLine().ToUpper();
-                Console.Write("请输入要购买的座位列号 (例如: 12): ");
-                if (!int.TryParse(Console.ReadLine(), out int columnNo))
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("无效的列号。");
-                    Console.ResetColor();
-                    return;
-                }
-
-                // 再次验证座位是否真的可用
-                if (!availableSeats.ContainsKey(lineNo) || !availableSeats[lineNo].Contains(columnNo.ToString()))
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine($"座位 {lineNo}{columnNo} 不可用或不存在，请重新选择。");
-                    Console.ResetColor();
-                    return;
-                }
-
-                // 定义可用支付方式
-                List<string> paymentMethods = new List<string> { "支付宝", "微信支付", "银行卡", "现金" };
-
-                // 显示支付方式选项
-                Console.WriteLine("\n请选择支付方式:");
-                for (int i = 0; i < paymentMethods.Count; i++)
-                {
-                    Console.WriteLine($"{i + 1}. {paymentMethods[i]}");
-                }
-
-                // 获取用户选择
-                int selectedPaymentIndex = -1;
-                while (true)
-                {
-                    Console.Write("请输入数字选择支付方式 (1-4): ");
-                    string input = Console.ReadLine();
-
-                    if (int.TryParse(input, out selectedPaymentIndex) &&
-                        selectedPaymentIndex >= 1 &&
-                        selectedPaymentIndex <= paymentMethods.Count)
-                    {
-                        break;
-                    }
-
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("输入无效，请重新选择！");
-                    Console.ResetColor();
-                }
-
-                string paymentMethod = paymentMethods[selectedPaymentIndex - 1];
-                Console.WriteLine($"\n您选择的支付方式是: {paymentMethod}");
-
-                Console.WriteLine($"\n--- 正在为顾客 {_loggedInCustomer.Name} 购买场次 {selectedSection.SectionID} 的座位 {lineNo}{columnNo} ---");
-                OrderForTickets bookedOrder = _bookingService.PurchaseTicket(selectedSection.SectionID, lineNo, columnNo, _loggedInCustomer.CustomerID, paymentMethod);
-
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine($"购票成功！订单信息：{bookedOrder.ToString()}");
-                Console.ResetColor();
-
-                // 购票成功后，刷新用户积分信息
-                _loggedInCustomer = _customerRepository.GetCustomerById(_loggedInCustomer.CustomerID);
-                Console.WriteLine($"您的新积分: {_loggedInCustomer.VIPCard?.Points ?? 0}");
+                // 7. 确认购买
+                ConfirmAndPurchase(selectedSection, lineNo, columnNo, paymentMethod);
             }
             catch (Exception ex)
             {
@@ -758,6 +658,179 @@ namespace test
                 Console.ResetColor();
             }
         }
+
+        #region Helper Methods
+        private static DateTime GetUserSelectedDate()
+        {
+            while (true)
+            {
+                Console.Write("请输入查询日期(格式: yyyy-MM-dd，或直接回车查询今天场次): ");
+                string dateInput = Console.ReadLine();
+
+                if (string.IsNullOrWhiteSpace(dateInput))
+                    return DateTime.Today;
+
+                if (DateTime.TryParse(dateInput, out var selectedDate))
+                    return selectedDate;
+
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("日期格式不正确，请重新输入！");
+                Console.ResetColor();
+            }
+        }
+
+        private static Section SelectSection(List<Section> sections)
+        {
+            Console.WriteLine("请选择一个场次：");
+            for (int i = 0; i < sections.Count; i++)
+            {
+                var section = sections[i];
+                Console.WriteLine($"{i + 1}. 场次ID: {section.SectionID}, 影厅: {section.MovieHall.HallNo}, " +
+                                 $"时段: {section.TimeSlot.StartTime:hh\\:mm}-{section.TimeSlot.EndTime:hh\\:mm}");
+            }
+
+            Console.Write("请输入场次序号 (0 返回主菜单): ");
+            if (!int.TryParse(Console.ReadLine(), out int sectionChoice) || sectionChoice <= 0 || sectionChoice > sections.Count)
+            {
+                if (sectionChoice == 0) return null;
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("无效的场次选择。");
+                Console.ResetColor();
+                return null;
+            }
+            return sections[sectionChoice - 1];
+        }
+
+        private static void DisplayFullSeatMap(Section section)
+        {
+            Console.WriteLine($"\n--- 场次 ID: {section.SectionID} 的完整座位表 ---");
+
+            // 获取完整座位状态
+            var seatStatus = _showingService.GetHallSeatStatus(section);
+
+            // 打印列号标题 (假设每行列数相同)
+            var firstRow = seatStatus.First();
+            Console.Write("   ");
+            for (int col = 1; col <= firstRow.Value.Count; col++)
+            {
+                Console.Write($"{col.ToString().PadLeft(3)}");
+            }
+            Console.WriteLine();
+
+            // 打印每行座位状态
+            foreach (var row in seatStatus.OrderBy(r => r.Key))
+            {
+                Console.Write($"{row.Key.PadLeft(2)} ");
+                foreach (var seat in row.Value.OrderBy(s => int.Parse(s.Key)))
+                {
+                    char statusSymbol = seat.Value == SeatStatus.Available ? '○' : '×';
+                    Console.ForegroundColor = statusSymbol == '○' ? ConsoleColor.Green : ConsoleColor.Red;
+                    Console.Write($"{statusSymbol.ToString().PadLeft(3)}");
+                    Console.ResetColor();
+                }
+                Console.WriteLine();
+            }
+
+            Console.WriteLine("\n图例: ○=可用(绿色)  ×=已售(红色)");
+            Console.WriteLine();
+        }
+
+        private static (string lineNo, int columnNo) SelectSeat(Section section)
+        {
+            var availableSeats = _showingService.GetAvailableSeats(section);
+            if (!availableSeats.Any())
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine($"场次 ID: {section.SectionID} 没有可用座位。");
+                Console.ResetColor();
+                return (null, 0);
+            }
+
+            while (true)
+            {
+                Console.Write("请输入要购买的座位行号 (例如: A，输入0取消): ");
+                string lineNo = Console.ReadLine().ToUpper();
+                if (lineNo == "0") return (null, 0);
+
+                Console.Write("请输入要购买的座位列号 (例如: 12，输入0取消): ");
+                if (!int.TryParse(Console.ReadLine(), out int columnNo) || columnNo == 0)
+                {
+                    if (columnNo == 0) return (null, 0);
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("无效的列号。");
+                    Console.ResetColor();
+                    continue;
+                }
+
+                if (availableSeats.ContainsKey(lineNo) && availableSeats[lineNo].Contains(columnNo.ToString()))
+                {
+                    return (lineNo, columnNo);
+                }
+
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"座位 {lineNo}{columnNo} 不可用或不存在，请重新选择。");
+                Console.ResetColor();
+            }
+        }
+
+        private static string SelectPaymentMethod()
+        {
+            List<string> paymentMethods = new List<string> { "支付宝", "微信支付", "银行卡", "现金" };
+
+            Console.WriteLine("\n请选择支付方式:");
+            for (int i = 0; i < paymentMethods.Count; i++)
+            {
+                Console.WriteLine($"{i + 1}. {paymentMethods[i]}");
+            }
+
+            while (true)
+            {
+                Console.Write("请输入数字选择支付方式 (1-4，0取消): ");
+                string input = Console.ReadLine();
+
+                if (input == "0") return null;
+
+                if (int.TryParse(input, out int selectedPaymentIndex) &&
+                    selectedPaymentIndex >= 1 &&
+                    selectedPaymentIndex <= paymentMethods.Count)
+                {
+                    return paymentMethods[selectedPaymentIndex - 1];
+                }
+
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("输入无效，请重新选择！");
+                Console.ResetColor();
+            }
+        }
+
+        private static void ConfirmAndPurchase(Section section, string lineNo, int columnNo, string paymentMethod)
+        {
+            Console.WriteLine($"\n--- 订单确认 ---");
+            Console.WriteLine($"电影: {section.FilmName}");
+            Console.WriteLine($"场次: {section.TimeSlot.StartTime:yyyy-MM-dd HH:mm} 影厅 {section.MovieHall.HallNo}");
+            Console.WriteLine($"座位: {lineNo}{columnNo}");
+            Console.WriteLine($"支付方式: {paymentMethod}");
+
+            Console.Write("\n确认购买吗？(Y/N): ");
+            if (Console.ReadLine().Trim().ToUpper() != "Y")
+            {
+                Console.WriteLine("购票已取消。");
+                return;
+            }
+
+            OrderForTickets bookedOrder = _bookingService.PurchaseTicket(
+                section.SectionID, lineNo, columnNo, _loggedInCustomer.CustomerID, paymentMethod);
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"\n购票成功！订单号: {bookedOrder.OrderID}");
+            Console.WriteLine($"票号: {bookedOrder.TicketID}");
+            Console.ResetColor();
+
+            // 刷新用户信息
+            _loggedInCustomer = _customerRepository.GetCustomerById(_loggedInCustomer.CustomerID);
+            Console.WriteLine($"您的新积分: {_loggedInCustomer.VIPCard?.Points ?? 0}");
+        }
+        #endregion
 
         private static void DisplayCustomerPaidOrders()
         {

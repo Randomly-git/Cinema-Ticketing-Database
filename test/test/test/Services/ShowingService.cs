@@ -1,10 +1,10 @@
-﻿using test.Models; 
-using test.Repositories; 
+﻿using test.Models;
+using test.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace test.Services 
+namespace test.Services
 {
     /// <summary>
     /// 票务调度业务服务实现。
@@ -60,7 +60,7 @@ namespace test.Services
             // 4. 遍历所有座位，筛选出可用的座位
             foreach (var seat in hallLayout)
             {
-                string seatString = $"{seat.LINENO}{seat.ColumnNo}"; 
+                string seatString = $"{seat.LINENO}{seat.ColumnNo}";
                 if (!soldSeatStrings.Contains(seatString))
                 {
                     if (!availableSeats.ContainsKey(seat.LINENO))
@@ -78,6 +78,59 @@ namespace test.Services
             }
 
             return availableSeats;
+        }
+
+        public Dictionary<string, Dictionary<string, SeatStatus>> GetHallSeatStatus(Section section)
+        {
+            if (section == null)
+            {
+                throw new ArgumentNullException(nameof(section), "传入的场次对象不能为空。");
+            }
+
+            int hallNo = section.HallNo;
+            int sectionId = section.SectionID;
+
+            // 1. 获取影厅完整座位布局
+            var hallLayout = _showingRepository.GetHallSeatLayout(hallNo);
+            if (!hallLayout.Any())
+            {
+                throw new InvalidOperationException($"影厅 {hallNo} 没有座位布局信息。");
+            }
+
+            // 2. 获取已售座位
+            var soldTickets = _showingRepository.GetSoldSeatsForSection(sectionId);
+            var soldSeatSet = new HashSet<string>(soldTickets.Select(t => $"{t.LineNo}{t.ColumnNo}"));
+
+            // 3. 构建完整座位状态表
+            var seatStatusTable = new Dictionary<string, Dictionary<string, SeatStatus>>();
+
+            foreach (var seat in hallLayout)
+            {
+                string lineNo = seat.LINENO;
+                string columnNo = seat.ColumnNo.ToString();
+                string seatKey = $"{lineNo}{columnNo}";
+
+                // 初始化行字典
+                if (!seatStatusTable.ContainsKey(lineNo))
+                {
+                    seatStatusTable[lineNo] = new Dictionary<string, SeatStatus>();
+                }
+
+                // 设置座位状态
+                seatStatusTable[lineNo][columnNo] = soldSeatSet.Contains(seatKey)
+                    ? SeatStatus.Sold
+                    : SeatStatus.Available;
+            }
+
+            // 4. 按行号和列号排序
+            var sortedTable = seatStatusTable
+                .OrderBy(row => int.Parse(row.Key))
+                .ToDictionary(
+                    row => row.Key,
+                    row => row.Value.OrderBy(col => int.Parse(col.Key))
+                        .ToDictionary(col => col.Key, col => col.Value));
+
+            return sortedTable;
         }
     }
 }
