@@ -1,0 +1,260 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "MovieTicketSystem/1.0.0": {
+        "dependencies": {
+          "Oracle.ManagedDataAccess.Core": "23.9.1",
+          "System.Drawing.Common": "9.0.8"
+        },
+        "runtime": {
+          "MovieTicketSystem.dll": {}
+        }
+      },
+      "Oracle.ManagedDataAccess.Core/23.9.1": {
+        "dependencies": {
+          "System.Diagnostics.PerformanceCounter": "6.0.2",
+          "System.DirectoryServices.Protocols": "8.0.2",
+          "System.Formats.Asn1": "6.0.1",
+          "System.Memory": "4.6.0",
+          "System.Security.Cryptography.Pkcs": "6.0.4"
+        },
+        "runtime": {
+          "lib/netstandard2.1/Oracle.ManagedDataAccess.dll": {
+            "assemblyVersion": "23.1.0.0",
+            "fileVersion": "23.1.0.0"
+          }
+        }
+      },
+      "System.Configuration.ConfigurationManager/6.0.2": {
+        "dependencies": {
+          "System.Security.Cryptography.ProtectedData": "6.0.0",
+          "System.Security.Permissions": "6.0.1"
+        },
+        "runtime": {
+          "lib/net6.0/System.Configuration.ConfigurationManager.dll": {
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.3624.51421"
+          }
+        }
+      },
+      "System.Diagnostics.PerformanceCounter/6.0.2": {
+        "dependencies": {
+          "System.Configuration.ConfigurationManager": "6.0.2"
+        },
+        "runtime": {
+          "lib/net6.0/System.Diagnostics.PerformanceCounter.dll": {
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.3624.51421"
+          }
+        },
+        "runtimeTargets": {
+          "runtimes/win/lib/net6.0/System.Diagnostics.PerformanceCounter.dll": {
+            "rid": "win",
+            "assetType": "runtime",
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.3624.51421"
+          }
+        }
+      },
+      "System.DirectoryServices.Protocols/8.0.2": {
+        "runtime": {
+          "lib/net6.0/System.DirectoryServices.Protocols.dll": {
+            "assemblyVersion": "8.0.0.2",
+            "fileVersion": "8.0.1725.26602"
+          }
+        },
+        "runtimeTargets": {
+          "runtimes/linux/lib/net6.0/System.DirectoryServices.Protocols.dll": {
+            "rid": "linux",
+            "assetType": "runtime",
+            "assemblyVersion": "8.0.0.2",
+            "fileVersion": "8.0.1725.26602"
+          },
+          "runtimes/osx/lib/net6.0/System.DirectoryServices.Protocols.dll": {
+            "rid": "osx",
+            "assetType": "runtime",
+            "assemblyVersion": "8.0.0.2",
+            "fileVersion": "8.0.1725.26602"
+          },
+          "runtimes/win/lib/net6.0/System.DirectoryServices.Protocols.dll": {
+            "rid": "win",
+            "assetType": "runtime",
+            "assemblyVersion": "8.0.0.2",
+            "fileVersion": "8.0.1725.26602"
+          }
+        }
+      },
+      "System.Drawing.Common/9.0.8": {
+        "runtime": {
+          "lib/netstandard2.0/System.Drawing.Common.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.825.36801"
+          }
+        }
+      },
+      "System.Formats.Asn1/6.0.1": {
+        "runtime": {
+          "lib/net6.0/System.Formats.Asn1.dll": {
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.3224.31407"
+          }
+        }
+      },
+      "System.Memory/4.6.0": {},
+      "System.Security.Cryptography.Pkcs/6.0.4": {
+        "dependencies": {
+          "System.Formats.Asn1": "6.0.1"
+        },
+        "runtime": {
+          "lib/net6.0/System.Security.Cryptography.Pkcs.dll": {
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.1923.31806"
+          }
+        },
+        "runtimeTargets": {
+          "runtimes/win/lib/net6.0/System.Security.Cryptography.Pkcs.dll": {
+            "rid": "win",
+            "assetType": "runtime",
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.1923.31806"
+          }
+        }
+      },
+      "System.Security.Cryptography.ProtectedData/6.0.0": {
+        "runtime": {
+          "lib/net6.0/System.Security.Cryptography.ProtectedData.dll": {
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.21.52210"
+          }
+        },
+        "runtimeTargets": {
+          "runtimes/win/lib/net6.0/System.Security.Cryptography.ProtectedData.dll": {
+            "rid": "win",
+            "assetType": "runtime",
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.21.52210"
+          }
+        }
+      },
+      "System.Security.Permissions/6.0.1": {
+        "dependencies": {
+          "System.Windows.Extensions": "6.0.0"
+        },
+        "runtime": {
+          "lib/net6.0/System.Security.Permissions.dll": {
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.3624.51421"
+          }
+        }
+      },
+      "System.Windows.Extensions/6.0.0": {
+        "dependencies": {
+          "System.Drawing.Common": "9.0.8"
+        },
+        "runtime": {
+          "lib/net6.0/System.Windows.Extensions.dll": {
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.21.52210"
+          }
+        },
+        "runtimeTargets": {
+          "runtimes/win/lib/net6.0/System.Windows.Extensions.dll": {
+            "rid": "win",
+            "assetType": "runtime",
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.21.52210"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "MovieTicketSystem/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Oracle.ManagedDataAccess.Core/23.9.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-WDQxe50dzRdtNoPKiFwF5p4Zv6AGwM7IKfnWQa7/ijd0k+vT6RBmwLRjtS0wn4C3PIamygy1Vn6AV3GgNkkGXg==",
+      "path": "oracle.manageddataaccess.core/23.9.1",
+      "hashPath": "oracle.manageddataaccess.core.23.9.1.nupkg.sha512"
+    },
+    "System.Configuration.ConfigurationManager/6.0.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-LtqgY79MRntWIM0AeQf4uj1mGyqpVhR7O9N1+UODQu/EGQwRTERqMqpYTeedE7VTK2ngoCtxzAaTn9gRDa+6Qw==",
+      "path": "system.configuration.configurationmanager/6.0.2",
+      "hashPath": "system.configuration.configurationmanager.6.0.2.nupkg.sha512"
+    },
+    "System.Diagnostics.PerformanceCounter/6.0.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-4SLKj8/YJ+uA7YxmKmTfk6Pnn89nxIDipfNaApe1E3I2SI+f1+INj75ysTAtKwIWj7yQK8iiUjlRcJfiINwFUQ==",
+      "path": "system.diagnostics.performancecounter/6.0.2",
+      "hashPath": "system.diagnostics.performancecounter.6.0.2.nupkg.sha512"
+    },
+    "System.DirectoryServices.Protocols/8.0.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-7pSU+qkmdkwbikAvn4kpvClfyffaR7dYJw7ucBtO5d6m/7wgKZIULOZAGFLMIMOFFmg7xC67TYKptHxcbqQm+Q==",
+      "path": "system.directoryservices.protocols/8.0.2",
+      "hashPath": "system.directoryservices.protocols.8.0.2.nupkg.sha512"
+    },
+    "System.Drawing.Common/9.0.8": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ineIJmF+yuBEHGft9R153J9kmBFaeEfFL5Put5nzENneRcGGPUb3MvM8zrZ5pERQ0jPPSE3Wqw/clXvOq2F/Kw==",
+      "path": "system.drawing.common/9.0.8",
+      "hashPath": "system.drawing.common.9.0.8.nupkg.sha512"
+    },
+    "System.Formats.Asn1/6.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-glgtKqWJpH9GDw0m9I5xFiF6WDIQqi/eZXU6MkMRPzAWEERGGAJh+qztkrlWSDbokQ1jalj5NcBNIvVoSDpSSA==",
+      "path": "system.formats.asn1/6.0.1",
+      "hashPath": "system.formats.asn1.6.0.1.nupkg.sha512"
+    },
+    "System.Memory/4.6.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-OEkbBQoklHngJ8UD8ez2AERSk2g+/qpAaSWWCBFbpH727HxDq5ydVkuncBaKcKfwRqXGWx64dS6G1SUScMsitg==",
+      "path": "system.memory/4.6.0",
+      "hashPath": "system.memory.4.6.0.nupkg.sha512"
+    },
+    "System.Security.Cryptography.Pkcs/6.0.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-LGbXi1oUJ9QgCNGXRO9ndzBL/GZgANcsURpMhNR8uO+rca47SZmciS3RSQUvlQRwK3QHZSHNOXzoMUASKA+Anw==",
+      "path": "system.security.cryptography.pkcs/6.0.4",
+      "hashPath": "system.security.cryptography.pkcs.6.0.4.nupkg.sha512"
+    },
+    "System.Security.Cryptography.ProtectedData/6.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-rp1gMNEZpvx9vP0JW0oHLxlf8oSiQgtno77Y4PLUBjSiDYoD77Y8uXHr1Ea5XG4/pIKhqAdxZ8v8OTUtqo9PeQ==",
+      "path": "system.security.cryptography.protecteddata/6.0.0",
+      "hashPath": "system.security.cryptography.protecteddata.6.0.0.nupkg.sha512"
+    },
+    "System.Security.Permissions/6.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-QufGNXopGXxdXbkDn87hta4ajdNKNI3a1+HoJbKkmBbMtYPhEgEJKSiPZHGjI0zQpgZ7gi5L0gSV3PeewKRtew==",
+      "path": "system.security.permissions/6.0.1",
+      "hashPath": "system.security.permissions.6.0.1.nupkg.sha512"
+    },
+    "System.Windows.Extensions/6.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-IXoJOXIqc39AIe+CIR7koBtRGMiCt/LPM3lI+PELtDIy9XdyeSrwXFdWV9dzJ2Awl0paLWUaknLxFQ5HpHZUog==",
+      "path": "system.windows.extensions/6.0.0",
+      "hashPath": "system.windows.extensions.6.0.0.nupkg.sha512"
+    }
+  }
+}
