@@ -31,3 +31,6 @@ D:\Ddesktop\cinemaapp\cinemaapp\obj\Debug\net8.0-windows\cinemaapp.DeleteCustome
 D:\Ddesktop\cinemaapp\cinemaapp\obj\Debug\net8.0-windows\cinemaapp.UpdateCustomerProfile.resources
 D:\Ddesktop\cinemaapp\cinemaapp\obj\Debug\net8.0-windows\cinemaapp.ViewAllOrders.resources
 D:\Ddesktop\cinemaapp\cinemaapp\obj\Debug\net8.0-windows\cinemaapp.FilmDashboard.resources
+D:\Ddesktop\cinemaapp\cinemaapp\bin\Debug\net8.0-windows\cs\cinemaapp.resources.dll
+D:\Ddesktop\cinemaapp\cinemaapp\obj\Debug\net8.0-windows\cinemaapp.TicketRefundForm.cs.resources
+D:\Ddesktop\cinemaapp\cinemaapp\obj\Debug\net8.0-windows\cs\cinemaapp.resources.dll

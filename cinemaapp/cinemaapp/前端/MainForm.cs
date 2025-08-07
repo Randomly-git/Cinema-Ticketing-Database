@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -279,12 +280,54 @@ namespace cinemaapp
         }
 
         // 5. 退票
+
         private void ProcessTicketRefund()
         {
-            MessageBox.Show("退票 - 功能未实现");
+            try
+            {
+                // 1. 验证用户登录状态
+                if (_loggedInCustomer == null)
+                {
+                    MessageBox.Show("请先登录才能退票", "提示",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // 2. 验证服务实例
+                if (Program._orderRepository == null || Program._bookingService == null)
+                {
+                    MessageBox.Show("系统服务未初始化，无法办理退票", "错误",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // 3. 创建并显示退票窗体
+                using (var refundForm = new TicketRefundForm(
+                    _loggedInCustomer,
+                    Program._orderRepository,
+                    Program._bookingService))
+                {
+                    // 4. 处理窗体结果
+                    var result = refundForm.ShowDialog();
+
+                    if (result == DialogResult.OK)
+                    {
+                        // 可添加退票成功后的处理逻辑
+                        MessageBox.Show("退票操作已完成", "成功",
+                            MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // 5. 捕获全局异常
+                MessageBox.Show($"退票过程中发生错误：{ex.Message}", "系统错误",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                // 记录日志（实际项目中应使用日志框架）
+                Debug.WriteLine($"退票错误：{ex.ToString()}");
+            }
         }
-
-
 
 
 

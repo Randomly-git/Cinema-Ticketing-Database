@@ -13,6 +13,11 @@
         },
         "runtime": {
           "cinemaapp.dll": {}
+        },
+        "resources": {
+          "cs/cinemaapp.resources.dll": {
+            "locale": "cs"
+          }
         }
       },
       "Oracle.ManagedDataAccess.Core/23.9.1": {

@@ -18,6 +18,6 @@ namespace test.Services // 请替换为你的项目命名空间
         /// <returns>购买成功的票对象。</returns>
         OrderForTickets PurchaseTicket(int sectionId, string lineNo, int columnNo, string customerId, string paymentMethod); //购票方法
 
-        bool RefundTicket(int orderId, DateTime refundTime, out decimal refundFee, out int refundAmount); //退票方法
+        public bool RefundTicket(int orderId, DateTime refundTime, out decimal refundFee, out int refundAmount, out string errorMessage); //退票方法
     }
 }

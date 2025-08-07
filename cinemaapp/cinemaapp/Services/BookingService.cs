@@ -122,7 +122,8 @@ namespace test.Services
                 }
             }
         }
-        public bool RefundTicket(int orderId, DateTime refundTime, out decimal refundFee, out int refundAmount)
+
+        public bool RefundTicket(int orderId, DateTime refundTime, out decimal refundFee, out int refundAmount, out string errorMessage)
         {
             refundFee = 0m;
             refundAmount = 0;
@@ -150,7 +151,7 @@ WHERE
             var orderInfo = _dbService.ExecuteQuery(getOrderSql, orderParam);
             if (orderInfo.Rows.Count == 0)
             {
-                Console.WriteLine("[ERROR] 未找到可退款的订单");
+                errorMessage = "未找到可退款的订单";
                 return false;
             }
 
@@ -162,9 +163,7 @@ WHERE
             // 2. 检查电影是否已开始放映
             if (refundTime >= showtime)
             {
-                Console.WriteLine($"[ERROR] 电影已开始放映，无法退票");
-                Console.WriteLine($"\t开始时间: {showtime:yyyy-MM-dd HH:mm}");
-                Console.WriteLine($"\t当前时间: {refundTime:yyyy-MM-dd HH:mm}");
+                errorMessage = $"电影已开始放映，无法退票\n开始时间: {showtime:yyyy-MM-dd HH:mm}\n当前时间: {refundTime:yyyy-MM-dd HH:mm}";
                 return false;
             }
 
@@ -184,7 +183,7 @@ WHERE
                     if (_dbService.ExecuteNonQuery(updateOrderSql, updateParam) <= 0)
                     {
                         transaction.Rollback();
-                        Console.WriteLine("[ERROR] 更新订单状态失败");
+                        errorMessage = "更新订单状态失败";
                         return false;
                     }
 
@@ -192,22 +191,23 @@ WHERE
                     if (!ReleaseTicket(ticketId))
                     {
                         transaction.Rollback();
-                        Console.WriteLine("[ERROR] 释放座位失败");
+                        errorMessage = "释放座位失败";
                         return false;
                     }
 
                     transaction.Commit();
-                    Console.WriteLine($"[SUCCESS] 退票成功，应退款金额: {refundAmount}元");
+                    errorMessage = $"退票成功，应退款金额: {refundAmount}元";
                     return true;
                 }
                 catch (Exception ex)
                 {
                     transaction.Rollback();
-                    Console.WriteLine($"[ERROR] 退票过程中发生异常: {ex.Message}");
+                    errorMessage = "退票过程中发生异常: " + ex.Message;
                     return false;
                 }
             }
         }
+
         private decimal CalculateRefundFee(DateTime showtime, DateTime refundTime, int paidPrice)
         {
             TimeSpan timeLeft = showtime - refundTime;
