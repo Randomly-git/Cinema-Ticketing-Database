@@ -1,10 +1,10 @@
-﻿using test.Models; 
+﻿using test.Models;
 using test.Repositories; // 引用 Repositories 命名空间
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace test.Services 
+namespace test.Services
 {
     /// <summary>
     /// 影片业务服务实现。
@@ -58,8 +58,27 @@ namespace test.Services
             return _filmRepository.GetSectionsByFilmName(filmName);
         }
 
+        // FilmService.cs
+        public List<Film> GetFilmStatistics(string orderBy)
+        {
+            var films = _filmRepository.GetAllFilms();
 
+            switch (orderBy)
+            {
+                case "score":
+                    return films.OrderByDescending(f => f.Score).ToList();
+                case "admissions":
+                    return films.OrderByDescending(f => f.Admissions).ToList();
+                case "filmLength":
+                    return films.OrderByDescending(f => f.FilmLength).ToList();
+                case "releaseDate":
+                    return films.OrderByDescending(f => f.ReleaseDate ?? DateTime.MinValue).ToList();
+                case "normalPrice":
+                    return films.OrderByDescending(f => f.NormalPrice).ToList();
+                default:
+                    return films.OrderByDescending(f => f.BoxOffice).ToList();
+            }
+        }
     }
 
 }
-

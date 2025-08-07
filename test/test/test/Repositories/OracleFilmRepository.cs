@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
-using test.Models; 
+using test.Models;
 
 namespace test.Repositories
 {
@@ -14,7 +14,7 @@ namespace test.Repositories
     public class OracleFilmRepository : IFilmRepository
     {
         private readonly string _connectionString;
-        private const string SchemaName = ""; 
+        private const string SchemaName = "";
 
         public OracleFilmRepository(string connectionString)
         {
@@ -167,13 +167,13 @@ namespace test.Repositories
             {
                 // 联结 section、moviehall 和 timeslot 表以获取完整的场次信息
                 string sql = $@"SELECT S.SECTIONID, S.FILMNAME, S.HALLNO, S.TIMEID,
-                               MH.LINES, MH.COLUMNS, MH.CATEGORY AS HALL_CATEGORY,
-                               TS.""STARTTIME"", TS.""ENDTIME""
-                        FROM {SchemaName}SECTION S
-                        JOIN {SchemaName}MOVIEHALL MH ON S.HALLNO = MH.HALLNO
-                        JOIN {SchemaName}TIMESLOT TS ON S.TIMEID = TS.TIMEID
-                        WHERE S.FILMNAME = :filmName
-                        ORDER BY TS.""STARTTIME""";
+                                   MH.LINES, MH.COLUMNS, MH.CATEGORY AS HALL_CATEGORY,
+                                   TS.""STARTTIME"", TS.""ENDTIME""
+                            FROM {SchemaName}SECTION S
+                            JOIN {SchemaName}MOVIEHALL MH ON S.HALLNO = MH.HALLNO
+                            JOIN {SchemaName}TIMESLOT TS ON S.TIMEID = TS.TIMEID
+                            WHERE S.FILMNAME = :filmName
+                            ORDER BY TS.""STARTTIME""";
 
                 using (var command = new OracleCommand(sql, connection))
                 {
@@ -277,11 +277,11 @@ namespace test.Repositories
             {
                 connection.Open();
                 string sql = $@"INSERT INTO {SchemaName}FILM 
-                       (FILMNAME, GENRE, FILMLENGTH, NORMALPRICE, RELEASEDATE, 
-                        ENDDATE, ADMISSIONS, BOXOFFICE, SCORE)
-                       VALUES 
-                       (:filmname, :genre, :filmlength, :normalprice, :releasedate,
-                        :enddate, :admissions, :boxoffice, :score)";
+                           (FILMNAME, GENRE, FILMLENGTH, NORMALPRICE, RELEASEDATE, 
+                            ENDDATE, ADMISSIONS, BOXOFFICE, SCORE)
+                           VALUES 
+                           (:filmname, :genre, :filmlength, :normalprice, :releasedate,
+                            :enddate, :admissions, :boxoffice, :score)";
 
                 using (var command = new OracleCommand(sql, connection))
                 {
@@ -308,13 +308,13 @@ namespace test.Repositories
                 connection.Open();
                 // 使用FILMNAME作为更新条件（假设它是唯一标识）
                 string sql = $@"UPDATE {SchemaName}FILM SET
-                       GENRE = :genre,
-                       FILMLENGTH = :filmlength,
-                       NORMALPRICE = :normalprice,
-                       RELEASEDATE = :releasedate,
-                       ENDDATE = :enddate,
-                       SCORE = :score
-                       WHERE FILMNAME = :filmname";
+                           GENRE = :genre,
+                           FILMLENGTH = :filmlength,
+                           NORMALPRICE = :normalprice,
+                           RELEASEDATE = :releasedate,
+                           ENDDATE = :enddate,
+                           SCORE = :score
+                           WHERE FILMNAME = :filmname";
 
                 using (var command = new OracleCommand(sql, connection))
                 {
@@ -343,7 +343,7 @@ namespace test.Repositories
             {
                 connection.Open();
                 string sql = $@"SELECT COUNT(1) FROM {SchemaName}SECTIONS
-                       WHERE FILMNAME = :filmname AND SHOWTIME > SYSDATE";
+                           WHERE FILMNAME = :filmname AND SHOWTIME > SYSDATE";
 
                 using (var command = new OracleCommand(sql, connection))
                 {
@@ -389,20 +389,20 @@ namespace test.Repositories
 
                     // 2. 获取所有场次信息
                     string sessionsSql = @"
-                    SELECT
-                        s.sectionID, s.filmName, s.hallNo, s.timeID,
-                        mh.category AS HallCategory,
-                        ts.startTime, ts.endTime
-                    FROM
-                        section s
-                    JOIN
-                        timeslot ts ON s.timeID = ts.timeID
-                    JOIN
-                        moviehall mh ON s.hallNo = mh.hallNo
-                    WHERE
-                        s.filmName = :filmName
-                    ORDER BY
-                        ts.startTime";
+                        SELECT
+                            s.sectionID, s.filmName, s.hallNo, s.timeID,
+                            mh.category AS HallCategory,
+                            ts.startTime, ts.endTime
+                        FROM
+                            section s
+                        JOIN
+                            timeslot ts ON s.timeID = ts.timeID
+                        JOIN
+                            moviehall mh ON s.hallNo = mh.hallNo
+                        WHERE
+                            s.filmName = :filmName
+                        ORDER BY
+                            ts.startTime";
                     using (OracleCommand sessionsCmd = new OracleCommand(sessionsSql, connection))
                     {
                         sessionsCmd.Parameters.Add(new OracleParameter("filmName", filmName));
@@ -490,19 +490,22 @@ namespace test.Repositories
                 try
                 {
                     connection.Open();
-                    string sql = "SELECT filmName, role FROM cast WHERE memberName = :memberName";
+                    // 模糊查询，使用 LIKE 和绑定带通配符的参数
+                    string sql = "SELECT memberName, filmName, role FROM cast WHERE memberName LIKE :memberName";
+
                     using (OracleCommand command = new OracleCommand(sql, connection))
                     {
-                        command.Parameters.Add(new OracleParameter("memberName", memberName));
+                        // 传入的参数加上前后通配符，实现模糊匹配
+                        command.Parameters.Add(new OracleParameter("memberName", "%" + memberName + "%"));
                         using (OracleDataReader reader = command.ExecuteReader())
                         {
                             while (reader.Read())
                             {
                                 details.Add(new Cast
                                 {
+                                    MemberName = reader["memberName"].ToString(), // 数据库返回的完整名字
                                     FilmName = reader["filmName"].ToString(),
-                                    Role = reader["role"].ToString(),
-                                    MemberName = memberName
+                                    Role = reader["role"].ToString()
                                 });
                             }
                         }
@@ -515,6 +518,8 @@ namespace test.Repositories
             }
             return details;
         }
+
+
 
         /// <summary>
         /// 查询指定电影的数据统计信息，包括票价、总票房、已售票数和上座率。
@@ -533,14 +538,14 @@ namespace test.Repositories
 
                     // 1. 获取总票房和已售票数
                     string ticketsSql = @"
-                    SELECT
-                        SUM(t.price) AS TotalBoxOffice, COUNT(t.ticketID) AS TicketsSold
-                    FROM
-                        ticket t
-                    JOIN
-                        section s ON t.sectionID = s.sectionID
-                    WHERE
-                        s.filmName = :filmName AND t.state = '已售出'";
+                        SELECT
+                            SUM(t.price) AS TotalBoxOffice, COUNT(t.ticketID) AS TicketsSold
+                        FROM
+                            ticket t
+                        JOIN
+                            section s ON t.sectionID = s.sectionID
+                        WHERE
+                            s.filmName = :filmName AND t.state = '已售出'";
                     using (OracleCommand ticketsCmd = new OracleCommand(ticketsSql, connection))
                     {
                         ticketsCmd.Parameters.Add(new OracleParameter("filmName", filmName));
@@ -556,14 +561,14 @@ namespace test.Repositories
 
                     // 2. 统计总座次
                     string seatsSql = @"
-                    SELECT
-                        SUM(mh.lines * mh.columns) AS TotalSeats
-                    FROM
-                        section s
-                    JOIN
-                        moviehall mh ON s.hallNo = mh.hallNo
-                    WHERE
-                        s.filmName = :filmName";
+                        SELECT
+                            SUM(mh.lines * mh.columns) AS TotalSeats
+                        FROM
+                            section s
+                        JOIN
+                            moviehall mh ON s.hallNo = mh.hallNo
+                        WHERE
+                            s.filmName = :filmName";
                     using (OracleCommand seatsCmd = new OracleCommand(seatsSql, connection))
                     {
                         seatsCmd.Parameters.Add(new OracleParameter("filmName", filmName));

@@ -26,12 +26,14 @@ namespace test
         private static IBookingService _bookingService;
         private static IAdministratorService _adminService; // 新增：管理员服务
         private static ISchedulingService _schedulingService;
+        private static IProductService _productService; // 周边产品服务
 
         // 仓库实例 (某些操作可能需要直接访问，例如管理员删除)
         private static ICustomerRepository _customerRepository;
         private static IOrderRepository _orderRepository; // 新增：订单仓库
         private static IFilmRepository _filmRepository; // 新增：电影仓库
-
+        private static IRelatedProductRepository _relatedProductRepository; // 新增：周边产品仓库
+        private static IOrderForProductRepository _orderForProductRepository; // 新增：周边产品订单仓库
 
         static void Main(string[] args)
         {
@@ -80,6 +82,8 @@ namespace test
             _filmRepository = new OracleFilmRepository(connectionString);
             IShowingRepository showingRepository = new OracleShowingRepository(connectionString);
             IAdministratorRepository adminRepository = new OracleAdministratorRepository(connectionString); // 新增管理员仓库
+            _relatedProductRepository = new OracleRelatedProductRepository(connectionString); // 实例化周边产品仓库
+            _orderForProductRepository = new OracleOrderForProductRepository(connectionString); // 实例化周边产品订单仓库
 
             _dbService = new DatabaseService(connectionString);
             _userService = new UserService(_customerRepository);
@@ -88,6 +92,7 @@ namespace test
             _bookingService = new BookingService(showingRepository, _filmRepository, _customerRepository, _orderRepository,_dbService ,connectionString);
             // 根据提供的 IAdministratorService 接口和错误信息，AdministratorService 构造函数应接受 3 个参数
             _adminService = new AdministratorService(adminRepository, _orderRepository, _filmRepository); // 新增管理员服务
+            _productService = new ProductService(_relatedProductRepository, _orderForProductRepository,connectionString); // 实例化周边产品服务
             _schedulingService = new SchedulingService(connectionString);
 
             RunMainMenu();
@@ -124,13 +129,14 @@ namespace test
                     Console.WriteLine("3. 购票");
                     Console.WriteLine("4. 查看所有有效订单");
                     Console.WriteLine("5. 退票");
-                    Console.WriteLine("6. 购买周边 (未实现)");
-                    Console.WriteLine("7. 影片排档、撤档信息");
-                    Console.WriteLine("8. 影片概况查询");
-                    Console.WriteLine("9. 演职人员查询");
-                    Console.WriteLine("10. 电影数据统计");
-                    Console.WriteLine("11. 删除我的账户");
-                    Console.WriteLine("12. 用户登出");
+                    Console.WriteLine("6. 购买周边");
+                    Console.WriteLine("7. 积分兑换周边");
+                    Console.WriteLine("8. 影片排档、撤档信息");
+                    Console.WriteLine("9. 影片概况查询");
+                    Console.WriteLine("10. 演职人员查询");
+                    Console.WriteLine("11. 电影数据统计");
+                    Console.WriteLine("12. 删除我的账户");
+                    Console.WriteLine("13. 用户登出");
                 }
                 else if (_loggedInAdmin != null)
                 {
@@ -197,26 +203,29 @@ namespace test
                                 ProcessTicketRefund();
                                 break;
                             case "6":
-                                Console.WriteLine("\n--- 购买周边功能尚未实现。---");
+                                PurchaseProductMenu();
                                 break;
                             case "7":
-                                GetMovieSchedulingInfoInteractive();
+                                RedeemReward();
                                 break;
                             case "8":
-                                GetMovieOverviewInteractive();
+                                GetMovieSchedulingInfoInteractive();
                                 break;
                             case "9":
-                                GetCastCrewDetailsInteractive();
+                                GetMovieOverviewInteractive();
                                 break;
                             case "10":
-                                GetMovieStatisticsInteractive();
+                                GetCastCrewDetailsInteractive();
                                 break;
                             case "11":
+                                GetMovieStatisticsInteractive();
+                                break;
+                            case "12":
                                 DeleteCustomerAccount();
                                 // 如果账户被删除，则退出循环，因为用户已登出
                                 if (_loggedInCustomer == null) running = false;
                                 break;
-                            case "12":
+                            case "13":
                                 LogoutCustomer();
                                 break;
                             case "0":
@@ -1093,6 +1102,117 @@ namespace test
             {
                 Console.WriteLine($"未找到电影 '{filmName}' 的数据统计信息。");
             }
+        }
+
+        static void PurchaseProductMenu()
+        {
+            if (_loggedInCustomer == null)
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("请先登录才能购买周边产品。");
+                Console.ResetColor();
+                return;
+            }
+
+            Console.WriteLine("\n--- 购买周边产品 ---");
+
+            try
+            {
+                List<RelatedProduct> products = _productService.GetAvailableProducts();
+                if (!products.Any())
+                {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine("当前没有可供购买的周边产品。");
+                    Console.ResetColor();
+                    return;
+                }
+
+                Console.WriteLine("请选择要购买的周边产品：");
+                for (int i = 0; i < products.Count; i++)
+                {
+                    Console.WriteLine($"{i + 1}. {products[i].ProductName} - 价格: {products[i].Price:C}, 库存: {products[i].ProductNumber}");
+                }
+
+                Console.Write("请输入产品序号 (0 返回主菜单): ");
+                if (!int.TryParse(Console.ReadLine(), out int productChoice) || productChoice <= 0 || productChoice > products.Count)
+                {
+                    if (productChoice == 0) return;
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("无效的产品选择。");
+                    Console.ResetColor();
+                    return;
+                }
+                RelatedProduct selectedProduct = products[productChoice - 1];
+
+                Console.Write($"请输入购买数量 (当前库存: {selectedProduct.ProductNumber}): ");
+                if (!int.TryParse(Console.ReadLine(), out int purchaseNum) || purchaseNum <= 0)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("购买数量必须是大于0的整数。");
+                    Console.ResetColor();
+                    return;
+                }
+
+                Console.Write("请输入支付方式 (例如: 支付宝, 微信支付): ");
+                string paymentMethod = Console.ReadLine();
+
+                Console.WriteLine($"\n--- 正在为顾客 {_loggedInCustomer.Name} 购买 {purchaseNum} 个 {selectedProduct.ProductName} ---");
+                OrderForProduct newOrder = _productService.PurchaseProduct(selectedProduct.ProductName, purchaseNum, _loggedInCustomer.CustomerID, paymentMethod);
+
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"购买周边产品成功！订单信息：{newOrder.ToString()}");
+                Console.ResetColor();
+            }
+            catch (Exception ex)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"购买周边产品失败: {ex.Message}");
+                Console.ResetColor();
+            }
+        }
+
+        static void RedeemReward()
+        {
+            Console.WriteLine("\n=== 积分兑换 ===");
+
+            if (_loggedInCustomer == null)
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("请先登录才能购买周边产品。");
+                Console.ResetColor();
+                return;
+            }
+
+            // 显示可兑换商品列表
+            var products = _productService.GetAvailableProducts()
+                .Where(p => p.RequiredPoints > 0 && p.ProductNumber > 0)
+                .ToList();
+
+            if (products.Count == 0)
+            {
+                Console.WriteLine("当前没有可兑换的商品！");
+                return;
+            }
+
+            Console.WriteLine("\n可兑换商品列表（商品名称 - 所需积分 - 当前库存）:");
+            foreach (var product in products)
+            {
+                Console.WriteLine($"- {product.ProductName}：{product.RequiredPoints} 积分/个 (库存: {product.ProductNumber}个)");
+            }
+
+            Console.Write("\n请输入要兑换的商品名称: ");
+            string productName = Console.ReadLine();
+
+            Console.Write("请输入要兑换的数量: ");
+            if (!int.TryParse(Console.ReadLine(), out int quantity) || quantity <= 0)
+            {
+                Console.WriteLine("请输入有效的正数数量！");
+                return;
+            }
+
+            // 执行兑换
+            string result = _productService.RedeemProductWithPoints(productName, quantity, _loggedInCustomer.CustomerID);
+            Console.WriteLine(result);
         }
 
         // ====================================================================
