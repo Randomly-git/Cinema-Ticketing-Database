@@ -62,15 +62,15 @@ namespace cinemaapp
                 };
                 this.Controls.Add(lblUser);
 
-                AddButton("1. 更新个人资料", 110, UpdateCustomerProfile);
-                AddButton("2. 查看电影相关信息", 150, FilmDashBoard);
-                AddButton("3. 购票", 190, PurchaseTicketMenu);
-                AddButton("4. 查看所有有效订单", 230, DisplayCustomerPaidOrders);
-                AddButton("5. 退票", 270, ProcessTicketRefund);
-                AddButton("6. 购买周边 (未实现)", 310, () => MessageBox.Show("功能尚未实现"));
-                AddButton("7. 删除我的账户", 350, DeleteCustomerAccount);
-                AddButton("8. 用户登出", 390, LogoutCustomer);
-                AddButton("0. 退出系统", 430, () => this.Close());
+                AddButton("更新个人资料", 110, UpdateCustomerProfile);
+                AddButton("查看电影相关信息", 150, FilmDashBoard);
+                AddButton("购票", 190, PurchaseTicketMenu);
+                AddButton("查看所有有效订单", 230, DisplayCustomerPaidOrders);
+                AddButton("退票", 270, ProcessTicketRefund);
+                AddButton("购买周边 (未实现)", 310, () => MessageBox.Show("功能尚未实现"));
+                AddButton("删除我的账户", 350, DeleteCustomerAccount);
+                AddButton("用户登出", 390, LogoutCustomer);
+                AddButton("退出系统",    430, () => this.Close());
             }
             else if (_loggedInAdmin != null)
             {
@@ -82,13 +82,13 @@ namespace cinemaapp
                 };
                 this.Controls.Add(lblAdmin);
 
-                AddButton("1. 电影管理 (增/改)", 110, ManageFilmsMenu);
-                AddButton("2. 查看所有订单", 160, ViewAllOrders);
-                AddButton("3. 添加新排片", 210, AddSectionInteractive);
-                AddButton("4. 排片和座位图可视化", 260, ShowCinemaScheduleAndSeatMap);
-                AddButton("5. 删除排片", 310, DeleteSectionInteractive);
-                AddButton("6. 管理员登出", 360, LogoutAdministrator);
-                AddButton("0. 退出系统", 410, () => this.Close());
+                AddButton("电影管理 (增/改)", 110, ManageFilmsMenu);
+                AddButton("查看所有订单", 160, ViewAllOrders);
+                AddButton("添加新排片", 210, AddSectionInteractive);
+                AddButton("排片和座位图可视化", 260, ShowCinemaScheduleAndSeatMap);
+                AddButton("删除排片", 310, DeleteSectionInteractive);
+                AddButton("管理员登出", 360, LogoutAdministrator);
+                AddButton("退出系统", 410, () => this.Close());
             }
         }
 
@@ -227,9 +227,13 @@ namespace cinemaapp
 
         private void ShowCinemaScheduleAndSeatMap()
         {
-            var form = new SeatMapVisualizationForm(cinemaapp.Program._schedulingService);
+            var form = new SeatMapVisualizationForm(
+                cinemaapp.Program._schedulingService,
+                cinemaapp.Program._showingService 
+            );
             form.ShowDialog();
         }
+
 
 
 

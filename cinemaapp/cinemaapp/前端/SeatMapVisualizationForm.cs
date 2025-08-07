@@ -9,6 +9,7 @@ using test.Services;
 public partial class SeatMapVisualizationForm : Form
 {
     private readonly ISchedulingService _schedulingService;
+    private readonly IShowingService _showingService;
     private List<Section> _sections;
 
     private TextBox _txtScheduleList;
@@ -21,11 +22,13 @@ public partial class SeatMapVisualizationForm : Form
     private Button _btnLoadSchedule;
     private ToolTip _toolTip;
 
-    public SeatMapVisualizationForm(ISchedulingService schedulingService)
+    public SeatMapVisualizationForm(ISchedulingService schedulingService, IShowingService showingService)
     {
         _schedulingService = schedulingService ?? throw new ArgumentNullException(nameof(schedulingService));
+        _showingService = showingService ?? throw new ArgumentNullException(nameof(showingService));
         Load += SeatMapVisualizationForm_Load;
     }
+
 
     private void SeatMapVisualizationForm_Load(object sender, EventArgs e)
     {
@@ -85,7 +88,6 @@ public partial class SeatMapVisualizationForm : Form
         var tooltipCache = new Dictionary<Section, string>();
         foreach (var section in _sections)
         {
-            // 只显示时间段
             tooltipCache[section] = $"{section.ScheduleStartTime:HH:mm} - {section.ScheduleEndTime:HH:mm}";
         }
 
@@ -143,10 +145,10 @@ public partial class SeatMapVisualizationForm : Form
                     Location = new Point(left, top),
                     Size = new Size(width, cellHeight - 2),
                     BorderStyle = BorderStyle.FixedSingle,
-                    Cursor = Cursors.Hand
+                    Cursor = Cursors.Hand,
+                    Tag = section
                 };
 
-                // 电影名显示在排片条内居中
                 var filmNameLabel = new Label
                 {
                     Text = section.FilmName,
@@ -156,21 +158,43 @@ public partial class SeatMapVisualizationForm : Form
                     Dock = DockStyle.Fill,
                     AutoEllipsis = true,
                     Font = new Font("Segoe UI", 8, FontStyle.Regular),
+                    Cursor = Cursors.Hand // 让 label 可点击
                 };
+
+                // 调用 HandleBoxClick
+                box.Click += (s, e) =>
+                {
+                    var clickedPanel = s as Panel;
+                    var sec = clickedPanel?.Tag as Section;
+
+                    if (sec != null)
+                    {
+                        HandleBoxClick(sec);
+                    }
+                };
+
+                // 调用 HandleBoxClick，使用闭包保存的 section
+                filmNameLabel.Click += (s, e) =>
+                {
+                    HandleBoxClick(section);
+                };
+
 
                 box.Controls.Add(filmNameLabel);
 
-                // 给 Panel 和 Label 都绑定 ToolTip，确保悬停时显示时间段
                 _toolTip.SetToolTip(box, tooltipCache[section]);
                 _toolTip.SetToolTip(filmNameLabel, tooltipCache[section]);
-
-                box.Click += (s, e) =>
-                {
-                    MessageBox.Show($"点击了影厅 {hallNo} 的《{section.FilmName}》场次\n时间：{section.ScheduleStartTime:HH:mm} - {section.ScheduleEndTime:HH:mm}");
-                };
 
                 _schedulePanel.Controls.Add(box);
             }
         }
     }
+
+    private void HandleBoxClick(Section section)
+    {
+        var seatForm = new SeatStatusForm(section, _showingService);
+        seatForm.ShowDialog();
+    }
+
+
 }
