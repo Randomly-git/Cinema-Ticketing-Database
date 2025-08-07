@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using test.Models;
+using test.Services;
 
 namespace cinemaapp
 {
@@ -11,6 +12,8 @@ namespace cinemaapp
     {
         private Customer _loggedInCustomer = null;
         private Administrator _loggedInAdmin = null;
+        private ISchedulingService _schedulingService;  
+        private IShowingService _showingService;
 
         public MainForm()
         {
@@ -85,7 +88,8 @@ namespace cinemaapp
                 AddButton("4. 查看排片", 260, ViewSectionsInteractive);
                 AddButton("5. 删除排片", 310, DeleteSectionInteractive);
                 AddButton("6. 管理员登出", 360, LogoutAdministrator);
-                AddButton("0. 退出系统", 410, () => this.Close());
+                AddButton("7. 排片和座位图可视化", 410, ShowCinemaScheduleAndSeatMap);
+                AddButton("0. 退出系统", 460, () => this.Close());
             }
         }
 
@@ -220,6 +224,16 @@ namespace cinemaapp
                 form.ShowDialog();
             }
         }
+
+
+        private void ShowCinemaScheduleAndSeatMap()
+        {
+            var form = new SeatMapVisualizationForm(cinemaapp.Program._schedulingService);
+            form.ShowDialog();
+        }
+
+
+
 
 
 

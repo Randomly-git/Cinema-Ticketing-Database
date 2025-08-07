@@ -63,16 +63,23 @@ namespace test.Services
         {
             var films = _filmRepository.GetAllFilms();
 
-            return orderBy switch
+            switch (orderBy)
             {
-                "score" => films.OrderByDescending(f => f.Score).ToList(),
-                "admissions" => films.OrderByDescending(f => f.Admissions).ToList(),
-                "filmLength" => films.OrderByDescending(f => f.FilmLength).ToList(),
-                "releaseDate" => films.OrderByDescending(f => f.ReleaseDate ?? DateTime.MinValue).ToList(),
-                "normalPrice" => films.OrderByDescending(f => f.NormalPrice).ToList(),
-                _ => films.OrderByDescending(f => f.BoxOffice).ToList(),
-            };
+                case "score":
+                    return films.OrderByDescending(f => f.Score).ToList();
+                case "admissions":
+                    return films.OrderByDescending(f => f.Admissions).ToList();
+                case "filmLength":
+                    return films.OrderByDescending(f => f.FilmLength).ToList();
+                case "releaseDate":
+                    return films.OrderByDescending(f => f.ReleaseDate ?? DateTime.MinValue).ToList();
+                case "normalPrice":
+                    return films.OrderByDescending(f => f.NormalPrice).ToList();
+                default:
+                    return films.OrderByDescending(f => f.BoxOffice).ToList();
+            }
         }
+
 
 
 

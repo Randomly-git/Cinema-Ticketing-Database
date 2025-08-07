@@ -3,8 +3,12 @@
   "WorkspaceRootPath": "D:\\Ddesktop\\cinemaapp\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|d:\\ddesktop\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\viewallorders.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|solutionrelative:cinemaapp\\\u524D\u7AEF\\viewallorders.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|d:\\ddesktop\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\loginadministrator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|solutionrelative:cinemaapp\\\u524D\u7AEF\\loginadministrator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|d:\\ddesktop\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\deletecustomeraccount.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|solutionrelative:cinemaapp\\\u524D\u7AEF\\deletecustomeraccount.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|d:\\ddesktop\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\updatecustomerprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -27,16 +31,8 @@
       "RelativeMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|solutionrelative:cinemaapp\\\u524D\u7AEF\\logincustomer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|d:\\ddesktop\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\loginadministrator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|solutionrelative:cinemaapp\\\u524D\u7AEF\\loginadministrator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|d:\\ddesktop\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\filmdashboard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|solutionrelative:cinemaapp\\\u524D\u7AEF\\filmdashboard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|d:\\ddesktop\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\deletecustomeraccount.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|solutionrelative:cinemaapp\\\u524D\u7AEF\\deletecustomeraccount.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|d:\\ddesktop\\cinemaapp\\cinemaapp\\repositories\\oraclefilmrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -51,14 +47,6 @@
       "RelativeMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|solutionrelative:cinemaapp\\repositories\\ifilmrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|d:\\ddesktop\\cinemaapp\\cinemaapp\\services\\filmservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|solutionrelative:cinemaapp\\services\\filmservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|d:\\ddesktop\\cinemaapp\\cinemaapp\\models\\cast.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|solutionrelative:cinemaapp\\models\\cast.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|d:\\ddesktop\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\mainform.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|solutionrelative:cinemaapp\\\u524D\u7AEF\\mainform.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
@@ -70,37 +58,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "ViewAllOrders.cs",
-              "DocumentMoniker": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\ViewAllOrders.cs",
-              "RelativeDocumentMoniker": "cinemaapp\\\u524D\u7AEF\\ViewAllOrders.cs",
-              "ToolTip": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\ViewAllOrders.cs",
-              "RelativeToolTip": "cinemaapp\\\u524D\u7AEF\\ViewAllOrders.cs",
-              "ViewState": "AgIAADYAAAAAAAAAAAAAAEIAAAAmAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-06T06:56:00.867Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "UpdateCustomerProfile.cs",
-              "DocumentMoniker": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\UpdateCustomerProfile.cs",
-              "RelativeDocumentMoniker": "cinemaapp\\\u524D\u7AEF\\UpdateCustomerProfile.cs",
-              "ToolTip": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\UpdateCustomerProfile.cs",
-              "RelativeToolTip": "cinemaapp\\\u524D\u7AEF\\UpdateCustomerProfile.cs",
-              "ViewState": "AgIAAF4AAAAAAAAAAAAYwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-06T06:55:56.337Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "RegisterCustomer.cs",
               "DocumentMoniker": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\RegisterCustomer.cs",
               "RelativeDocumentMoniker": "cinemaapp\\\u524D\u7AEF\\RegisterCustomer.cs",
@@ -108,12 +70,11 @@
               "RelativeToolTip": "cinemaapp\\\u524D\u7AEF\\RegisterCustomer.cs",
               "ViewState": "AgIAAFMAAAAAAAAAAAAUwAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-06T06:55:51.975Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-08-06T06:55:51.975Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "RegisterAdministrator.cs",
               "DocumentMoniker": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\RegisterAdministrator.cs",
               "RelativeDocumentMoniker": "cinemaapp\\\u524D\u7AEF\\RegisterAdministrator.cs",
@@ -121,12 +82,11 @@
               "RelativeToolTip": "cinemaapp\\\u524D\u7AEF\\RegisterAdministrator.cs",
               "ViewState": "AgIAAFwAAAAAAAAAAAAUwAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-06T06:55:47.236Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-08-06T06:55:47.236Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "LoginCustomer.cs",
               "DocumentMoniker": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\LoginCustomer.cs",
               "RelativeDocumentMoniker": "cinemaapp\\\u524D\u7AEF\\LoginCustomer.cs",
@@ -134,12 +94,11 @@
               "RelativeToolTip": "cinemaapp\\\u524D\u7AEF\\LoginCustomer.cs",
               "ViewState": "AgIAAEYAAAAAAAAAAAAYwAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-06T06:55:28.421Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-08-06T06:55:28.421Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 0,
               "Title": "LoginAdministrator.cs",
               "DocumentMoniker": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\LoginAdministrator.cs",
               "RelativeDocumentMoniker": "cinemaapp\\\u524D\u7AEF\\LoginAdministrator.cs",
@@ -152,7 +111,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 1,
               "Title": "DeleteCustomerAccount.cs",
               "DocumentMoniker": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\DeleteCustomerAccount.cs",
               "RelativeDocumentMoniker": "cinemaapp\\\u524D\u7AEF\\DeleteCustomerAccount.cs",
@@ -165,7 +124,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 2,
+              "Title": "UpdateCustomerProfile.cs",
+              "DocumentMoniker": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\UpdateCustomerProfile.cs",
+              "RelativeDocumentMoniker": "cinemaapp\\\u524D\u7AEF\\UpdateCustomerProfile.cs",
+              "ToolTip": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\UpdateCustomerProfile.cs",
+              "RelativeToolTip": "cinemaapp\\\u524D\u7AEF\\UpdateCustomerProfile.cs",
+              "ViewState": "AgIAAD4AAAAAAAAAAAAQwGIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-06T06:55:56.337Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
               "Title": "OracleFilmRepository.cs",
               "DocumentMoniker": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\Repositories\\OracleFilmRepository.cs",
               "RelativeDocumentMoniker": "cinemaapp\\Repositories\\OracleFilmRepository.cs",
@@ -173,12 +145,11 @@
               "RelativeToolTip": "cinemaapp\\Repositories\\OracleFilmRepository.cs",
               "ViewState": "AgIAAHkAAAAAAAAAAAAuwJYAAAAbAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-06T06:07:44.021Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-08-06T06:07:44.021Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 10,
               "Title": "IFilmRepository.cs",
               "DocumentMoniker": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\Repositories\\IFilmRepository.cs",
               "RelativeDocumentMoniker": "cinemaapp\\Repositories\\IFilmRepository.cs",
@@ -186,37 +157,11 @@
               "RelativeToolTip": "cinemaapp\\Repositories\\IFilmRepository.cs",
               "ViewState": "AgIAAAsAAAAAAAAAAAAuwAsAAAAkAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-06T06:07:39.024Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-08-06T06:07:39.024Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "FilmService.cs",
-              "DocumentMoniker": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\Services\\FilmService.cs",
-              "RelativeDocumentMoniker": "cinemaapp\\Services\\FilmService.cs",
-              "ToolTip": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\Services\\FilmService.cs",
-              "RelativeToolTip": "cinemaapp\\Services\\FilmService.cs",
-              "ViewState": "AgIAACUAAAAAAAAAAAAAADEAAAA0AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-06T04:49:01.394Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "Cast.cs",
-              "DocumentMoniker": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\Models\\Cast.cs",
-              "RelativeDocumentMoniker": "cinemaapp\\Models\\Cast.cs",
-              "ToolTip": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\Models\\Cast.cs",
-              "RelativeToolTip": "cinemaapp\\Models\\Cast.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAADwvwAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-06T04:38:52.683Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "MainForm.cs",
               "DocumentMoniker": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\MainForm.cs",
               "RelativeDocumentMoniker": "cinemaapp\\\u524D\u7AEF\\MainForm.cs",
@@ -224,12 +169,11 @@
               "RelativeToolTip": "cinemaapp\\\u524D\u7AEF\\MainForm.cs",
               "ViewState": "AgIAABwBAAAAAAAAAAAQwFIAAAAeAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-06T02:25:59.151Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-08-06T02:25:59.151Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 11,
               "Title": "MainForm.Designer.cs",
               "DocumentMoniker": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\MainForm.Designer.cs",
               "RelativeDocumentMoniker": "cinemaapp\\\u524D\u7AEF\\MainForm.Designer.cs",
@@ -241,7 +185,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 9,
               "Title": "IFilmService.cs",
               "DocumentMoniker": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\Services\\IFilmService.cs",
               "RelativeDocumentMoniker": "cinemaapp\\Services\\IFilmService.cs",
@@ -249,8 +193,7 @@
               "RelativeToolTip": "cinemaapp\\Services\\IFilmService.cs",
               "ViewState": "AgIAAA4AAAAAAAAAAAAQwBcAAAA0AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-06T03:58:27.993Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-08-06T03:58:27.993Z"
             },
             {
               "$type": "Document",
@@ -262,8 +205,7 @@
               "RelativeToolTip": "cinemaapp\\\u524D\u7AEF\\FilmDashBoard.cs",
               "ViewState": "AgIAALcBAAAAAAAAAAAAAMoAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-06T03:07:36.193Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-08-06T03:07:36.193Z"
             }
           ]
         }

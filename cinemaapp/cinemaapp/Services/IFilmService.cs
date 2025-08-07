@@ -21,7 +21,7 @@ namespace test.Services
         Film GetFilmDetails(string filmName); // 获取电影详细信息，包括演职人员和场次
         List<Cast> GetFilmCast(string filmName); // 获取电影演职人员
         List<Section> GetFilmSections(string filmName); // 获取电影场次
-        List<Film> GetFilmStatistics(string sortBy);
+        List<Film> GetFilmStatistics(string sortBy);//排序电影统计信息
 
     }
 }
