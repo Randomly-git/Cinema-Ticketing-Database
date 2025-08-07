@@ -1,10 +1,10 @@
-﻿using test.Models; 
+﻿using test.Models;
 using test.Repositories; // 引用 Repositories 命名空间
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace test.Services 
+namespace test.Services
 {
     /// <summary>
     /// 影片业务服务实现。
@@ -79,11 +79,6 @@ namespace test.Services
                     return films.OrderByDescending(f => f.BoxOffice).ToList();
             }
         }
-
-
-
-
     }
 
 }
-

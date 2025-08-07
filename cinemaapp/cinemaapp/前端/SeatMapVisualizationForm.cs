@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Text;
+using System.Linq;
 using System.Windows.Forms;
 using test.Models;
 using test.Services;
@@ -26,6 +26,7 @@ public partial class SeatMapVisualizationForm : Form
         _schedulingService = schedulingService ?? throw new ArgumentNullException(nameof(schedulingService));
         Load += SeatMapVisualizationForm_Load;
     }
+
     private void SeatMapVisualizationForm_Load(object sender, EventArgs e)
     {
         Text = "影院排片网格";
@@ -56,7 +57,12 @@ public partial class SeatMapVisualizationForm : Form
         };
         Controls.Add(_schedulePanel);
 
+        // 初始化 ToolTip 并设置属性
         _toolTip = new ToolTip();
+        _toolTip.InitialDelay = 100;
+        _toolTip.ReshowDelay = 100;
+        _toolTip.AutoPopDelay = 10000;
+        _toolTip.ShowAlways = true;
     }
 
     private void DrawScheduleGrid()
@@ -67,27 +73,38 @@ public partial class SeatMapVisualizationForm : Form
         _sections = _schedulingService.GetSectionsByDateRange(selectedDate, selectedDate.AddDays(1));
 
         var hallList = _sections.Select(s => s.HallNo).Distinct().OrderBy(h => h).ToList();
-        var startHour = 10;
-        var endHour = 23;
 
-        int cellWidth = 60;
+        DateTime startDateTime = selectedDate.AddHours(9);
+        DateTime endDateTime = selectedDate.AddDays(1).AddHours(2);
+        int totalMinutes = (int)(endDateTime - startDateTime).TotalMinutes;
+
+        int cellWidth = 10;
         int cellHeight = 30;
+        int hallLabelWidth = 50;
 
-        // 添加标题行
-        for (int h = startHour; h <= endHour; h++)
+        var tooltipCache = new Dictionary<Section, string>();
+        foreach (var section in _sections)
         {
+            // 只显示时间段
+            tooltipCache[section] = $"{section.ScheduleStartTime:HH:mm} - {section.ScheduleEndTime:HH:mm}";
+        }
+
+        // 添加时间轴标题行
+        for (int i = 0; i < 17; i++)
+        {
+            DateTime hourTime = startDateTime.AddHours(i);
             var lbl = new Label
             {
-                Text = $"{h}:00",
-                Location = new Point((h - startHour + 1) * cellWidth, 0),
-                Size = new Size(cellWidth, cellHeight),
+                Text = $"{hourTime.Hour}:00",
+                Location = new Point(hallLabelWidth + i * 6 * cellWidth, 0),
+                Size = new Size(6 * cellWidth, cellHeight),
                 TextAlign = ContentAlignment.MiddleCenter,
                 BorderStyle = BorderStyle.FixedSingle
             };
             _schedulePanel.Controls.Add(lbl);
         }
 
-        // 添加每一行
+        // 添加每行影厅号及排片条
         for (int row = 0; row < hallList.Count; row++)
         {
             var hallNo = hallList[row];
@@ -95,72 +112,65 @@ public partial class SeatMapVisualizationForm : Form
             {
                 Text = $"影厅 {hallNo}",
                 Location = new Point(0, (row + 1) * cellHeight),
-                Size = new Size(cellWidth, cellHeight),
+                Size = new Size(hallLabelWidth, cellHeight),
                 TextAlign = ContentAlignment.MiddleCenter,
                 BorderStyle = BorderStyle.FixedSingle
             };
             _schedulePanel.Controls.Add(lbl);
 
-            // 获取该影厅的排片
             var hallSections = _sections.Where(s => s.HallNo == hallNo).ToList();
 
             foreach (var section in hallSections)
             {
-                int start = section.ScheduleStartTime.Hour;
-                int end = section.ScheduleEndTime.Hour;
-                int left = (start - startHour + 1) * cellWidth;
+                int startTotalMinutes = (int)(section.ScheduleStartTime - startDateTime).TotalMinutes;
+                int endTotalMinutes = (int)(section.ScheduleEndTime - startDateTime).TotalMinutes;
+
+                if (endTotalMinutes <= 0 || startTotalMinutes >= totalMinutes)
+                    continue;
+
+                startTotalMinutes = Math.Max(startTotalMinutes, 0);
+                endTotalMinutes = Math.Min(endTotalMinutes, totalMinutes);
+
+                int left = hallLabelWidth + (int)(startTotalMinutes * (cellWidth / 10.0));
+                int width = (int)((endTotalMinutes - startTotalMinutes) * (cellWidth / 10.0));
+                width = Math.Max(width, 5);
+
                 int top = (row + 1) * cellHeight;
-                int width = Math.Max(1, end - start) * cellWidth;
 
                 var box = new Panel
                 {
                     BackColor = Color.LightBlue,
                     Location = new Point(left, top),
                     Size = new Size(width, cellHeight - 2),
-                    BorderStyle = BorderStyle.FixedSingle
+                    BorderStyle = BorderStyle.FixedSingle,
+                    Cursor = Cursors.Hand
                 };
 
-                _toolTip.SetToolTip(box, $"{section.FilmName}\n{section.ScheduleStartTime:HH:mm} - {section.ScheduleEndTime:HH:mm}");
+                // 电影名显示在排片条内居中
+                var filmNameLabel = new Label
+                {
+                    Text = section.FilmName,
+                    ForeColor = Color.Black,
+                    BackColor = Color.Transparent,
+                    TextAlign = ContentAlignment.MiddleCenter,
+                    Dock = DockStyle.Fill,
+                    AutoEllipsis = true,
+                    Font = new Font("Segoe UI", 8, FontStyle.Regular),
+                };
+
+                box.Controls.Add(filmNameLabel);
+
+                // 给 Panel 和 Label 都绑定 ToolTip，确保悬停时显示时间段
+                _toolTip.SetToolTip(box, tooltipCache[section]);
+                _toolTip.SetToolTip(filmNameLabel, tooltipCache[section]);
+
+                box.Click += (s, e) =>
+                {
+                    MessageBox.Show($"点击了影厅 {hallNo} 的《{section.FilmName}》场次\n时间：{section.ScheduleStartTime:HH:mm} - {section.ScheduleEndTime:HH:mm}");
+                };
+
                 _schedulePanel.Controls.Add(box);
             }
         }
-    }
-
-
-
-    private void LoadScheduleData()
-    {
-        DateTime start = _dtpStart.Value.Date;
-        DateTime end = _dtpEnd.Value.Date.AddDays(1);  // 结束时间为次日 0 点
-
-        if (start > end)
-        {
-            MessageBox.Show("起始日期不能晚于结束日期。", "错误", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            return;
-        }
-
-        _sections = _schedulingService.GetSectionsByDateRange(start, end);
-        ShowScheduleListText(start, end.AddDays(-1)); // 显示时减回一天，让文字更直观
-    }
-
-    private void ShowScheduleListText(DateTime start, DateTime end)
-    {
-        if (_sections == null || _sections.Count == 0)
-        {
-            _txtScheduleList.Text = $"[{start:yyyy-MM-dd}] 至 [{end:yyyy-MM-dd}] 无排片信息。";
-            return;
-        }
-
-        var sb = new StringBuilder();
-        sb.AppendLine($"[{start:yyyy-MM-dd}] 至 [{end:yyyy-MM-dd}] 排片信息：");
-        sb.AppendLine("场次ID | 影厅号 | 电影名       | 开始时间           | 结束时间");
-        sb.AppendLine("------------------------------------------------------------");
-
-        foreach (var sec in _sections)
-        {
-            sb.AppendLine($"{sec.SectionID,6} | {sec.HallNo,6} | {sec.FilmName,-12} | {sec.ScheduleStartTime:yyyy-MM-dd HH:mm} | {sec.ScheduleEndTime:HH:mm}");
-        }
-
-        _txtScheduleList.Text = sb.ToString();
     }
 }

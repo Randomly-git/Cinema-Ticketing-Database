@@ -3,7 +3,7 @@ using test.Repositories; // 引用 Repositories 命名空间
 using System;
 using System.Collections.Generic;
 
-namespace test.Services 
+namespace test.Services
 {
     // 添加统计数据类
     public class FilmStatistic

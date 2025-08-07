@@ -85,11 +85,10 @@ namespace cinemaapp
                 AddButton("1. 电影管理 (增/改)", 110, ManageFilmsMenu);
                 AddButton("2. 查看所有订单", 160, ViewAllOrders);
                 AddButton("3. 添加新排片", 210, AddSectionInteractive);
-                AddButton("4. 查看排片", 260, ViewSectionsInteractive);
+                AddButton("4. 排片和座位图可视化", 260, ShowCinemaScheduleAndSeatMap);
                 AddButton("5. 删除排片", 310, DeleteSectionInteractive);
                 AddButton("6. 管理员登出", 360, LogoutAdministrator);
-                AddButton("7. 排片和座位图可视化", 410, ShowCinemaScheduleAndSeatMap);
-                AddButton("0. 退出系统", 460, () => this.Close());
+                AddButton("0. 退出系统", 410, () => this.Close());
             }
         }
 
