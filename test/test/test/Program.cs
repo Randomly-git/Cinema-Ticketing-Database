@@ -842,59 +842,88 @@ namespace test
         #endregion
 
         private static void DisplayCustomerPaidOrders()
+{
+    if (_loggedInCustomer == null)
+    {
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.WriteLine("请先登录才能查看订单。");
+        Console.ResetColor();
+        return;
+    }
+
+    try
+    {
+        // === 1. 获取并显示电影票订单 ===
+        Console.WriteLine("\n=== 您的电影票订单 ===");
+        var paidTicketOrders = _orderRepository.GetOrdersForCustomer(_loggedInCustomer.CustomerID, true)
+                                               .Where(o => o.State == "有效")
+                                               .OrderByDescending(o => o.Day)
+                                               .ToList();
+
+        if (paidTicketOrders.Any())
         {
-            if (_loggedInCustomer == null)
+            foreach (var order in paidTicketOrders)
             {
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("请先登录才能查看订单。");
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.WriteLine($"\n订单ID: {order.OrderID}");
                 Console.ResetColor();
-                return;
-            }
 
-            try
-            {
-                // 获取客户所有已支付订单
-                var paidOrders = _orderRepository.GetOrdersForCustomer(_loggedInCustomer.CustomerID ,true)
-                                    .Where(o => o.State == "有效") // 您系统中的已支付状态标识
-                                    .OrderByDescending(o => o.Day)
-                                    .ToList();
-
-                Console.WriteLine("\n=== 您的已支付订单 ===");
-
-                if (!paidOrders.Any())
-                {
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine("您没有已支付的订单。");
-                    Console.ResetColor();
-                    return;
-                }
-
-                // 显示订单列表
-                foreach (var order in paidOrders)
-                {
-                    Console.ForegroundColor = ConsoleColor.Cyan;
-                    Console.WriteLine($"\n订单ID: {order.OrderID}");
-                    Console.ResetColor();
-
-                    Console.WriteLine($"订单日期: {order.Day:yyyy-MM-dd HH:mm}");
-                    Console.WriteLine($"电影票ID: {order.TicketID}");
-                    Console.WriteLine($"支付方式: {order.PaymentMethod}");
-                    Console.WriteLine($"金额: {order.TotalPrice:C}");
-                    Console.WriteLine($"状态: {order.State}");
-
-                    // 可以添加更多订单详情显示
-                    Console.WriteLine("----------------------------");
-                }
-
-                Console.WriteLine($"\n共找到 {paidOrders.Count} 个已支付订单。");
-            }
-            catch (Exception ex)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine($"获取订单时出错: {ex.Message}");
-                Console.ResetColor();
+                Console.WriteLine($"订单日期: {order.Day:yyyy-MM-dd HH:mm}");
+                Console.WriteLine($"电影票ID: {order.TicketID}");
+                Console.WriteLine($"支付方式: {order.PaymentMethod}");
+                Console.WriteLine($"金额: {order.TotalPrice:C}");
+                Console.WriteLine($"状态: {order.State}");
+                Console.WriteLine("----------------------------");
             }
         }
+        else
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("您没有已支付的电影票订单。");
+            Console.ResetColor();
+        }
+
+        // --- 2. 获取并显示周边产品订单 ---
+        Console.WriteLine("\n=== 您的周边产品订单 ===");
+        // 假设有一个静态的 _orderForProductRepository 实例
+        var paidProductOrders = _orderForProductRepository.GetOrdersByCustomerId(_loggedInCustomer.CustomerID)
+                                                        .Where(o => o.State == "已完成") // 根据你的ProductService逻辑，状态为"已完成"
+                                                        .OrderByDescending(o => o.Day)
+                                                        .ToList();
+
+        if (paidProductOrders.Any())
+        {
+            foreach (var order in paidProductOrders)
+            {
+                Console.ForegroundColor = ConsoleColor.Green; // 为周边订单使用不同的颜色
+                Console.WriteLine($"\n订单ID: {order.OrderID}");
+                Console.ResetColor();
+
+                Console.WriteLine($"订单日期: {order.Day:yyyy-MM-dd HH:mm}");
+                Console.WriteLine($"产品名称: {order.ProductName}");
+                Console.WriteLine($"购买数量: {order.PurchaseNum}");
+                Console.WriteLine($"支付方式: {order.PMethod}");
+                Console.WriteLine($"金额: {order.Price * order.PurchaseNum:C}"); // 计算总价
+                Console.WriteLine($"状态: {order.State}");
+                Console.WriteLine("----------------------------");
+            }
+        }
+        else
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("您没有周边产品订单。");
+            Console.ResetColor();
+        }
+
+        Console.WriteLine($"\n已找到 {paidTicketOrders.Count} 个电影票订单和 {paidProductOrders.Count} 个周边产品订单。");
+    }
+    catch (Exception ex)
+    {
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine($"获取订单时出错: {ex.Message}");
+        Console.ResetColor();
+    }
+}
 
         private static void ProcessTicketRefund()
         {
