@@ -123,6 +123,40 @@ namespace test.Services
             }
         }
 
+        
+
+        private decimal CalculateRefundFee(DateTime showtime, DateTime refundTime, int paidPrice)
+        {
+            TimeSpan timeLeft = showtime - refundTime;
+            decimal feeRate;
+
+            if (timeLeft.TotalHours > 24)
+            {
+                feeRate = 0.1m; // 24小时以上收取10%手续费
+            }
+            else if (timeLeft.TotalHours > 2)
+            {
+                feeRate = 0.3m; // 2-24小时收取30%手续费
+            }
+            else
+            {
+                feeRate = 0.5m; // 2小时内收取50%手续费
+            }
+
+            return paidPrice * feeRate;
+        }
+
+        public bool ReleaseTicket(string ticketId)
+        {
+            string sql = "UPDATE ticket SET state = '已退票' WHERE ticketID = :ticketId";
+            var parameter = new OracleParameter("ticketId", OracleDbType.Varchar2, 40)
+            {
+                Value = ticketId
+            };
+
+            return _dbService.ExecuteNonQuery(sql, parameter) > 0;
+        }
+
         public bool RefundTicket(int orderId, DateTime refundTime, out decimal refundFee, out int refundAmount, out string errorMessage)
         {
             refundFee = 0m;
@@ -208,37 +242,51 @@ WHERE
             }
         }
 
-        private decimal CalculateRefundFee(DateTime showtime, DateTime refundTime, int paidPrice)
+        public bool TryGetRefundInfo(int orderId, DateTime refundTime, out decimal fee, out int refundAmount, out string errorMsg)
         {
-            TimeSpan timeLeft = showtime - refundTime;
-            decimal feeRate;
+            fee = 0m;
+            refundAmount = 0;
+            errorMsg = "";
 
-            if (timeLeft.TotalHours > 24)
+            // 查询订单信息
+            string getOrderSql = @"
+SELECT 
+    o.ticketID, 
+    o.price,
+    ts.starttime AS showtime
+FROM 
+    orderfortickets o
+    JOIN ticket t ON o.ticketID = t.ticketID
+    JOIN section s ON t.sectionID = s.sectionID
+    JOIN timeslot ts ON s.timeID = ts.timeID
+WHERE 
+    o.orderID = :orderId 
+    AND o.state = '有效'";
+
+            var param = new OracleParameter("orderId", OracleDbType.Int32) { Value = orderId };
+            var dt = _dbService.ExecuteQuery(getOrderSql, param);
+
+            if (dt.Rows.Count == 0)
             {
-                feeRate = 0.1m; // 24小时以上收取10%手续费
-            }
-            else if (timeLeft.TotalHours > 2)
-            {
-                feeRate = 0.3m; // 2-24小时收取30%手续费
-            }
-            else
-            {
-                feeRate = 0.5m; // 2小时内收取50%手续费
+                errorMsg = "订单不存在或已失效。";
+                return false;
             }
 
-            return paidPrice * feeRate;
+            var row = dt.Rows[0];
+            DateTime showtime = Convert.ToDateTime(row["showtime"]);
+            int paidPrice = Convert.ToInt32(row["price"]);
+
+            if (refundTime >= showtime)
+            {
+                errorMsg = "电影已开始放映，无法退票。";
+                return false;
+            }
+
+            fee = CalculateRefundFee(showtime, refundTime, paidPrice);
+            refundAmount = paidPrice - (int)fee;
+            return true;
         }
 
-        public bool ReleaseTicket(string ticketId)
-        {
-            string sql = "UPDATE ticket SET state = '已退票' WHERE ticketID = :ticketId";
-            var parameter = new OracleParameter("ticketId", OracleDbType.Varchar2, 40)
-            {
-                Value = ticketId
-            };
-
-            return _dbService.ExecuteNonQuery(sql, parameter) > 0;
-        }
     }
 }
 

@@ -19,5 +19,10 @@ namespace test.Services // 请替换为你的项目命名空间
         OrderForTickets PurchaseTicket(int sectionId, string lineNo, int columnNo, string customerId, string paymentMethod); //购票方法
 
         public bool RefundTicket(int orderId, DateTime refundTime, out decimal refundFee, out int refundAmount, out string errorMessage); //退票方法
+
+        bool TryGetRefundInfo(int bookingId, DateTime refundTime, out decimal fee, out int refundAmount, out string errorMessage);
+
+        
+
     }
 }

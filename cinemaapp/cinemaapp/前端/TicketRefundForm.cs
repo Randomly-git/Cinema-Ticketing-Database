@@ -1,4 +1,5 @@
-﻿using System;
+﻿using cinemaapp.Services;
+using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
@@ -13,13 +14,18 @@ namespace cinemaapp
         private readonly Customer _loggedInCustomer;
         private readonly IOrderRepository _orderRepository;
         private readonly IBookingService _bookingService;
+        private readonly ITicketService _ticketService;
 
-        public TicketRefundForm(Customer loggedInCustomer, IOrderRepository orderRepository, IBookingService bookingService)
+        public TicketRefundForm(Customer loggedInCustomer,
+                                IOrderRepository orderRepository,
+                                IBookingService bookingService,
+                                ITicketService ticketService) // 新增参数
         {
             InitializeComponent();
             _loggedInCustomer = loggedInCustomer;
             _orderRepository = orderRepository;
             _bookingService = bookingService;
+            _ticketService = ticketService; // 初始化
             SetupUI();
         }
 
@@ -42,6 +48,7 @@ namespace cinemaapp
 
             btnRefund.Click += BtnRefund_Click;
             btnCancel.Click += (s, e) => this.Close();
+            dataGridView1.CellDoubleClick += DataGridView1_CellDoubleClick;
 
             panel.Controls.Add(btnRefund);
             panel.Controls.Add(btnCancel);
@@ -184,32 +191,52 @@ namespace cinemaapp
 
             var selectedOrderId = (int)dataGridView1.SelectedRows[0].Cells["订单ID列"].Value;
 
-            if (MessageBox.Show("确定要退票吗？", "确认退票",
-                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+            // ✳️ 第一步：尝试计算手续费和退款金额
+            if (!_bookingService.TryGetRefundInfo(
+                selectedOrderId,
+                DateTime.Now,
+                out decimal fee,
+                out int refundAmount,
+                out string errMsg))
+            {
+                MessageBox.Show(errMsg, "无法退票", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // ✳️ 第二步：提示用户详细的退款信息
+            string confirmMsg = $"确定要退票吗？\n\n" +
+                                $"票价: {refundAmount + (int)fee} 元\n" +
+                                $"手续费: {fee:F2} 元\n" +
+                                $"实际可退: {refundAmount} 元";
+
+            if (MessageBox.Show(confirmMsg, "确认退票", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
             {
                 return;
             }
 
+            // ✳️ 第三步：正式调用 RefundTicket 执行退票
             try
             {
                 decimal refundFee;
-                int refundAmount;
+                int actualRefundAmount;
+
                 bool success = _bookingService.RefundTicket(
                     selectedOrderId,
                     DateTime.Now,
                     out refundFee,
-                    out refundAmount,
+                    out actualRefundAmount,
                     out string errorMsg);
 
                 if (success)
                 {
                     string message = $"退票成功！\n\n" +
-                                    $"退款金额: {refundAmount:C}\n" +
-                                    $"手续费: {refundFee:C}\n" +
-                                    $"实际退还: {(refundAmount - refundFee):C}";
+                                     $"退款金额: {actualRefundAmount:C}\n" +
+                                     $"手续费: {refundFee:C}\n" +
+                                     $"实际退还: {(actualRefundAmount - refundFee):C}";
 
                     MessageBox.Show(message, "退票成功",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
+
                     LoadOrders(); // 刷新订单列表
                 }
                 else
@@ -223,5 +250,35 @@ namespace cinemaapp
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+
+        private void DataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+
+            var row = dataGridView1.Rows[e.RowIndex];
+            string ticketId = row.Cells["电影票ID列"].Value?.ToString();
+
+            if (string.IsNullOrEmpty(ticketId)) return;
+
+            var ticket = _ticketService.GetTicketWithSection(ticketId);
+            if (ticket == null || ticket.Section == null)
+            {
+                MessageBox.Show("未找到该票的详细排片信息", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            var sec = ticket.Section;
+            string msg = $"🎬 电影：{sec.FilmName}\n" +
+                         $"🏟️ 影厅：{sec.HallNo}（{sec.HallCategory}）\n" +
+                         $"🕒 时间：{sec.ScheduleStartTime:yyyy-MM-dd HH:mm} ~ {sec.ScheduleEndTime:HH:mm}\n" +
+                         $"📍 座位：{ticket.LineNo}排{ticket.ColumnNo}座\n" +
+                         $"💰 价格：{ticket.Price:C}\n";
+
+            MessageBox.Show(msg, "排片详情", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+
+
     }
 }

@@ -1,16 +1,18 @@
-﻿using Oracle.ManagedDataAccess.Client; // 确保引用此命名空间
+﻿using cinemaapp.Repositories;
+using cinemaapp.Services;
+using Oracle.ManagedDataAccess.Client; // 确保引用此命名空间
 using System;
 using System.Collections.Generic; // 用于 List<T> 和 Dictionary<TKey, TValue>
 using System.Configuration;
-using System.Linq;
-using test.Models;
-using test.Repositories;
-using test.Services;
-using System.Text;
-using System.Windows.Forms;
 using System.Data;
 using System.Globalization;
 using System.Linq;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
+using test.Models;
+using test.Repositories;
+using test.Services;
 
 
 
@@ -31,11 +33,15 @@ namespace cinemaapp
         public static IAdministratorService _adminService;
         public static DatabaseService _dbService;
         public static ISchedulingService _schedulingService;
+        public static ITicketService _ticketService;
+
 
         // 仓库实例
         public static ICustomerRepository _customerRepository;
         public static IOrderRepository _orderRepository;
         public static IFilmRepository _filmRepository;
+        public static ITicketRepository _ticketRepository;
+
 
 
         /// <summary>
@@ -71,6 +77,8 @@ namespace cinemaapp
             _filmRepository = new OracleFilmRepository(connectionString);
             IShowingRepository showingRepository = new OracleShowingRepository(connectionString);
             IAdministratorRepository adminRepository = new OracleAdministratorRepository(connectionString); // 管理员仓库
+            _ticketRepository = new OracleTicketRepository(connectionString); 
+
 
             _dbService = new DatabaseService(connectionString);
             _userService = new UserService(_customerRepository);
@@ -79,6 +87,7 @@ namespace cinemaapp
             _bookingService = new BookingService(showingRepository, _filmRepository, _customerRepository, _orderRepository, _dbService, connectionString);
             _adminService = new AdministratorService(adminRepository, _orderRepository, _filmRepository); // 管理员服务
             _schedulingService = new SchedulingService(connectionString);
+            _ticketService = new TicketService(_ticketRepository); 
 
 
             // ✅ 启动主窗体（MainForm）

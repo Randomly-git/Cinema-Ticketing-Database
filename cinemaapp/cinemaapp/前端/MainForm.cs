@@ -1,4 +1,5 @@
 ﻿
+using cinemaapp.Services;
 using System;
 using System.Diagnostics;
 using System.Drawing;
@@ -15,6 +16,7 @@ namespace cinemaapp
         private Administrator _loggedInAdmin = null;
         private ISchedulingService _schedulingService;  
         private IShowingService _showingService;
+        //private ITicketService _ticketService;
 
         public MainForm()
         {
@@ -67,7 +69,7 @@ namespace cinemaapp
                 AddButton("查看电影相关信息", 150, FilmDashBoard);
                 AddButton("购票", 190, PurchaseTicketMenu);
                 AddButton("查看所有有效订单", 230, DisplayCustomerPaidOrders);
-                AddButton("退票", 270, ProcessTicketRefund);
+                AddButton("我的电影票", 270, ProcessTicketRefund);
                 AddButton("购买周边 (未实现)", 310, () => MessageBox.Show("功能尚未实现"));
                 AddButton("删除我的账户", 350, DeleteCustomerAccount);
                 AddButton("用户登出", 390, LogoutCustomer);
@@ -281,6 +283,7 @@ namespace cinemaapp
 
         // 5. 退票
 
+
         private void ProcessTicketRefund()
         {
             try
@@ -305,7 +308,8 @@ namespace cinemaapp
                 using (var refundForm = new TicketRefundForm(
                     _loggedInCustomer,
                     Program._orderRepository,
-                    Program._bookingService))
+                    Program._bookingService,
+                    Program._ticketService))
                 {
                     // 4. 处理窗体结果
                     var result = refundForm.ShowDialog();
@@ -334,7 +338,6 @@ namespace cinemaapp
 
 
 
-
         // 2. 查看所有订单（已实现或正在实现）
 
         // 3. 添加新排片
@@ -343,11 +346,7 @@ namespace cinemaapp
             MessageBox.Show("添加新排片 - 功能未实现");
         }
 
-        // 4. 查看排片
-        private void ViewSectionsInteractive()
-        {
-            MessageBox.Show("查看排片 - 功能未实现");
-        }
+
 
         // 5. 删除排片
         private void DeleteSectionInteractive()
