@@ -1,0 +1,407 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|d:\\ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|solutionrelative:cinemaapp\\\u524D\u7AEF\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|d:\\ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|solutionrelative:cinemaapp\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|d:\\ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\customerordersform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|solutionrelative:cinemaapp\\\u524D\u7AEF\\customerordersform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|d:\\ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\ticketrefundform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|solutionrelative:cinemaapp\\\u524D\u7AEF\\ticketrefundform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|d:\\ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\services\\bookingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|solutionrelative:cinemaapp\\services\\bookingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|d:\\ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\services\\ibookingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|solutionrelative:cinemaapp\\services\\ibookingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|d:\\ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\productpurchaseform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|solutionrelative:cinemaapp\\\u524D\u7AEF\\productpurchaseform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|d:\\ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\ticketrefundform.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|solutionrelative:cinemaapp\\\u524D\u7AEF\\ticketrefundform.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|D:\\Ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\productpurchaseform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|solutionrelative:cinemaapp\\\u524D\u7AEF\\productpurchaseform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|d:\\ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\productpurchaseform.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|solutionrelative:cinemaapp\\\u524D\u7AEF\\productpurchaseform.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|d:\\ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\repositories\\oraclerelatedproductrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|solutionrelative:cinemaapp\\repositories\\oraclerelatedproductrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|d:\\ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\services\\productservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|solutionrelative:cinemaapp\\services\\productservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|d:\\ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\logincustomer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|solutionrelative:cinemaapp\\\u524D\u7AEF\\logincustomer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|d:\\ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\seatmapvisualizationform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|solutionrelative:cinemaapp\\\u524D\u7AEF\\seatmapvisualizationform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|d:\\ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\registeradministrator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|solutionrelative:cinemaapp\\\u524D\u7AEF\\registeradministrator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|d:\\ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\updatecustomerprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|solutionrelative:cinemaapp\\\u524D\u7AEF\\updatecustomerprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|d:\\ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\seatstatusform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|solutionrelative:cinemaapp\\\u524D\u7AEF\\seatstatusform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|d:\\ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\viewallorders.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|solutionrelative:cinemaapp\\\u524D\u7AEF\\viewallorders.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|d:\\ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\mainform.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|solutionrelative:cinemaapp\\\u524D\u7AEF\\mainform.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|d:\\ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\services\\ishowingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|solutionrelative:cinemaapp\\services\\ishowingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|d:\\ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\repositories\\ishowingrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|solutionrelative:cinemaapp\\repositories\\ishowingrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|d:\\ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\deletecustomeraccount.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|solutionrelative:cinemaapp\\\u524D\u7AEF\\deletecustomeraccount.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|d:\\ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\registercustomer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|solutionrelative:cinemaapp\\\u524D\u7AEF\\registercustomer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|d:\\ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\filmdashboard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|solutionrelative:cinemaapp\\\u524D\u7AEF\\filmdashboard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 4,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "CustomerOrdersForm.cs",
+              "DocumentMoniker": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\CustomerOrdersForm.cs",
+              "RelativeDocumentMoniker": "cinemaapp\\\u524D\u7AEF\\CustomerOrdersForm.cs",
+              "ToolTip": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\CustomerOrdersForm.cs",
+              "RelativeToolTip": "cinemaapp\\\u524D\u7AEF\\CustomerOrdersForm.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAA0AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-08T06:58:43.185Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "ProductPurchaseForm.cs",
+              "DocumentMoniker": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\ProductPurchaseForm.cs",
+              "RelativeDocumentMoniker": "cinemaapp\\\u524D\u7AEF\\ProductPurchaseForm.cs",
+              "ToolTip": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\ProductPurchaseForm.cs",
+              "RelativeToolTip": "cinemaapp\\\u524D\u7AEF\\ProductPurchaseForm.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADIBAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-08T02:51:40.823Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "TicketRefundForm.cs",
+              "DocumentMoniker": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\TicketRefundForm.cs",
+              "RelativeDocumentMoniker": "cinemaapp\\\u524D\u7AEF\\TicketRefundForm.cs",
+              "ToolTip": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\TicketRefundForm.cs",
+              "RelativeToolTip": "cinemaapp\\\u524D\u7AEF\\TicketRefundForm.cs",
+              "ViewState": "AgIAALIAAAAAAAAAAAAvwMsAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-08T02:43:11.529Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\Program.cs",
+              "RelativeDocumentMoniker": "cinemaapp\\Program.cs",
+              "ToolTip": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\Program.cs",
+              "RelativeToolTip": "cinemaapp\\Program.cs",
+              "ViewState": "AgIAABIAAAAAAAAAAAAAACQAAAA0AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-07T04:48:24.347Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "MainForm.cs",
+              "DocumentMoniker": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\MainForm.cs",
+              "RelativeDocumentMoniker": "cinemaapp\\\u524D\u7AEF\\MainForm.cs",
+              "ToolTip": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\MainForm.cs*",
+              "RelativeToolTip": "cinemaapp\\\u524D\u7AEF\\MainForm.cs*",
+              "ViewState": "AgIAAA4BAAAAAAAAAAAIwCMBAABPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-06T02:25:59.151Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "IBookingService.cs",
+              "DocumentMoniker": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\Services\\IBookingService.cs",
+              "RelativeDocumentMoniker": "cinemaapp\\Services\\IBookingService.cs",
+              "ToolTip": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\Services\\IBookingService.cs",
+              "RelativeToolTip": "cinemaapp\\Services\\IBookingService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwBYAAABeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-07T06:38:04.589Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "BookingService.cs",
+              "DocumentMoniker": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\Services\\BookingService.cs",
+              "RelativeDocumentMoniker": "cinemaapp\\Services\\BookingService.cs",
+              "ToolTip": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\Services\\BookingService.cs",
+              "RelativeToolTip": "cinemaapp\\Services\\BookingService.cs",
+              "ViewState": "AgIAAPMAAAAAAAAAAAAewB0BAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-07T06:38:48.096Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "TicketRefundForm.Designer.cs",
+              "DocumentMoniker": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\TicketRefundForm.Designer.cs",
+              "RelativeDocumentMoniker": "cinemaapp\\\u524D\u7AEF\\TicketRefundForm.Designer.cs",
+              "ToolTip": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\TicketRefundForm.Designer.cs",
+              "RelativeToolTip": "cinemaapp\\\u524D\u7AEF\\TicketRefundForm.Designer.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADsAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-08T02:40:40.024Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "ProductPurchaseForm.cs [\u8BBE\u8BA1]",
+              "DocumentMoniker": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\ProductPurchaseForm.cs",
+              "RelativeDocumentMoniker": "cinemaapp\\\u524D\u7AEF\\ProductPurchaseForm.cs",
+              "ToolTip": "D:\\\u684C\u9762\\Cinema-Ticketing-Database--\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\ProductPurchaseForm.cs [\u8BBE\u8BA1]",
+              "RelativeToolTip": "..\\..\\..\\\u684C\u9762\\Cinema-Ticketing-Database--\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\ProductPurchaseForm.cs [\u8BBE\u8BA1]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-08T02:51:35.792Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "ProductPurchaseForm.Designer.cs",
+              "DocumentMoniker": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\ProductPurchaseForm.Designer.cs",
+              "RelativeDocumentMoniker": "cinemaapp\\\u524D\u7AEF\\ProductPurchaseForm.Designer.cs",
+              "ToolTip": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\ProductPurchaseForm.Designer.cs",
+              "RelativeToolTip": "cinemaapp\\\u524D\u7AEF\\ProductPurchaseForm.Designer.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACYAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-08T02:53:39.892Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "OracleRelatedProductRepository.cs",
+              "DocumentMoniker": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\Repositories\\OracleRelatedProductRepository.cs",
+              "RelativeDocumentMoniker": "cinemaapp\\Repositories\\OracleRelatedProductRepository.cs",
+              "ToolTip": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\Repositories\\OracleRelatedProductRepository.cs",
+              "RelativeToolTip": "cinemaapp\\Repositories\\OracleRelatedProductRepository.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAADwvzIAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-08T03:25:00.687Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "ProductService.cs",
+              "DocumentMoniker": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\Services\\ProductService.cs",
+              "RelativeDocumentMoniker": "cinemaapp\\Services\\ProductService.cs",
+              "ToolTip": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\Services\\ProductService.cs",
+              "RelativeToolTip": "cinemaapp\\Services\\ProductService.cs",
+              "ViewState": "AgIAAHwAAAAAAAAAAAAUwJwAAAA3AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-08T03:09:04.71Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "LoginCustomer.cs",
+              "DocumentMoniker": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\LoginCustomer.cs",
+              "RelativeDocumentMoniker": "cinemaapp\\\u524D\u7AEF\\LoginCustomer.cs",
+              "ToolTip": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\LoginCustomer.cs",
+              "RelativeToolTip": "cinemaapp\\\u524D\u7AEF\\LoginCustomer.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-06T06:55:28.421Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "SeatMapVisualizationForm.cs",
+              "DocumentMoniker": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\SeatMapVisualizationForm.cs",
+              "RelativeDocumentMoniker": "cinemaapp\\\u524D\u7AEF\\SeatMapVisualizationForm.cs",
+              "ToolTip": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\SeatMapVisualizationForm.cs",
+              "RelativeToolTip": "cinemaapp\\\u524D\u7AEF\\SeatMapVisualizationForm.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-07T03:17:18.749Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "RegisterAdministrator.cs",
+              "DocumentMoniker": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\RegisterAdministrator.cs",
+              "RelativeDocumentMoniker": "cinemaapp\\\u524D\u7AEF\\RegisterAdministrator.cs",
+              "ToolTip": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\RegisterAdministrator.cs",
+              "RelativeToolTip": "cinemaapp\\\u524D\u7AEF\\RegisterAdministrator.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-06T06:55:47.236Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "UpdateCustomerProfile.cs",
+              "DocumentMoniker": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\UpdateCustomerProfile.cs",
+              "RelativeDocumentMoniker": "cinemaapp\\\u524D\u7AEF\\UpdateCustomerProfile.cs",
+              "ToolTip": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\UpdateCustomerProfile.cs",
+              "RelativeToolTip": "cinemaapp\\\u524D\u7AEF\\UpdateCustomerProfile.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAGIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-06T06:55:56.337Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "SeatStatusForm.cs",
+              "DocumentMoniker": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\SeatStatusForm.cs",
+              "RelativeDocumentMoniker": "cinemaapp\\\u524D\u7AEF\\SeatStatusForm.cs",
+              "ToolTip": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\SeatStatusForm.cs",
+              "RelativeToolTip": "cinemaapp\\\u524D\u7AEF\\SeatStatusForm.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAKIAAAAXAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-07T04:30:41.025Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "ViewAllOrders.cs",
+              "DocumentMoniker": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\ViewAllOrders.cs",
+              "RelativeDocumentMoniker": "cinemaapp\\\u524D\u7AEF\\ViewAllOrders.cs",
+              "ToolTip": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\ViewAllOrders.cs",
+              "RelativeToolTip": "cinemaapp\\\u524D\u7AEF\\ViewAllOrders.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-08T02:43:01.29Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "IShowingService.cs",
+              "DocumentMoniker": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\Services\\IShowingService.cs",
+              "RelativeDocumentMoniker": "cinemaapp\\Services\\IShowingService.cs",
+              "ToolTip": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\Services\\IShowingService.cs",
+              "RelativeToolTip": "cinemaapp\\Services\\IShowingService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-07T03:10:31.498Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "MainForm.Designer.cs",
+              "DocumentMoniker": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\MainForm.Designer.cs",
+              "RelativeDocumentMoniker": "cinemaapp\\\u524D\u7AEF\\MainForm.Designer.cs",
+              "ToolTip": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\MainForm.Designer.cs",
+              "RelativeToolTip": "cinemaapp\\\u524D\u7AEF\\MainForm.Designer.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-06T04:16:57.809Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "IShowingRepository.cs",
+              "DocumentMoniker": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\Repositories\\IShowingRepository.cs",
+              "RelativeDocumentMoniker": "cinemaapp\\Repositories\\IShowingRepository.cs",
+              "ToolTip": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\Repositories\\IShowingRepository.cs",
+              "RelativeToolTip": "cinemaapp\\Repositories\\IShowingRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAADwvwAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-07T03:10:25.819Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "RegisterCustomer.cs",
+              "DocumentMoniker": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\RegisterCustomer.cs",
+              "RelativeDocumentMoniker": "cinemaapp\\\u524D\u7AEF\\RegisterCustomer.cs",
+              "ToolTip": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\RegisterCustomer.cs",
+              "RelativeToolTip": "cinemaapp\\\u524D\u7AEF\\RegisterCustomer.cs",
+              "ViewState": "AgIAAFMAAAAAAAAAAAAUwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-06T06:55:51.975Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "DeleteCustomerAccount.cs",
+              "DocumentMoniker": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\DeleteCustomerAccount.cs",
+              "RelativeDocumentMoniker": "cinemaapp\\\u524D\u7AEF\\DeleteCustomerAccount.cs",
+              "ToolTip": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\DeleteCustomerAccount.cs",
+              "RelativeToolTip": "cinemaapp\\\u524D\u7AEF\\DeleteCustomerAccount.cs",
+              "ViewState": "AgIAAFEAAAAAAAAAAAAuwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-06T06:55:06.179Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "FilmDashBoard.cs",
+              "DocumentMoniker": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\FilmDashBoard.cs",
+              "RelativeDocumentMoniker": "cinemaapp\\\u524D\u7AEF\\FilmDashBoard.cs",
+              "ToolTip": "D:\\Ddesktop\\cinemaapp\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\FilmDashBoard.cs",
+              "RelativeToolTip": "cinemaapp\\\u524D\u7AEF\\FilmDashBoard.cs",
+              "ViewState": "AgIAALcBAAAAAAAAAAAAAMoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-06T03:07:36.193Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
