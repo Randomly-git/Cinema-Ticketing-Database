@@ -30,5 +30,14 @@ namespace test.Services
         //电影管理
         void AddFilm(Film film); // 添加新电影
         void UpdateFilm(Film film); // 更新电影信息
+
+
+        // 周边产品管理
+        /// <summary>
+        /// 添加新的电影周边产品
+        /// </summary>
+        void AddMerchandise(RelatedProduct product);
+
+        
     }
 }

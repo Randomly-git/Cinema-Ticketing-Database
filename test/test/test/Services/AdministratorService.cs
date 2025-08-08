@@ -13,13 +13,18 @@ namespace test.Services
         private readonly IAdministratorRepository _administratorRepository;
         private readonly IOrderRepository _orderRepository;
         private readonly IFilmRepository _filmRepository; // 新增电影仓库依赖
+        private readonly IRelatedProductRepository _relatedProductRepository;
+        private readonly IOrderForProductRepository _orderForProductRepository; // 用于验证订单关联
 
         // 构造函数注入仓储依赖
-        public AdministratorService(IAdministratorRepository administratorRepository, IOrderRepository orderRepository, IFilmRepository filmRepository)
+        public AdministratorService(IAdministratorRepository administratorRepository, IOrderRepository orderRepository, IFilmRepository filmRepository, IRelatedProductRepository relatedProductRepo,
+            IOrderForProductRepository orderForProductRepo)
         {
             _administratorRepository = administratorRepository;
             _orderRepository = orderRepository;
             _filmRepository = filmRepository;
+            _relatedProductRepository = relatedProductRepo;
+            _orderForProductRepository = orderForProductRepo;
 
         }
 
@@ -159,6 +164,15 @@ namespace test.Services
         }
 
 
+        /// <summary>
+        /// 添加新的电影周边产品
+        /// </summary>
+        public void AddMerchandise(RelatedProduct product)
+        {
+            _relatedProductRepository.AddProduct(product);
+        }
+
+       
 
 
     }

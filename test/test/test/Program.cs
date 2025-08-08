@@ -91,7 +91,7 @@ namespace test
             _showingService = new ShowingService(showingRepository, _filmRepository);
             _bookingService = new BookingService(showingRepository, _filmRepository, _customerRepository, _orderRepository,_dbService ,connectionString);
             // 根据提供的 IAdministratorService 接口和错误信息，AdministratorService 构造函数应接受 3 个参数
-            _adminService = new AdministratorService(adminRepository, _orderRepository, _filmRepository); // 新增管理员服务
+            _adminService = new AdministratorService(adminRepository, _orderRepository, _filmRepository,_relatedProductRepository,_orderForProductRepository); // 新增管理员服务
             _productService = new ProductService(_relatedProductRepository, _orderForProductRepository,connectionString); // 实例化周边产品服务
             _schedulingService = new SchedulingService(connectionString);
 
@@ -147,7 +147,8 @@ namespace test
                     Console.WriteLine("3. 添加新排片");
                     Console.WriteLine("4. 查看排片");
                     Console.WriteLine("5. 删除排片");
-                    Console.WriteLine("6. 管理员登出"); // 原来的 5 变成了 3
+                    Console.WriteLine("6. 添加周边产品");
+                    Console.WriteLine("7. 管理员登出"); // 原来的 5 变成了 3
                 }
                 Console.WriteLine("0. 退出系统");
                 Console.WriteLine("======================================");
@@ -257,7 +258,10 @@ namespace test
                             case "5":
                                 DeleteSectionInteractive();
                                 break;
-                            case "6": 
+                            case "6":
+                                GetProductInputFromUser();
+                                break; // 添加周边产品
+                            case "7": 
                                 LogoutAdministrator();
                                 break;
                             case "0":
@@ -985,7 +989,7 @@ namespace test
 
                 // 5. 执行退票
                 decimal refundFee;
-                int refundAmount;
+                decimal refundAmount;
                 bool success = _bookingService.RefundTicket(
                     selectedOrder.OrderID,
                     //DateTime.Now,
@@ -1537,12 +1541,6 @@ namespace test
         }
 
 
-        // 移除了 ViewAllCustomers 方法，因为它在提供的 IAdministratorService 接口中不存在。
-        // static void ViewAllCustomers()
-        // {
-        //    ...
-        // }
-
         /// <summary>
         /// 从控制台获取隐藏输入的密码。
         /// </summary>
@@ -1754,7 +1752,44 @@ namespace test
                 Console.WriteLine("删除操作已取消。");
             }
         }
-    }
+
+        // 从用户输入获取产品信息
+        static void GetProductInputFromUser()
+        {
+            RelatedProduct product = new RelatedProduct();
+
+            Console.WriteLine("===== 添加新周边产品 =====");
+
+            Console.Write("请输入产品名称：");
+            product.ProductName = Console.ReadLine()?.Trim() ?? throw new ArgumentException("产品名称不能为空");
+
+            Console.Write("请输入产品价格：");
+            if (!decimal.TryParse(Console.ReadLine(), out decimal price) || price < 0)
+            {
+                throw new ArgumentException("价格必须是有效的非负数");
+            }
+            product.Price = price;
+
+            Console.Write("请输入初始库存数量：");
+            if (!int.TryParse(Console.ReadLine(), out int stock) || stock < 0)
+            {
+                throw new ArgumentException("库存数量必须是有效的非负数");
+            }
+            product.ProductNumber = stock;
+
+            Console.Write("请输入兑换所需积分：");
+            if (!int.TryParse(Console.ReadLine(), out int points) || points < 0)
+            {
+                throw new ArgumentException("积分必须是有效的非负数");
+            }
+            product.RequiredPoints = points;
+            _adminService.AddMerchandise(product);
+
+        }
+    
+
+
+}
 }
 
 
