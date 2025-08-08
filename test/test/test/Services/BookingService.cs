@@ -122,7 +122,7 @@ namespace test.Services
                 }
             }
         }
-        public bool RefundTicket(int orderId, DateTime refundTime, out decimal refundFee, out int refundAmount)
+        public bool RefundTicket(int orderId, DateTime refundTime, out decimal refundFee, out decimal refundAmount)
         {
             refundFee = 0m;
             refundAmount = 0;
@@ -170,7 +170,7 @@ WHERE
 
             // 3. 计算手续费和退款金额
             refundFee = CalculateRefundFee(showtime, refundTime, paidPrice);
-            refundAmount = paidPrice - (int)refundFee;
+            refundAmount = paidPrice - refundFee;
 
             // 4. 执行退款事务
             using (var transaction = _dbService.BeginTransaction())

@@ -985,7 +985,7 @@ namespace test
 
                 // 5. 执行退票
                 decimal refundFee;
-                int refundAmount;
+                decimal refundAmount;
                 bool success = _bookingService.RefundTicket(
                     selectedOrder.OrderID,
                     //DateTime.Now,
