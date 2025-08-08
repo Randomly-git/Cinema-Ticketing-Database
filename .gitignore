@@ -1,0 +1,6 @@
+﻿################################################################################
+# 此 .gitignore 文件已由 Microsoft(R) Visual Studio 自动创建。
+################################################################################
+
+/cinemaapp/.vs/cinemaapp/CopilotIndices/17.14.878.3237/CodeChunks.db
+/cinemaapp/.vs/cinemaapp/CopilotIndices/17.14.878.3237/SemanticSymbols.db

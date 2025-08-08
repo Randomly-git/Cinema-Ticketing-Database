@@ -13,6 +13,8 @@ namespace test.Models
         public int ProductNumber { get; set; } // 库存数量
 
         public int RequiredPoints { get; set; } // 兑换所需积分
+
+        public string ImagePath { get; set; }  // 新增，图片路径
         public override string ToString()
         {
             return $"产品名称: {ProductName}, 价格: {Price:C}, 库存: {ProductNumber}";

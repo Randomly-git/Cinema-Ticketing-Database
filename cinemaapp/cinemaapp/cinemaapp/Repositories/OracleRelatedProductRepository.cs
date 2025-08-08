@@ -24,8 +24,8 @@ namespace test.Repositories
         public List<RelatedProduct> GetAllProducts()
         {
             List<RelatedProduct> products = new List<RelatedProduct>();
-            // 添加 REQUIREDPOINTS 到查询字段
-            string sql = "SELECT PRODUCTNAME, PRICE, PRODUCTNUMBER, REQUIREDPOINTS FROM RELATEDPRODUCT";
+            // SQL 查询加上 IMAGEPATH 字段
+            string sql = "SELECT PRODUCTNAME, PRICE, PRODUCTNUMBER, REQUIREDPOINTS, IMAGEPATH FROM RELATEDPRODUCT";
 
             using (OracleConnection connection = new OracleConnection(_connectionString))
             {
@@ -41,7 +41,8 @@ namespace test.Repositories
                                 ProductName = reader.GetString(0),
                                 Price = reader.GetDecimal(1),
                                 ProductNumber = reader.GetInt32(2),
-                                RequiredPoints = reader.GetInt32(3) // 添加 REQUIREDPOINTS 字段
+                                RequiredPoints = reader.GetInt32(3),
+                                ImagePath = reader.IsDBNull(4) ? null : reader.GetString(4)
                             });
                         }
                     }
@@ -49,6 +50,7 @@ namespace test.Repositories
             }
             return products;
         }
+
 
         /// <summary>
         /// 根据产品名称获取周边产品。
