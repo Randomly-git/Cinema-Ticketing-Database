@@ -84,7 +84,7 @@ namespace test.Services
                     {
                         TicketID = Guid.NewGuid().ToString(), // 生成唯一票ID
                         Price = ticketUnitPrice, // 单张票的售价
-                        Rating = 0, // 初始评分为0
+                        //Rating = 0, // 初始评分为0
                         SectionID = sectionId,
                         LineNo = lineNo,
                         ColumnNo = columnNo,

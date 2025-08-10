@@ -83,7 +83,7 @@ public partial class SeatMapVisualizationForm : Form
 
         int cellWidth = 10;
         int cellHeight = 30;
-        int hallLabelWidth = 50;
+        int hallLabelWidth = 70;
 
         var tooltipCache = new Dictionary<Section, string>();
         foreach (var section in _sections)

@@ -123,10 +123,11 @@ namespace test.Repositories
             List<Ticket> soldTickets = new List<Ticket>();
             using (var connection = GetConnection())
             {
-                // Ticket 表不再包含 CustomerID
-                string sql = $@"SELECT TICKETID, PRICE, RATING, SECTIONID, LINENO, COLUMNNO, STATE
-                                FROM {SchemaName}TICKET
-                                WHERE SECTIONID = :sectionId AND STATE = '已售出'"; // 只查询已售出的票
+                // 修改SQL查询，移除RATING字段
+                string sql = $@"SELECT TICKETID, PRICE, SECTIONID, LINENO, COLUMNNO, STATE
+                        FROM {SchemaName}TICKET
+                        WHERE SECTIONID = :sectionId AND STATE = '已售出'";
+
                 using (var command = new OracleCommand(sql, connection))
                 {
                     command.Parameters.Add(new OracleParameter("sectionId", sectionId));
@@ -138,11 +139,11 @@ namespace test.Repositories
                             {
                                 TicketID = reader["TICKETID"].ToString(),
                                 Price = Convert.ToDecimal(reader["PRICE"]),
-                                Rating = Convert.ToInt32(reader["RATING"]),
                                 SectionID = Convert.ToInt32(reader["SECTIONID"]),
                                 LineNo = reader["LINENO"].ToString(),
                                 ColumnNo = Convert.ToInt32(reader["COLUMNNO"]),
                                 State = reader["STATE"].ToString()
+                                // 移除了Rating属性的赋值
                             });
                         }
                     }
@@ -163,14 +164,14 @@ namespace test.Repositories
 
             try
             {
+                // 修改SQL语句，移除RATING字段
                 string sql = $@"INSERT INTO {SchemaName}TICKET
-                               (TICKETID, PRICE, RATING, SECTIONID, LINENO, COLUMNNO, STATE)
-                               VALUES (:ticketId, :price, :rating, :sectionId, :lineNo, :columnNo, :state)";
+                       (TICKETID, PRICE, SECTIONID, LINENO, COLUMNNO, STATE)
+                       VALUES (:ticketId, :price, :sectionId, :lineNo, :columnNo, :state)";
 
                 command = new OracleCommand(sql, connection);
                 command.Parameters.Add(new OracleParameter("ticketId", ticket.TicketID));
                 command.Parameters.Add(new OracleParameter("price", ticket.Price));
-                command.Parameters.Add(new OracleParameter("rating", ticket.Rating));
                 command.Parameters.Add(new OracleParameter("sectionId", ticket.SectionID));
                 command.Parameters.Add(new OracleParameter("lineNo", ticket.LineNo));
                 command.Parameters.Add(new OracleParameter("columnNo", ticket.ColumnNo));

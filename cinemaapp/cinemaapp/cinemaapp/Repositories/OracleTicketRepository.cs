@@ -16,21 +16,21 @@ namespace cinemaapp.Repositories
         public Ticket GetTicketWithSection(string ticketId)
         {
             string sql = @"
-        SELECT
-            t.ticketID, t.price, t.rating, t.sectionID, t.lineNo, t.columnNo, t.state,
-            s.sectionID AS secID, s.filmName, s.hallNo, s.timeID,
-            ts.startTime, ts.endTime,
-            mh.category AS HallCategory
-        FROM
-            ticket t
-        JOIN
-            section s ON t.sectionID = s.sectionID
-        JOIN
-            timeslot ts ON s.timeID = ts.timeID
-        JOIN
-            moviehall mh ON s.hallNo = mh.hallNo
-        WHERE
-            t.ticketID = :ticketId";
+SELECT
+    t.ticketID, t.price, t.sectionID, t.lineNo, t.columnNo, t.state,
+    s.sectionID AS secID, s.filmName, s.hallNo, s.timeID,
+    ts.startTime, ts.endTime,
+    mh.category AS HallCategory
+FROM
+    ticket t
+JOIN
+    section s ON t.sectionID = s.sectionID
+JOIN
+    timeslot ts ON s.timeID = ts.timeID
+JOIN
+    moviehall mh ON s.hallNo = mh.hallNo
+WHERE
+    t.ticketID = :ticketId";
 
             using (var connection = new OracleConnection(_connectionString))
             {
@@ -48,7 +48,7 @@ namespace cinemaapp.Repositories
                             {
                                 TicketID = reader["ticketID"]?.ToString(),
                                 Price = reader["price"] == DBNull.Value ? 0 : Convert.ToDecimal(reader["price"]),
-                                Rating = reader["rating"] == DBNull.Value ? 0 : Convert.ToInt32(reader["rating"]),
+                                // 移除了Rating属性的映射
                                 SectionID = reader["sectionID"] == DBNull.Value ? 0 : Convert.ToInt32(reader["sectionID"]),
                                 LineNo = reader["lineNo"]?.ToString(),
                                 ColumnNo = reader["columnNo"] == DBNull.Value ? 0 : Convert.ToInt32(reader["columnNo"]),

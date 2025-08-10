@@ -12,7 +12,7 @@ namespace test.Models
     {
         public string TicketID { get; set; }   // 票号，PK
         public decimal Price { get; set; }     // 票价（实际售价）
-        public int Rating { get; set; }        // 评分（单次观影的评分）
+        //public int Rating { get; set; }        // 评分（单次观影的评分）
         public int SectionID { get; set; }     // 场次号，FK 参考 section 表中的 sectionID
         public string LineNo { get; set; }     // 座位行号
         public int ColumnNo { get; set; }      // 座位列号
