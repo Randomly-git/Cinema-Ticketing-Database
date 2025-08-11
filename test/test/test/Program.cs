@@ -24,16 +24,18 @@ namespace test
         private static IFilmService _filmService;
         private static IShowingService _showingService;
         private static IBookingService _bookingService;
-        private static IAdministratorService _adminService; // 新增：管理员服务
+        private static IAdministratorService _adminService; // 管理员服务
         private static ISchedulingService _schedulingService;
         private static IProductService _productService; // 周边产品服务
+        private static IRatingService _ratingService;  // 影评服务
 
         // 仓库实例 (某些操作可能需要直接访问，例如管理员删除)
         private static ICustomerRepository _customerRepository;
-        private static IOrderRepository _orderRepository; // 新增：订单仓库
-        private static IFilmRepository _filmRepository; // 新增：电影仓库
-        private static IRelatedProductRepository _relatedProductRepository; // 新增：周边产品仓库
-        private static IOrderForProductRepository _orderForProductRepository; // 新增：周边产品订单仓库
+        private static IOrderRepository _orderRepository; // 订单仓库
+        private static IFilmRepository _filmRepository; // 电影仓库
+        private static IRelatedProductRepository _relatedProductRepository; // 周边产品仓库
+        private static IOrderForProductRepository _orderForProductRepository; // 周边产品订单仓库
+        private static IRatingRepository _ratingRepository;// 影评仓库
 
         static void Main(string[] args)
         {
@@ -81,9 +83,10 @@ namespace test
             _orderRepository = new OracleOrderRepository(connectionString);
             _filmRepository = new OracleFilmRepository(connectionString);
             IShowingRepository showingRepository = new OracleShowingRepository(connectionString);
-            IAdministratorRepository adminRepository = new OracleAdministratorRepository(connectionString); // 新增管理员仓库
+            IAdministratorRepository adminRepository = new OracleAdministratorRepository(connectionString); // 实例化管理员仓库
             _relatedProductRepository = new OracleRelatedProductRepository(connectionString); // 实例化周边产品仓库
             _orderForProductRepository = new OracleOrderForProductRepository(connectionString); // 实例化周边产品订单仓库
+            _ratingRepository = new OracleRatingRepository(connectionString);                  // 实例化影评仓库
 
             _dbService = new DatabaseService(connectionString);
             _userService = new UserService(_customerRepository);
@@ -94,6 +97,7 @@ namespace test
             _adminService = new AdministratorService(adminRepository, _orderRepository, _filmRepository,_relatedProductRepository,_orderForProductRepository); // 新增管理员服务
             _productService = new ProductService(_relatedProductRepository, _orderForProductRepository,connectionString); // 实例化周边产品服务
             _schedulingService = new SchedulingService(connectionString);
+            _ratingService = new RatingService(_ratingRepository, _filmRepository, _orderRepository, connectionString);
 
             RunMainMenu();
 
@@ -135,8 +139,9 @@ namespace test
                     Console.WriteLine("9. 影片概况查询");
                     Console.WriteLine("10. 演职人员查询");
                     Console.WriteLine("11. 电影数据统计");
-                    Console.WriteLine("12. 删除我的账户");
-                    Console.WriteLine("13. 用户登出");
+                    Console.WriteLine("12. 评价电影"); 
+                    Console.WriteLine("13. 删除我的账户");
+                    Console.WriteLine("14. 用户登出");
                 }
                 else if (_loggedInAdmin != null)
                 {
@@ -222,11 +227,14 @@ namespace test
                                 GetMovieStatisticsInteractive();
                                 break;
                             case "12":
+                                RateMovieInteractive();
+                                break;
+                            case "13":
                                 DeleteCustomerAccount();
                                 // 如果账户被删除，则退出循环，因为用户已登出
                                 if (_loggedInCustomer == null) running = false;
                                 break;
-                            case "13":
+                            case "14":
                                 LogoutCustomer();
                                 break;
                             case "0":
@@ -1247,6 +1255,147 @@ namespace test
             string result = _productService.RedeemProductWithPoints(productName, quantity, _loggedInCustomer.CustomerID);
             Console.WriteLine(result);
         }
+
+        /// <summary>
+        /// 交互式电影评分功能
+        /// </summary>
+        static void RateMovieInteractive()
+        {
+            if (_loggedInCustomer == null)
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("请先登录才能评分。");
+                Console.ResetColor();
+                return;
+            }
+
+            try
+            {
+                Console.WriteLine("\n--- 为电影评分 ---");
+
+                // 获取用户观看过的电影（通过订单）
+                var finishedOrders = _orderRepository.GetOrdersForCustomer(_loggedInCustomer.CustomerID, true)
+                    .Where(o => o.State == "有效")
+                    .ToList();
+
+                if (!finishedOrders.Any())
+                {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine("您尚未观看过任何电影，无法评分。");
+                    Console.ResetColor();
+                    return;
+                }
+
+                Console.WriteLine("您观看过的电影:");
+                for (int i = 0; i < finishedOrders.Count(); i++)
+                {
+                    var order = finishedOrders[i];
+                    bool hasRated = _ratingService.HasRated(order.OrderID);
+                    string filmName = _ratingService.GetFilmNamebyOrderId(order.OrderID);
+                    string ratedStatus = hasRated ? "(已评分)" : "";
+                    Console.WriteLine($"{i + 1}. {filmName} {ratedStatus}");
+                }
+
+                Console.Write("请选择要评分的电影(输入序号): ");
+                if (!int.TryParse(Console.ReadLine(), out int choice) || choice < 1 || choice > finishedOrders.Count())
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("无效的选择。");
+                    Console.ResetColor();
+                    return;
+                }
+
+                var selectedOrder = finishedOrders[choice - 1];
+                string selectedFilmName = _ratingService.GetFilmNamebyOrderId(selectedOrder.OrderID);
+
+                // 检查是否已评分
+                if (_ratingService.HasRated(selectedOrder.OrderID))
+                {
+                    Console.Write($"您已为《{selectedFilmName}》评分，是否要重新评分？(Y/N): ");
+                    if (Console.ReadLine().Trim().ToUpper() != "Y")
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        _ratingService.CancelRating(selectedOrder.OrderID);  // 先删除原有的影评，包括评论和评分
+                    }
+                }
+
+                Console.Write($"请为《{selectedFilmName}》评分(0-10): ");
+                if (!int.TryParse(Console.ReadLine(), out int score) || score < 0 || score > 10)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("评分必须在0到10之间。");
+                    Console.ResetColor();
+                    return;
+                }
+
+                Console.Write($"对《{selectedFilmName}》的评论（前200字符有效，可回车略过）: ");
+                string comment = Console.ReadLine();
+
+                // 处理评论长度限制
+                if (!string.IsNullOrEmpty(comment))
+                {
+                    // 截断超过200字节的部分
+                    comment = comment.Length > 200
+                        ? comment.Substring(0, 200)
+                        : comment;
+                }
+
+                _ratingService.RateOrder(selectedOrder.OrderID, score, comment);
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"评分成功！您为《{selectedFilmName}》打了{score}分。");
+                Console.ResetColor();
+            }
+            catch (Exception ex)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"评分失败: {ex.Message}");
+                Console.ResetColor();
+            }
+        }
+/*
+        /// <summary>
+        /// 查看我的所有评分
+        /// </summary>
+        static void ViewMyRatings()
+        {
+            if (_loggedInCustomer == null)
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("请先登录才能查看评分。");
+                Console.ResetColor();
+                return;
+            }
+
+            try
+            {
+                Console.WriteLine("\n--- 我的评分记录 ---");
+                var ratings = _ratingService.GetUserRatings(_loggedInCustomer.CustomerID);
+
+                if (!ratings.Any())
+                {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine("您还没有为任何电影评分。");
+                    Console.ResetColor();
+                    return;
+                }
+
+                foreach (var rating in ratings)
+                {
+                    Console.WriteLine($"- 《{rating.FilmName}》: {rating.Score}分 (评分时间: {rating.RatingDate:yyyy-MM-dd})");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"获取评分记录失败: {ex.Message}");
+                Console.ResetColor();
+            }
+        }
+*/
 
         // ====================================================================
         // 管理员相关功能

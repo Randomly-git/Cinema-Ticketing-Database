@@ -36,7 +36,7 @@ namespace test.Repositories
             Film film = null;
             using (var connection = GetConnection())
             {
-                string sql = $"SELECT FILMNAME, GENRE, FILMLENGTH, NORMALPRICE, RELEASEDATE, ENDDATE, ADMISSIONS, BOXOFFICE, SCORE FROM {SchemaName}FILM WHERE FILMNAME = :filmName";
+                string sql = $"SELECT FILMNAME, GENRE, FILMLENGTH, NORMALPRICE, RELEASEDATE, ENDDATE, ADMISSIONS, BOXOFFICE, SCORE, RATINGNUM FROM {SchemaName}FILM WHERE FILMNAME = :filmName";
                 using (var command = new OracleCommand(sql, connection))
                 {
                     command.Parameters.Add(new OracleParameter("filmName", filmName));
@@ -70,7 +70,8 @@ namespace test.Repositories
                                 EndDate = reader["ENDDATE"] as DateTime?, // 可空日期
                                 Admissions = Convert.ToInt32(reader["ADMISSIONS"]),
                                 BoxOffice = Convert.ToInt32(reader["BOXOFFICE"]),
-                                Score = Convert.ToInt32(reader["SCORE"])
+                                Score = Convert.ToDecimal(reader["SCORE"]),
+                                RatingNum = Convert.ToInt32(reader["RATINGNUM"])
                             };
                         }
                     }
@@ -87,7 +88,7 @@ namespace test.Repositories
             List<Film> films = new List<Film>();
             using (var connection = GetConnection())
             {
-                string sql = $"SELECT FILMNAME, GENRE, FILMLENGTH, NORMALPRICE, RELEASEDATE, ENDDATE, ADMISSIONS, BOXOFFICE, SCORE FROM {SchemaName}FILM";
+                string sql = $"SELECT FILMNAME, GENRE, FILMLENGTH, NORMALPRICE, RELEASEDATE, ENDDATE, ADMISSIONS, BOXOFFICE, SCORE, RATINGNUM FROM {SchemaName}FILM";
                 using (var command = new OracleCommand(sql, connection))
                 {
                     using (var reader = command.ExecuteReader())
@@ -119,7 +120,8 @@ namespace test.Repositories
                                 EndDate = reader["ENDDATE"] as DateTime?,
                                 Admissions = Convert.ToInt32(reader["ADMISSIONS"]),
                                 BoxOffice = Convert.ToInt32(reader["BOXOFFICE"]),
-                                Score = Convert.ToInt32(reader["SCORE"])
+                                Score = Convert.ToDecimal(reader["SCORE"]),
+                                RatingNum = Convert.ToInt32(reader["RATINGNUM"])
                             });
                         }
                     }
@@ -295,7 +297,7 @@ namespace test.Repositories
                     command.Parameters.Add(new OracleParameter("admissions", film.Admissions));
                     command.Parameters.Add(new OracleParameter("boxoffice", film.BoxOffice));
                     command.Parameters.Add(new OracleParameter("score", film.Score));
-
+                    command.Parameters.Add(new OracleParameter("ratingnum", film.RatingNum));
                     command.ExecuteNonQuery();
                 }
             }
@@ -324,6 +326,7 @@ namespace test.Repositories
                     command.Parameters.Add(new OracleParameter("releasedate", film.ReleaseDate));
                     command.Parameters.Add(new OracleParameter("enddate", film.EndDate));
                     command.Parameters.Add(new OracleParameter("score", film.Score));
+                    command.Parameters.Add(new OracleParameter("ratingnum", film.RatingNum));
                     // 使用FILMNAME作为查询条件（替代原FILMID）
                     command.Parameters.Add(new OracleParameter("filmname", film.FilmName));
 
@@ -335,6 +338,69 @@ namespace test.Repositories
                 }
             }
         }
+
+        public void UpdateAverageScore(Film film, int newScore, int addOrSub = 1)
+        {
+            using (var connection = new OracleConnection(_connectionString))
+            {
+                connection.Open();
+
+                // 先获取当前 SCORE 和 RATINGNUM
+                decimal currentScore;
+                int currentRatingNum;
+                string selectSql = $@"SELECT SCORE, RATINGNUM FROM {SchemaName}FILM WHERE FILMNAME = :filmname";
+
+                using (var selectCommand = new OracleCommand(selectSql, connection))
+                {
+                    selectCommand.Parameters.Add(new OracleParameter("filmname", film.FilmName));
+
+                    using (var reader = selectCommand.ExecuteReader())
+                    {
+                        if (!reader.Read())
+                        {
+                            throw new KeyNotFoundException("电影不存在");
+                        }
+
+                        currentScore = reader.GetDecimal(0); // 当前平均分
+                        currentRatingNum = reader.GetInt32(1); // 当前评分人数
+                    }
+                }
+
+                // 根据 addOrSub 计算新的平均分和评分人数
+                int newRatingNum = currentRatingNum + addOrSub;
+                if (newRatingNum <= 0) throw new InvalidOperationException("评分人数不能小于 1");
+
+                decimal updatedScore;
+                if (addOrSub > 0)
+                {
+                    updatedScore = (currentScore * currentRatingNum + newScore) / newRatingNum;
+                }
+                else // 如果是减少评分（例如撤销评分）
+                {
+                    updatedScore = (currentScore * currentRatingNum - newScore) / newRatingNum;
+                }
+
+                // 保留一位小数
+                updatedScore = Math.Round(updatedScore, 1);
+
+                // 更新数据库
+                string updateSql = $@"UPDATE {SchemaName}FILM SET 
+                               SCORE = :score,
+                               RATINGNUM = :ratingNum
+                               WHERE FILMNAME = :filmname";
+
+                using (var updateCommand = new OracleCommand(updateSql, connection))
+                {
+                    updateCommand.Parameters.Add(new OracleParameter("score", updatedScore));
+                    updateCommand.Parameters.Add(new OracleParameter("ratingNum", newRatingNum));
+                    updateCommand.Parameters.Add(new OracleParameter("filmname", film.FilmName));
+
+                    updateCommand.ExecuteNonQuery();
+                }
+            }
+        }
+
+
 
         public bool HasRelatedSections(string filmName)
         {
@@ -463,7 +529,7 @@ namespace test.Repositories
                                     ReleaseDate = reader["releaseDate"] as DateTime?,
                                     EndDate = reader["endDate"] as DateTime?,
                                     Admissions = Convert.ToInt32(reader["admissions"]),
-                                    BoxOffice = Convert.ToDecimal(reader["boxOffice"]),
+                                    BoxOffice = Convert.ToInt32(reader["boxOffice"]),
                                     Score = Convert.ToDecimal(reader["score"])
                                 };
                             }

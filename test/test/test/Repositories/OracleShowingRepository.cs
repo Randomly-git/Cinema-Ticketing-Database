@@ -123,8 +123,8 @@ namespace test.Repositories
             List<Ticket> soldTickets = new List<Ticket>();
             using (var connection = GetConnection())
             {
-                // Ticket 表不再包含 CustomerID
-                string sql = $@"SELECT TICKETID, PRICE, RATING, SECTIONID, LINENO, COLUMNNO, STATE
+                // Ticket 表不再包含 CustomerID 和RATING
+                string sql = $@"SELECT TICKETID, PRICE, SECTIONID, LINENO, COLUMNNO, STATE
                                 FROM {SchemaName}TICKET
                                 WHERE SECTIONID = :sectionId AND STATE = '已售出'"; // 只查询已售出的票
                 using (var command = new OracleCommand(sql, connection))
@@ -138,7 +138,6 @@ namespace test.Repositories
                             {
                                 TicketID = reader["TICKETID"].ToString(),
                                 Price = Convert.ToDecimal(reader["PRICE"]),
-                                Rating = Convert.ToInt32(reader["RATING"]),
                                 SectionID = Convert.ToInt32(reader["SECTIONID"]),
                                 LineNo = reader["LINENO"].ToString(),
                                 ColumnNo = Convert.ToInt32(reader["COLUMNNO"]),

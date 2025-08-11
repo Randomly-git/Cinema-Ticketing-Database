@@ -31,6 +31,9 @@ namespace test.Repositories
         // 更新电影信息
         void UpdateFilm(Film film);
 
+        // 只更新电影的平均分（避免冗余覆盖）
+        void UpdateAverageScore(Film film, int newScore, int addOrSub = 1);
+
 
         // 检查电影是否存在关联场次
         bool HasRelatedSections(string filmName);
