@@ -48,5 +48,11 @@ namespace test.Services
         /// <param name="sectionId">要删除的场次ID。</param>
         /// <returns>操作结果和消息。</returns>
         (bool Success, string Message) DeleteSection(int sectionId);
+
+        // --- 批量排片功能 ---
+        (bool Success, string Message) BatchScheduleFilm(string filmName, DateTime startDate, DateTime endDate, int maxSessionsToSchedule);
+
+        // --- 智能自动排片功能 ---
+        (bool Success, string Message) SmartAutoScheduleFilm(DateTime startDate, DateTime endDate, int targetSessionsPerDay = 3);
     }
 }

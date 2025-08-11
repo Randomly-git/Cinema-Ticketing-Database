@@ -149,11 +149,13 @@ namespace test
                     Console.WriteLine("1. 电影管理 (增/改)"); // 移除了删除功能
                     Console.WriteLine("2. 查看所有订单");
                     // 移除了 "3. 查看所有顾客"，因为 IAdministratorService 接口中没有此方法
-                    Console.WriteLine("3. 添加新排片");
-                    Console.WriteLine("4. 查看排片");
-                    Console.WriteLine("5. 删除排片");
-                    Console.WriteLine("6. 添加周边产品");
-                    Console.WriteLine("7. 管理员登出"); // 原来的 5 变成了 3
+                    Console.WriteLine("3. 单个添加新排片");
+                    Console.WriteLine("4. 批量添加新排片");
+                    Console.WriteLine("5. 自动排片");
+                    Console.WriteLine("6. 查看排片");
+                    Console.WriteLine("7. 删除排片");
+                    Console.WriteLine("8. 添加周边产品");
+                    Console.WriteLine("9. 管理员登出"); // 原来的 5 变成了 3
                 }
                 Console.WriteLine("0. 退出系统");
                 Console.WriteLine("======================================");
@@ -261,15 +263,21 @@ namespace test
                                 AddSectionInteractive();
                                 break;
                             case "4":
-                                ViewSectionsInteractive();
+                                BatchScheduleFilmInteractive();
                                 break;
                             case "5":
-                                DeleteSectionInteractive();
+                                SmartAutoScheduleFilmInteractive();
                                 break;
                             case "6":
+                                ViewSectionsInteractive();
+                                break;
+                            case "7":
+                                DeleteSectionInteractive();
+                                break;
+                            case "8":
                                 GetProductInputFromUser();
                                 break; // 添加周边产品
-                            case "7": 
+                            case "9": 
                                 LogoutAdministrator();
                                 break;
                             case "0":
@@ -1900,6 +1908,79 @@ namespace test
             {
                 Console.WriteLine("删除操作已取消。");
             }
+        }
+
+        /// <summary>
+        /// 交互式批量排片功能。
+        /// </summary>
+        static void BatchScheduleFilmInteractive()
+        {
+            Console.Clear();
+            Console.WriteLine("--- 批量排片功能 ---");
+
+            var films = _schedulingService.GetAllFilms();
+            if (!films.Any())
+            {
+                Console.WriteLine("数据库中没有可用的电影。请先添加电影信息。");
+                return;
+            }
+            Console.WriteLine("\n可用电影:");
+            for (int i = 0; i < films.Count; i++)
+            {
+                Console.WriteLine($"{i + 1}. {films[i].FilmName}");
+            }
+            Console.Write("请输入要批量排片的电影编号: ");
+            if (!int.TryParse(Console.ReadLine(), out int filmIndex) || filmIndex < 1 || filmIndex > films.Count)
+            {
+                Console.WriteLine("无效的电影编号。");
+                return;
+            }
+            string filmName = films[filmIndex - 1].FilmName;
+
+            Console.Write("请输入排片开始日期 (YYYY-MM-DD，留空默认为今天): ");
+            string startDateStr = Console.ReadLine();
+            DateTime startDate = string.IsNullOrEmpty(startDateStr) ? DateTime.Today : (DateTime.TryParse(startDateStr, out DateTime sDate) ? sDate : DateTime.Today);
+
+            Console.Write("请输入排片结束日期 (YYYY-MM-DD，留空默认为未来7天): ");
+            string endDateStr = Console.ReadLine();
+            DateTime endDate = string.IsNullOrEmpty(endDateStr) ? DateTime.Today.AddDays(7) : (DateTime.TryParse(endDateStr, out DateTime eDate) ? eDate : DateTime.Today.AddDays(7));
+
+            Console.Write("请输入最多批量创建的场次数量 (例如: 10): ");
+            if (!int.TryParse(Console.ReadLine(), out int maxSessions))
+            {
+                Console.WriteLine("无效的场次数量。");
+                return;
+            }
+
+            Console.WriteLine($"\n正在为电影 '{filmName}' 在 {startDate:yyyy-MM-dd} 到 {endDate:yyyy-MM-dd} 之间批量排片，最多创建 {maxSessions} 场...");
+            var result = _schedulingService.BatchScheduleFilm(filmName, startDate, endDate, maxSessions);
+            Console.WriteLine(result.Message);
+        }
+
+        /// <summary>
+        /// 交互式智能自动排片功能。
+        /// </summary>
+        static void SmartAutoScheduleFilmInteractive()
+        {
+            Console.Clear();
+            Console.WriteLine("--- 自动排片 (智能策略) 功能 ---");
+
+            Console.Write("请输入排片开始日期 (YYYY-MM-DD，留空默认为今天): ");
+            string startDateStr = Console.ReadLine();
+            DateTime startDate = string.IsNullOrEmpty(startDateStr) ? DateTime.Today : (DateTime.TryParse(startDateStr, out DateTime sDate) ? sDate : DateTime.Today);
+
+            Console.Write("请输入排片结束日期 (YYYY-MM-DD，留空默认为未来7天): ");
+            string endDateStr = Console.ReadLine();
+            DateTime endDate = string.IsNullOrEmpty(endDateStr) ? DateTime.Today.AddDays(7) : (DateTime.TryParse(endDateStr, out DateTime eDate) ? eDate : DateTime.Today.AddDays(7));
+
+            Console.Write("请输入每天每个影厅的目标场次数量 (例如: 3，留空默认为3): ");
+            string targetSessionsStr = Console.ReadLine();
+            int targetSessionsPerDay = string.IsNullOrEmpty(targetSessionsStr) ? 3 : (int.TryParse(targetSessionsStr, out int ts) ? ts : 3);
+            if (targetSessionsPerDay <= 0) targetSessionsPerDay = 1; // 至少1场
+
+            Console.WriteLine($"\n正在 {startDate:yyyy-MM-dd} 到 {endDate:yyyy-MM-dd} 之间进行智能自动排片，每天每个影厅目标 {targetSessionsPerDay} 场...");
+            var result = _schedulingService.SmartAutoScheduleFilm(startDate, endDate, targetSessionsPerDay);
+            Console.WriteLine(result.Message);
         }
 
         // 从用户输入获取产品信息

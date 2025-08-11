@@ -62,16 +62,16 @@ namespace test.Repositories
 
                             film = new Film
                             {
-                                FilmName = reader["FILMNAME"].ToString(),
-                                Genre = reader["GENRE"].ToString(),
-                                FilmLength = Convert.ToInt32(reader["FILMLENGTH"]),
-                                NormalPrice = normalPrice, // 使用转换后的值
-                                ReleaseDate = Convert.ToDateTime(reader["RELEASEDATE"]),
-                                EndDate = reader["ENDDATE"] as DateTime?, // 可空日期
-                                Admissions = Convert.ToInt32(reader["ADMISSIONS"]),
-                                BoxOffice = Convert.ToInt32(reader["BOXOFFICE"]),
-                                Score = Convert.ToDecimal(reader["SCORE"]),
-                                RatingNum = Convert.ToInt32(reader["RATINGNUM"])
+                                FilmName = !reader.IsDBNull(reader.GetOrdinal("FILMNAME")) ? reader["FILMNAME"].ToString() : string.Empty,
+                                Genre = !reader.IsDBNull(reader.GetOrdinal("GENRE")) ? reader["GENRE"].ToString() : string.Empty,
+                                FilmLength = !reader.IsDBNull(reader.GetOrdinal("FILMLENGTH")) ? Convert.ToInt32(reader["FILMLENGTH"]) : 0,
+                                NormalPrice = normalPrice,
+                                ReleaseDate = !reader.IsDBNull(reader.GetOrdinal("RELEASEDATE")) ? Convert.ToDateTime(reader["RELEASEDATE"]) : DateTime.MinValue,
+                                EndDate = reader["ENDDATE"] as DateTime?, 
+                                Admissions = !reader.IsDBNull(reader.GetOrdinal("ADMISSIONS")) ? Convert.ToInt32(reader["ADMISSIONS"]) : 0,
+                                BoxOffice = !reader.IsDBNull(reader.GetOrdinal("BOXOFFICE")) ? Convert.ToInt32(reader["BOXOFFICE"]) : 0,
+                                Score = !reader.IsDBNull(reader.GetOrdinal("SCORE")) ? Convert.ToDecimal(reader["SCORE"]) : 0m,
+                                RatingNum = !reader.IsDBNull(reader.GetOrdinal("RATINGNUM")) ? Convert.ToInt32(reader["RATINGNUM"]) : 0
                             };
                         }
                     }
@@ -361,14 +361,14 @@ namespace test.Repositories
                             throw new KeyNotFoundException("电影不存在");
                         }
 
-                        currentScore = reader.GetDecimal(0); // 当前平均分
+                        currentScore = reader.IsDBNull(0) ? 0m : reader.GetDecimal(0);// 当前平均分
                         currentRatingNum = reader.GetInt32(1); // 当前评分人数
                     }
                 }
 
                 // 根据 addOrSub 计算新的平均分和评分人数
                 int newRatingNum = currentRatingNum + addOrSub;
-                if (newRatingNum <= 0) throw new InvalidOperationException("评分人数不能小于 1");
+                if (newRatingNum < 0) throw new InvalidOperationException("评分人数不能小于 0");
 
                 decimal updatedScore;
                 if (addOrSub > 0)
@@ -377,7 +377,10 @@ namespace test.Repositories
                 }
                 else // 如果是减少评分（例如撤销评分）
                 {
-                    updatedScore = (currentScore * currentRatingNum - newScore) / newRatingNum;
+                    if (newRatingNum == 0)
+                        updatedScore = 0;
+                    else
+                        updatedScore = (currentScore * currentRatingNum - newScore) / newRatingNum;
                 }
 
                 // 保留一位小数

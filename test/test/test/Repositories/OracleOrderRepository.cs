@@ -6,7 +6,7 @@ using System.Data;
 using test.Models;
 using test.Repositories;
 
-namespace test.Repositories 
+namespace test.Repositories
 {
     /// <summary>
     /// Oracle 数据库的订单数据仓储实现。
@@ -100,6 +100,106 @@ namespace test.Repositories
             }
         }
 
+        /// <summary>
+        /// 根据ticketId获取电影票
+        /// </summary>
+        public Ticket GetTicketById(string ticketId)
+        {
+            // 初始化为 null，如果未找到记录则返回 null
+            Ticket ticket = null;
+
+            // 使用 try-catch 块来捕获和处理数据库连接或查询中的潜在异常
+            try
+            {
+                // 使用 using 语句确保数据库连接在操作完成后被正确关闭和释放
+                using (OracleConnection connection = new OracleConnection(_connectionString))
+                {
+                    connection.Open();
+
+                    // SQL 查询语句，使用参数化查询来防止 SQL 注入
+                    string sql = "SELECT TICKETID, PRICE, SECTIONID, LINENO, COLUMNNO, STATE FROM TICKET WHERE TICKETID = :p_ticketId";
+
+                    using (OracleCommand command = new OracleCommand(sql, connection))
+                    {
+                        // 添加参数，将传入的 ticketId 绑定到 SQL 查询中
+                        command.Parameters.Add(new OracleParameter("p_ticketId", ticketId));
+
+                        // 执行查询并获取数据读取器
+                        using (OracleDataReader reader = command.ExecuteReader())
+                        {
+                            // 检查是否有数据行可以读取
+                            if (reader.Read())
+                            {
+                                // 如果有，创建一个新的 Ticket 对象并从 reader 中填充数据
+                                ticket = new Ticket
+                                {
+                                    TicketID = reader["TICKETID"].ToString(),
+                                    Price = Convert.ToDecimal(reader["PRICE"]),
+                                    SectionID = Convert.ToInt32(reader["SECTIONID"]),
+                                    LineNo = reader["LINENO"].ToString(),
+                                    ColumnNo = Convert.ToInt32(reader["COLUMNNO"]),
+                                    State = reader["STATE"].ToString()
+                                };
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // 在控制台或日志中打印异常信息，方便调试
+                Console.WriteLine($"查询票务信息时发生错误: {ex.Message}");
+            }
+
+            return ticket;
+        }
+
+        /// <summary>
+        /// 根据 sectionId 获取场次信息
+        /// </summary>
+        public Section GetSectionById(int sectionId)
+        {
+            Section section = null;
+
+            try
+            {
+                using (OracleConnection connection = new OracleConnection(_connectionString))
+                {
+                    connection.Open();
+
+                    // 查询 SECTION 表对应字段
+                    // 如果它们是通过联表查询 TimeSlot 和 MovieHall 得到的，需要写 JOIN 查询
+                    string sql = "SELECT SECTIONID, FILMNAME, HALLNO, TIMEID FROM SECTION WHERE SECTIONID = :p_sectionId";
+
+                    using (OracleCommand command = new OracleCommand(sql, connection))
+                    {
+                        // 绑定参数
+                        command.Parameters.Add(new OracleParameter("p_sectionId", sectionId));
+
+                        using (OracleDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                section = new Section
+                                {
+                                    SectionID = Convert.ToInt32(reader["SECTIONID"]),
+                                    FilmName = reader["FILMNAME"].ToString(),
+                                    HallNo = Convert.ToInt32(reader["HALLNO"]),
+                                    TimeID = reader["TIMEID"].ToString(),
+                                };
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"查询场次信息时发生错误: {ex.Message}");
+            }
+
+            return section;
+        }
+
 
         /// <summary>
         /// 根据订单ID获取电影票订单。
@@ -128,7 +228,7 @@ namespace test.Repositories
                                 CustomerID = reader["CUSTOMERID"].ToString(),
                                 Day = Convert.ToDateTime(reader["DAY"]),
                                 PaymentMethod = reader["PMETHOD"].ToString(),
-                                TotalPrice = Convert.ToDecimal(reader["PRICE"]) 
+                                TotalPrice = Convert.ToDecimal(reader["PRICE"])
                             };
                         }
                     }
@@ -234,4 +334,3 @@ namespace test.Repositories
         }
     }
 }
-

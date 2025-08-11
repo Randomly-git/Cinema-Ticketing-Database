@@ -61,8 +61,8 @@ namespace test.Services
                 }
 
                 // 开始从订单出发，获取一系列相关信息
-                var ticket = order.Ticket;      // 导航到Ticket表
-                var section = ticket.Section;   // 进一步获取Section，以为跳板获取FilmName
+                var ticket = _orderRepository.GetTicketById(order.TicketID);      // 导航到Ticket表
+                var section = _orderRepository.GetSectionById(ticket.SectionID);   // 进一步获取Section，以为跳板获取FilmName
                 var filmName = section.FilmName; // 最终获得电影名称
 
                 if (string.IsNullOrEmpty(filmName))
@@ -90,7 +90,7 @@ namespace test.Services
             {
                 throw new KeyNotFoundException($"找不到ID为{orderId}的订单");
             }
-            var ticket = order.Ticket;
+            var ticket = _orderRepository.GetTicketById(order.TicketID);
             return _ratingRepository.GetRating(ticket.TicketID) != null;
         }
 
@@ -123,7 +123,7 @@ namespace test.Services
                     // 创建或更新评分
                     var rating = new Rating
                     {
-                        TicketID = orderId.ToString(),
+                        TicketID = ticketId,
                         Score = score,
                         Comment = comment,
                         RatingDate = DateTime.Now,

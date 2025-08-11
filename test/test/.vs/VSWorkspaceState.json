@@ -3,8 +3,9 @@
     "",
     "\\test",
     "\\test\\Models",
-    "\\test\\Repositories"
+    "\\test\\Repositories",
+    "\\test\\Services"
   ],
-  "SelectedNode": "\\test\\Models\\Rating.cs",
+  "SelectedNode": "\\test\\Program.cs",
   "PreviewInSolutionExplorer": false
 }
