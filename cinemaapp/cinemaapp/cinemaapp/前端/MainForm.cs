@@ -14,8 +14,8 @@ namespace cinemaapp
     {
         private Customer _loggedInCustomer = null;
         private Administrator _loggedInAdmin = null;
-        private ISchedulingService _schedulingService;  
-        private IShowingService _showingService;
+        //private ISchedulingService _schedulingService;  
+        //private IShowingService _showingService;
 
 
         public MainForm()
@@ -89,9 +89,8 @@ namespace cinemaapp
                 AddButton("查看所有订单", 160, ViewAllOrders);
                 AddButton("添加新排片", 210, AddSectionInteractive);
                 AddButton("排片和座位图可视化", 260, ShowCinemaScheduleAndSeatMap);
-                AddButton("删除排片", 310, DeleteSectionInteractive);
-                AddButton("管理员登出", 360, LogoutAdministrator);
-                AddButton("退出系统", 410, () => this.Close());
+                AddButton("管理员登出", 310, LogoutAdministrator);
+                AddButton("退出系统", 360, () => this.Close());
             }
         }
 
@@ -356,25 +355,11 @@ namespace cinemaapp
         // 3. 添加新排片
         private void AddSectionInteractive()
         {
-            MessageBox.Show("添加新排片 - 功能未实现");
+            using (var form = new ScheduleForm(Program._schedulingService)) // ScheduleOptionsForm 就是我帮你写的卡片窗体类
+            {
+                form.ShowDialog(this); // 模态方式打开
+            }
         }
-
-        // 4. 查看排片
-        private void ViewSectionsInteractive()
-        {
-            MessageBox.Show("查看排片 - 功能未实现");
-        }
-
-        // 5. 删除排片
-        private void DeleteSectionInteractive()
-        {
-            MessageBox.Show("删除排片 - 功能未实现");
-        }
-
-
-
-
-
 
     }
 }

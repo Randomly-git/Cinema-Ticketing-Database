@@ -9,12 +9,12 @@ public class SeatStatusForm : Form
 {
     private readonly Section _section;
     private readonly IShowingService _showingService;
+    private readonly ISchedulingService _schedulingService;
 
-    public SeatStatusForm(Section section, IShowingService showingService)
+    public SeatStatusForm(Section section, IShowingService showingService, ISchedulingService schedulingService)
     {
         if (section == null)
             throw new ArgumentNullException(nameof(section));
-
         if (showingService == null)
             throw new ArgumentNullException(nameof(showingService));
 
@@ -23,6 +23,25 @@ public class SeatStatusForm : Form
 
         _section = section;
         _showingService = showingService;
+        _schedulingService = schedulingService ?? throw new ArgumentNullException(nameof(schedulingService));
+
+        // 初始化窗体基础属性
+        this.Text = $"电影：{_section.FilmName} | 日期：{_section.ScheduleStartTime:yyyy-MM-dd} | 时间：{_section.ScheduleStartTime:HH:mm} - {_section.ScheduleEndTime:HH:mm} | 影厅：{_section.HallNo}";
+        this.Size = new Size(900, 700);
+        this.AutoScroll = true;
+
+        // 顶部工具栏
+        var btnDelete = new Button()
+        {
+            Text = "删除排片",
+            Font = new Font("Microsoft YaHei", 10, FontStyle.Bold),
+            ForeColor = Color.White,
+            BackColor = Color.IndianRed,
+            AutoSize = true,
+            Location = new Point(10, 10)
+        };
+        btnDelete.Click += BtnDelete_Click;
+        this.Controls.Add(btnDelete);
 
         try
         {
@@ -33,6 +52,51 @@ public class SeatStatusForm : Form
             MessageBox.Show($"初始化座位图时出错：{ex.Message}", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
+
+    private void BtnDelete_Click(object sender, EventArgs e)
+    {
+        // 检查是否有已售座位
+        var seatStatus = _showingService.GetHallSeatStatus(_section);
+        bool hasSoldSeats = seatStatus.Any(row => row.Value.Values.Contains(SeatStatus.Sold));
+
+        if (hasSoldSeats)
+        {
+            MessageBox.Show("该排片已有售出的座位，无法删除！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return;
+        }
+
+        // 二次确认
+        var confirmResult = MessageBox.Show(
+            "确定要删除该排片吗？此操作不可恢复！",
+            "确认删除",
+            MessageBoxButtons.YesNo,
+            MessageBoxIcon.Question,
+            MessageBoxDefaultButton.Button2 // 默认选中“否”
+        );
+
+        if (confirmResult != DialogResult.Yes)
+        {
+            return; // 用户取消删除
+        }
+
+        // 调用删除方法
+        var result = _schedulingService.DeleteSection(_section.SectionID);
+        if (result.Success)
+        {
+            MessageBox.Show("排片已删除。", "成功", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            // 让父窗体收到信号刷新
+            this.DialogResult = DialogResult.OK;
+
+            // 关闭当前窗体
+            this.Close();
+        }
+        else
+        {
+            MessageBox.Show($"删除失败：{result.Message}", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+    }
+
 
     private void InitializeSeatLayout()
     {

@@ -192,9 +192,12 @@ public partial class SeatMapVisualizationForm : Form
 
     private void HandleBoxClick(Section section)
     {
-        var seatForm = new SeatStatusForm(section, _showingService);
-        seatForm.ShowDialog();
+        using (var seatForm = new SeatStatusForm(section, _showingService, _schedulingService))
+        {
+            if (seatForm.ShowDialog() == DialogResult.OK)
+            {
+                DrawScheduleGrid(); // 删除成功刷新排片
+            }
+        }
     }
-
-
 }

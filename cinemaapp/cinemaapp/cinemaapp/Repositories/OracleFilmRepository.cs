@@ -119,7 +119,8 @@ namespace test.Repositories
                                 EndDate = reader["ENDDATE"] as DateTime?,
                                 Admissions = Convert.ToInt32(reader["ADMISSIONS"]),
                                 BoxOffice = Convert.ToInt32(reader["BOXOFFICE"]),
-                                Score = Convert.ToInt32(reader["SCORE"])
+                                // 处理 SCORE 为 NULL 的情况，转换为 0
+                                Score = reader["SCORE"] == DBNull.Value ? 0 : Convert.ToInt32(reader["SCORE"])
                             });
                         }
                     }
