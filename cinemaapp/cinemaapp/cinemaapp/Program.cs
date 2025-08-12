@@ -87,7 +87,7 @@ namespace cinemaapp
             _filmService = new FilmService(_filmRepository);
             _showingService = new ShowingService(showingRepository, _filmRepository);
             _bookingService = new BookingService(showingRepository, _filmRepository, _customerRepository, _orderRepository, _dbService, connectionString);
-            _adminService = new AdministratorService(adminRepository, _orderRepository, _filmRepository); // 管理员服务
+            _adminService = new AdministratorService(adminRepository, _orderRepository, _filmRepository, _relatedProductRepository); // 管理员服务
             _schedulingService = new SchedulingService(connectionString);
             _productService = new ProductService(_relatedProductRepository, _orderForProductRepository, connectionString);
             _ticketService = new TicketService(_ticketRepository);

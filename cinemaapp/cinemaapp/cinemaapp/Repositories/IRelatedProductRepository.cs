@@ -27,5 +27,7 @@ namespace test.Repositories
         /// <param name="productName">产品名称。</param>
         /// <param name="quantityChange">库存变化量（购买时为负数）。</param>
         void UpdateProductStock(string productName, int quantityChange);
+
+        void AddProduct(RelatedProduct product);//添加新的周边产品
     }
 }

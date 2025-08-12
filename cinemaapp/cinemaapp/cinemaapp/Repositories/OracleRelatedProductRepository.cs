@@ -107,5 +107,27 @@ namespace test.Repositories
                 }
             }
         }
+        //管理员添加周边产品
+        public void AddProduct(RelatedProduct product)
+        {
+            using (var connection = new OracleConnection(_connectionString))
+            {
+                connection.Open();
+                string sql = @"INSERT INTO RELATEDPRODUCT 
+                               (PRODUCTNAME, PRICE, PRODUCTNUMBER, REQUIREDPOINTS)
+                               VALUES 
+                               (:productname, :price, :productnumber, :requiredpoints)";
+
+                using (var command = new OracleCommand(sql, connection))
+                {
+
+                    command.Parameters.Add(new OracleParameter("productname", product.ProductName));
+                    command.Parameters.Add(new OracleParameter("price", product.Price));
+                    command.Parameters.Add(new OracleParameter("productnumber", product.ProductNumber));
+                    command.Parameters.Add(new OracleParameter("requiredpoints", product.RequiredPoints));
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
     }
 }

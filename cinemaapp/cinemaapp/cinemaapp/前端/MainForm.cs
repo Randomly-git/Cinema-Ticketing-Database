@@ -25,7 +25,7 @@ namespace cinemaapp
         private void InitUI()
         {
             this.Text = "电影院管理系统";
-            this.Size = new Size(500, 400);
+            this.Size = new Size(500, 600);
             this.StartPosition = FormStartPosition.CenterScreen;
 
             RefreshMenu();
@@ -87,9 +87,10 @@ namespace cinemaapp
                 AddButton("电影管理 (增/改)", 110, ManageFilmsMenu);
                 AddButton("查看所有订单", 160, ViewAllOrders);
                 AddButton("添加新排片", 210, AddSectionInteractive);
-                AddButton("排片和座位图可视化", 260, ShowCinemaScheduleAndSeatMap);
-                AddButton("管理员登出", 310, LogoutAdministrator);
-                AddButton("退出系统", 360, () => this.Close());
+                AddButton("添加新的周边产品", 260, AddProducts);
+                AddButton("排片和座位图可视化", 310, ShowCinemaScheduleAndSeatMap);
+                AddButton("管理员登出", 360, LogoutAdministrator);
+                AddButton("退出系统", 410, () => this.Close());
             }
         }
 
@@ -370,6 +371,13 @@ namespace cinemaapp
             {
                 form.ShowDialog(this); // 模态方式打开
             }
+        }
+
+        // 6. 添加新的周边产品
+        private void AddProducts()
+        {
+            var form = new AddProductForm();
+            form.ShowDialog();
         }
 
     }

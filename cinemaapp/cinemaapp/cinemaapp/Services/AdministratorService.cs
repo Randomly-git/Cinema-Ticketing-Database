@@ -13,14 +13,15 @@ namespace test.Services
         private readonly IAdministratorRepository _administratorRepository;
         private readonly IOrderRepository _orderRepository;
         private readonly IFilmRepository _filmRepository; // 新增电影仓库依赖
+        private readonly IRelatedProductRepository _relatedProductRepository;
 
         // 构造函数注入仓储依赖
-        public AdministratorService(IAdministratorRepository administratorRepository, IOrderRepository orderRepository, IFilmRepository filmRepository)
+        public AdministratorService(IAdministratorRepository administratorRepository, IOrderRepository orderRepository, IFilmRepository filmRepository, IRelatedProductRepository relatedProductRepository)
         {
             _administratorRepository = administratorRepository;
             _orderRepository = orderRepository;
             _filmRepository = filmRepository;
-
+            _relatedProductRepository = relatedProductRepository;
         }
 
         /// 管理员登录认证
@@ -164,6 +165,12 @@ namespace test.Services
             return _orderRepository.GetProductOrders(startDate, endDate);
         }
 
-
+        /// <summary>
+        /// 添加新的电影周边产品
+        /// </summary>
+        public void AddMerchandise(RelatedProduct product)
+        {
+            _relatedProductRepository.AddProduct(product);
+        }
     }
 }
