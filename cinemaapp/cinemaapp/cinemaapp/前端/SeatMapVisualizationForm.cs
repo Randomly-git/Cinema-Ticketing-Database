@@ -1,4 +1,5 @@
-﻿using System;
+﻿using cinemaapp;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -16,6 +17,7 @@ public partial class SeatMapVisualizationForm : Form
     private DateTimePicker _dtpStart;
     private DateTimePicker _dtpEnd;
     private Button _btnSearch;
+    private Button _btnManualSchedule; // 新增字段
 
     private Panel _schedulePanel;
     private DateTimePicker _datePicker;
@@ -50,6 +52,15 @@ public partial class SeatMapVisualizationForm : Form
         };
         _btnLoadSchedule.Click += (s, e) => DrawScheduleGrid();
         Controls.Add(_btnLoadSchedule);
+
+        _btnManualSchedule = new Button
+        {
+            Text = "手动排片",
+            Location = new Point(330, 20),
+            Width = 100
+        };
+        _btnManualSchedule.Click += BtnManualSchedule_Click;
+        Controls.Add(_btnManualSchedule);
 
         _schedulePanel = new Panel
         {
@@ -200,4 +211,20 @@ public partial class SeatMapVisualizationForm : Form
             }
         }
     }
+
+    // ===== 手动排片按钮事件 =====
+    private void BtnManualSchedule_Click(object sender, EventArgs e)
+    {
+        DateTime selectedDate = _datePicker.Value.Date;
+
+        using (var form = new ManualScheduleForm(_schedulingService, selectedDate))
+        {
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                // 手动排片成功后，直接刷新当前日期的排片
+                DrawScheduleGrid();
+            }
+        }
+    }
 }
+

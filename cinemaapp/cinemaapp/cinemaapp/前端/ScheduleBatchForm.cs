@@ -17,6 +17,7 @@ namespace cinemaapp
         private TextBox txtMaxSessions;
         private Button btnConfirm;
         private Button btnCancel;
+        private Label lblStatus; // 状态显示
 
         public BatchScheduleForm(ISchedulingService schedulingService)
         {
@@ -30,17 +31,12 @@ namespace cinemaapp
         private void SetupUI()
         {
             this.Text = "批量排片";
-            this.Size = new Size(400, 300);
+            this.Size = new Size(400, 320);
             this.StartPosition = FormStartPosition.CenterParent;
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
 
-            var lblFilm = new Label
-            {
-                Text = "电影：",
-                Location = new Point(30, 30),
-                AutoSize = true
-            };
+            var lblFilm = new Label { Text = "电影：", Location = new Point(30, 30), AutoSize = true };
             this.Controls.Add(lblFilm);
 
             cboFilms = new ComboBox
@@ -51,12 +47,7 @@ namespace cinemaapp
             };
             this.Controls.Add(cboFilms);
 
-            var lblStartDate = new Label
-            {
-                Text = "开始日期：",
-                Location = new Point(30, 75),
-                AutoSize = true
-            };
+            var lblStartDate = new Label { Text = "开始日期：", Location = new Point(30, 75), AutoSize = true };
             this.Controls.Add(lblStartDate);
 
             dtpStartDate = new DateTimePicker
@@ -69,12 +60,7 @@ namespace cinemaapp
             };
             this.Controls.Add(dtpStartDate);
 
-            var lblEndDate = new Label
-            {
-                Text = "结束日期：",
-                Location = new Point(30, 115),
-                AutoSize = true
-            };
+            var lblEndDate = new Label { Text = "结束日期：", Location = new Point(30, 115), AutoSize = true };
             this.Controls.Add(lblEndDate);
 
             dtpEndDate = new DateTimePicker
@@ -87,37 +73,31 @@ namespace cinemaapp
             };
             this.Controls.Add(dtpEndDate);
 
-            var lblMaxSessions = new Label
-            {
-                Text = "最多场次数量：",
-                Location = new Point(30, 155),
-                AutoSize = true
-            };
+            var lblMaxSessions = new Label { Text = "最多场次数量：", Location = new Point(30, 155), AutoSize = true };
             this.Controls.Add(lblMaxSessions);
 
             txtMaxSessions = new TextBox
             {
                 Location = new Point(130, 150),
                 Width = 100,
-                Text = "10" // 默认值
+                Text = "10"
             };
             this.Controls.Add(txtMaxSessions);
 
-            btnConfirm = new Button
+            lblStatus = new Label
             {
-                Text = "确认",
-                Location = new Point(100, 200),
-                Width = 100
+                Text = "状态：等待操作",
+                Location = new Point(30, 185),
+                AutoSize = true,
+                ForeColor = Color.Blue
             };
+            this.Controls.Add(lblStatus);
+
+            btnConfirm = new Button { Text = "确认", Location = new Point(100, 230), Width = 100 };
             btnConfirm.Click += BtnConfirm_Click;
             this.Controls.Add(btnConfirm);
 
-            btnCancel = new Button
-            {
-                Text = "取消",
-                Location = new Point(220, 200),
-                Width = 100
-            };
+            btnCancel = new Button { Text = "取消", Location = new Point(220, 230), Width = 100 };
             btnCancel.Click += (s, e) => this.Close();
             this.Controls.Add(btnCancel);
         }
@@ -136,7 +116,7 @@ namespace cinemaapp
             cboFilms.ValueMember = "FilmName";
         }
 
-        private void BtnConfirm_Click(object sender, EventArgs e)
+        private async void BtnConfirm_Click(object sender, EventArgs e)
         {
             if (cboFilms.SelectedItem == null)
             {
@@ -160,13 +140,35 @@ namespace cinemaapp
                 return;
             }
 
-            var result = _schedulingService.BatchScheduleFilm(filmName, startDate, endDate, maxSessions);
-            MessageBox.Show(result.Message, "结果", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            btnConfirm.Enabled = false;
+            lblStatus.Text = "状态：正在排片，请稍候...";
+            lblStatus.ForeColor = Color.Orange;
 
-            if (result.Success)
+            try
             {
-                this.DialogResult = DialogResult.OK;
-                this.Close();
+                var result = await System.Threading.Tasks.Task.Run(() =>
+                    _schedulingService.BatchScheduleFilm(filmName, startDate, endDate, maxSessions)
+                );
+
+                lblStatus.Text = "状态：操作完成";
+                lblStatus.ForeColor = result.Success ? Color.Green : Color.Red;
+                MessageBox.Show(result.Message, "结果", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                if (result.Success)
+                {
+                    this.DialogResult = DialogResult.OK;
+                    this.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                lblStatus.Text = "状态：操作失败";
+                lblStatus.ForeColor = Color.Red;
+                MessageBox.Show("排片过程中发生错误：" + ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                btnConfirm.Enabled = true;
             }
         }
     }

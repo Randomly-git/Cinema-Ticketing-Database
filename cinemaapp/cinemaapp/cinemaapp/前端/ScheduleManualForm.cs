@@ -10,6 +10,7 @@ namespace cinemaapp
     public partial class ManualScheduleForm : Form
     {
         private readonly ISchedulingService _schedulingService;
+        private readonly DateTime? _defaultDate; // 保存外部传入的默认日期
 
         private ComboBox cboFilms;
         private ComboBox cboHalls;
@@ -18,14 +19,13 @@ namespace cinemaapp
         private Button btnConfirm;
         private Button btnCancel;
 
-        public ManualScheduleForm(ISchedulingService schedulingService)
+        public ManualScheduleForm(ISchedulingService schedulingService, DateTime? defaultDate = null)
         {
             _schedulingService = schedulingService ?? throw new ArgumentNullException(nameof(schedulingService));
+            _defaultDate = defaultDate?.Date; // 只保留日期部分
 
             InitializeComponent();
-            // 直接调用自定义 SetupUI 来构建界面
             SetupUI();
-
             LoadData();
         }
 
@@ -83,7 +83,9 @@ namespace cinemaapp
                 Width = 150,
                 Format = DateTimePickerFormat.Custom,
                 CustomFormat = "yyyy-MM-dd",
-                ShowUpDown = false // 弹出日历
+                ShowUpDown = false,
+                Value = _defaultDate ?? DateTime.Today, // 初始化时直接用默认日期
+                Enabled = !_defaultDate.HasValue        // 如果有默认日期就禁用
             };
             this.Controls.Add(dtpDate);
 
@@ -93,10 +95,9 @@ namespace cinemaapp
                 Width = 100,
                 Format = DateTimePickerFormat.Custom,
                 CustomFormat = "HH:mm",
-                ShowUpDown = true  // 上下箭头调节时间，不弹日历
+                ShowUpDown = true
             };
             this.Controls.Add(dtpTime);
-
 
             btnConfirm = new Button
             {
@@ -166,6 +167,5 @@ namespace cinemaapp
                 this.Close();
             }
         }
-
     }
 }
