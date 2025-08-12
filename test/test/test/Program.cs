@@ -130,18 +130,19 @@ namespace test
                     Console.WriteLine($"当前用户: {_loggedInCustomer.Name} (ID: {_loggedInCustomer.CustomerID}, 等级: {_loggedInCustomer.VipLevel}, 积分: {_loggedInCustomer.VIPCard?.Points ?? 0})");
                     Console.WriteLine("1. 更新个人资料");
                     Console.WriteLine("2. 查看电影排挡");
-                    Console.WriteLine("3. 购票");
-                    Console.WriteLine("4. 查看所有有效订单");
-                    Console.WriteLine("5. 退票");
-                    Console.WriteLine("6. 购买周边");
-                    Console.WriteLine("7. 积分兑换周边");
-                    Console.WriteLine("8. 影片排档、撤档信息");
-                    Console.WriteLine("9. 影片概况查询");
-                    Console.WriteLine("10. 演职人员查询");
-                    Console.WriteLine("11. 电影数据统计");
-                    Console.WriteLine("12. 评价/撤评/重评电影"); 
-                    Console.WriteLine("13. 删除我的账户");
-                    Console.WriteLine("14. 用户登出");
+                    Console.WriteLine("3. 查看电影评分与评论");
+                    Console.WriteLine("4. 购票");
+                    Console.WriteLine("5. 查看所有有效订单");
+                    Console.WriteLine("6. 退票");
+                    Console.WriteLine("7. 购买周边");
+                    Console.WriteLine("8. 积分兑换周边");
+                    Console.WriteLine("9. 影片排档、撤档信息");
+                    Console.WriteLine("10. 影片概况查询");
+                    Console.WriteLine("11. 演职人员查询");
+                    Console.WriteLine("12. 电影数据统计");
+                    Console.WriteLine("13. 评价电影"); 
+                    Console.WriteLine("14. 删除我的账户");
+                    Console.WriteLine("15. 用户登出");
                 }
                 else if (_loggedInAdmin != null)
                 {
@@ -202,41 +203,44 @@ namespace test
                                 ViewFilmShowings();
                                 break;
                             case "3":
-                                PurchaseTicketMenu();
+                                ViewFilmRatings();
                                 break;
                             case "4":
-                                DisplayCustomerPaidOrders();
+                                PurchaseTicketMenu();
                                 break;
                             case "5":
-                                ProcessTicketRefund();
+                                DisplayCustomerPaidOrders();
                                 break;
                             case "6":
-                                PurchaseProductMenu();
+                                ProcessTicketRefund();
                                 break;
                             case "7":
-                                RedeemReward();
+                                PurchaseProductMenu();
                                 break;
                             case "8":
-                                GetMovieSchedulingInfoInteractive();
+                                RedeemReward();
                                 break;
                             case "9":
-                                GetMovieOverviewInteractive();
+                                GetMovieSchedulingInfoInteractive();
                                 break;
                             case "10":
-                                GetCastCrewDetailsInteractive();
+                                GetMovieOverviewInteractive();
                                 break;
                             case "11":
-                                GetMovieStatisticsInteractive();
+                                GetCastCrewDetailsInteractive();
                                 break;
                             case "12":
-                                RateMovieInteractive();
+                                GetMovieStatisticsInteractive();
                                 break;
                             case "13":
+                                RateMovieInteractive();
+                                break;
+                            case "14":
                                 DeleteCustomerAccount();
                                 // 如果账户被删除，则退出循环，因为用户已登出
                                 if (_loggedInCustomer == null) running = false;
                                 break;
-                            case "14":
+                            case "15":
                                 LogoutCustomer();
                                 break;
                             case "0":
@@ -607,7 +611,63 @@ namespace test
         }
 
         /// <summary>
-        /// 购票功能菜单。
+        /// 查看电影评分与评价。
+        /// </summary>
+        static void ViewFilmRatings()
+        {
+            Console.WriteLine("\n--- 查看电影评分与评价 ---");
+            Console.Write("请输入查看的电影名称: ");
+            string filmName = Console.ReadLine()?.Trim();
+
+            if (string.IsNullOrEmpty(filmName))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("电影名称不能为空！");
+                Console.ResetColor();
+                return;
+            }
+
+            try
+            {
+                // 获取该电影的评分数据
+                IEnumerable<Rating> ratings = _ratingService.GetFilmRatingDetails(filmName);
+
+                if (!ratings.Any())
+                {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine($"电影 '{filmName}' 暂无评分记录。");
+                    Console.ResetColor();
+                    return;
+                }
+
+                var film = _filmRepository.GetFilmByName(filmName);
+
+                Console.WriteLine($"\n--- 电影 '{filmName}' 评分与评价 ({ratings.Count()}条) ---");
+                Console.WriteLine($"总评分: {film.Score:F1}/10.0\n");
+
+                // 按时序从高到低排序
+                var sortedRatings = ratings.OrderByDescending(r => r.RatingDate);
+
+                int index = 1;
+                foreach (var rating in sortedRatings)
+                {
+                    Console.WriteLine($"{index++}. 评分: {rating.Score}/10");
+                    Console.WriteLine($"   评价: {rating.Comment ?? "无文字评价"}");
+                    Console.WriteLine($"   评价时间: {rating.RatingDate:yyyy-MM-dd HH:mm}");
+
+                    Console.WriteLine("   ----------------------------");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"获取电影评分失败: {ex.Message}");
+                Console.ResetColor();
+            }
+        }
+
+        /// <summary>
+        /// 购票功能菜单（支持单张及多张购买）。
         /// </summary>
         static void PurchaseTicketMenu()
         {
@@ -636,18 +696,18 @@ namespace test
                 Console.WriteLine("请选择要购票的电影：");
                 for (int i = 0; i < films.Count; i++)
                 {
-                    Console.WriteLine($"{i + 1}. {films[i].FilmName} ({films[i].Genre}) - 票价: {films[i].NormalPrice:C}");
+                    Console.WriteLine($"{i + 1}. {films[i].FilmName} ({films[i].Genre}) - 基础票价: {films[i].NormalPrice:C}");
                 }
 
-                Console.Write("请输入电影序号 (0 返回主菜单): ");
-                if (!int.TryParse(Console.ReadLine(), out int filmChoice) || filmChoice <= 0 || filmChoice > films.Count)
+                Console.Write("请输入电影序号: ");
+                if (!int.TryParse(Console.ReadLine(), out int filmChoice) || filmChoice < 0 || filmChoice > films.Count)
                 {
-                    if (filmChoice == 0) return;
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("无效的电影选择。");
                     Console.ResetColor();
                     return;
                 }
+                if (filmChoice == 0) return;
                 Film selectedFilm = films[filmChoice - 1];
 
                 // 2. 选择日期
@@ -666,27 +726,169 @@ namespace test
                 Section selectedSection = SelectSection(sections);
                 if (selectedSection == null) return;
 
-                // 4. 显示完整座位表
+                // 4. 显示座位表
                 DisplayFullSeatMap(selectedSection);
 
-                // 5. 选择座位
-                var (lineNo, columnNo) = SelectSeat(selectedSection);
-                if (lineNo == null) return;
+                // 5. 选择购买数量和座位
+                Console.Write("您希望购买几张票? (输入数字, 0 返回): ");
+                if (!int.TryParse(Console.ReadLine(), out int ticketCount) || ticketCount <= 0)
+                {
+                    if (ticketCount == 0) return;
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("无效的票数。");
+                    Console.ResetColor();
+                    return;
+                }
+
+                // 调用新的方法来选择多个座位
+                List<SeatHall> selectedSeats = SelectMultipleSeats(selectedSection, ticketCount);
+                if (selectedSeats == null || !selectedSeats.Any())
+                {
+                    Console.WriteLine("未选择任何座位，购票已取消。");
+                    return;
+                }
+
+                // 计算每个座位票价
+                List<decimal> seatPrices = new List<decimal>();
+                decimal totalPrice = 0m;
+                foreach (var seat in selectedSeats)
+                {
+                    decimal price = _bookingService.CalculateFinalTicketPrice(selectedSection, _loggedInCustomer, seat.LINENO);
+                    seatPrices.Add(price);
+                    totalPrice += price;
+                }
 
                 // 6. 支付流程
                 string paymentMethod = SelectPaymentMethod();
                 if (paymentMethod == null) return;
 
-                // 7. 确认购买
-                ConfirmAndPurchase(selectedSection, lineNo, columnNo, paymentMethod);
+                // 7. 最终确认
+                Console.WriteLine("\n--- 请确认您的订单 ---");
+                Console.WriteLine($"电影: {selectedFilm.FilmName}");
+                Console.WriteLine($"场次: {selectedDate.ToShortDateString()} {selectedSection.TimeSlot.StartTime:HH:mm}");
+                Console.WriteLine($"影厅: {selectedSection.MovieHall.HallNo}号厅 ({selectedSection.MovieHall.Category})");
+
+                // 显示每个座位和对应票价
+                for (int i = 0; i < selectedSeats.Count; i++)
+                {
+                    var seat = selectedSeats[i];
+                    Console.WriteLine($"座位: {seat.LINENO}{seat.ColumnNo} 票价: {seatPrices[i]:C}");
+                }
+
+                Console.WriteLine($"总计: {ticketCount} 张票，合计金额: {totalPrice:C}");
+                Console.WriteLine("-------------------------");
+                Console.Write("确认购买以上所有票? (Y/N): ");
+                string confirmation = Console.ReadLine();
+
+                if (confirmation.Trim().Equals("Y", StringComparison.OrdinalIgnoreCase))
+                {
+                    List<OrderForTickets> newOrders = _bookingService.PurchaseMultipleTickets(
+                        selectedSection.SectionID,
+                        selectedSeats,
+                        _loggedInCustomer.CustomerID,
+                        paymentMethod
+                    );
+
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine($"\n操作完成！共 {newOrders.Count} 笔订单已生成。请在“我的订单”中查看详情。");
+                    Console.ResetColor();
+                }
+                else
+                {
+                    Console.WriteLine("购买已取消。");
+                }
             }
             catch (Exception ex)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine($"购票失败: {ex.Message}");
+                Console.WriteLine($"\n[操作失败] 错误: {ex.Message}");
+
+                // if (ex.InnerException != null) Console.WriteLine($"   详细信息: {ex.InnerException.Message}");
                 Console.ResetColor();
             }
         }
+
+        /// <summary>
+        /// 辅助方法，用于让用户循环选择多个座位。
+        /// </summary>
+        /// <param name="section">所选场次</param>
+        /// <param name="ticketCount">要购买的票数</param>
+        /// <returns>包含所选座位的列表，如果用户中途取消则返回null</returns>
+        static List<SeatHall> SelectMultipleSeats(Section section, int ticketCount)
+        {
+            var selectedSeats = new List<SeatHall>();
+            var soldSeats = _showingService.GetSoldSeatsForSection(section.SectionID); // 获取已售座位
+
+            for (int i = 0; i < ticketCount; i++)
+            {
+                bool seatIsValid = false;
+                while (!seatIsValid)
+                {
+                    Console.Write($"请选择第 {i + 1}/{ticketCount} 个座位 (格式如 F8, 0 返回): ");
+                    string input = Console.ReadLine();
+
+                    if (input == "0") return null; // 用户取消
+
+                    // 解析输入 (简单的解析逻辑)
+                    if (string.IsNullOrEmpty(input) || input.Length < 2)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("无效的座位格式。");
+                        Console.ResetColor();
+                        continue;
+                    }
+
+                    string lineNo = input.Substring(0, 1).ToUpper();
+                    if (!int.TryParse(input.Substring(1), out int columnNo))
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("座位格式错误，列号必须是数字。");
+                        Console.ResetColor();
+                        continue;
+                    }
+
+                    // 检查座位是否已被预订 
+                    if (soldSeats.Any(s => s.LINENO.Equals(lineNo, StringComparison.OrdinalIgnoreCase) && s.ColumnNo == columnNo))
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine($"座位 {lineNo}{columnNo} 已被预订，请重新选择。");
+                        Console.ResetColor();
+                        continue;
+                    }
+
+                    // 检查座位是否在本次操作中已被选择
+                    if (selectedSeats.Any(s => s.LINENO.Equals(lineNo, StringComparison.OrdinalIgnoreCase) && s.ColumnNo == columnNo))
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine($"您已选择过座位 {lineNo}{columnNo}，请勿重复选择。");
+                        Console.ResetColor();
+                        continue;
+                    }
+
+                    // 检查座位是否存在于影厅中
+                    if (!IsValidSeatInHall(section.MovieHall, lineNo, columnNo))
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine($"座位 {lineNo}{columnNo} 不存在于该影厅，请参照座位图选择。");
+                        Console.ResetColor();
+                        continue;
+                    }
+
+                    // 座位有效
+                    selectedSeats.Add(new SeatHall { LINENO = lineNo, ColumnNo = columnNo });
+                    seatIsValid = true;
+                }
+            }
+            return selectedSeats;
+        }
+
+        static bool IsValidSeatInHall(MovieHall hall, string line, int column)
+        {
+            // 假设行号是 A, B, C...
+            int lineIndex = char.ToUpper(line[0]) - 'A';
+            return lineIndex >= 0 && lineIndex < hall.Lines && column > 0 && column <= hall.ColumnsCount;
+        }
+
 
         #region Helper Methods
         private static DateTime GetUserSelectedDate()
@@ -1012,6 +1214,7 @@ namespace test
                     testRefundTime, // 使用测试时间而非DateTime.Now
                     out refundFee,
                     out refundAmount);
+                _ratingService.CancelRating(selectedOrder.OrderID);  // 如果有评论也一并撤销（正常情况下不应该出现）
 
                 if (success)
                 {
@@ -1294,7 +1497,7 @@ namespace test
                     return;
                 }
 
-                Console.WriteLine("您观看过的电影:");
+                Console.WriteLine("您观看过的电影（一票一评）:");
                 for (int i = 0; i < finishedOrders.Count(); i++)
                 {
                     var order = finishedOrders[i];

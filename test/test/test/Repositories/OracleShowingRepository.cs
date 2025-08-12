@@ -163,13 +163,12 @@ namespace test.Repositories
             try
             {
                 string sql = $@"INSERT INTO {SchemaName}TICKET
-                               (TICKETID, PRICE, RATING, SECTIONID, LINENO, COLUMNNO, STATE)
-                               VALUES (:ticketId, :price, :rating, :sectionId, :lineNo, :columnNo, :state)";
+                               (TICKETID, PRICE, SECTIONID, LINENO, COLUMNNO, STATE)
+                               VALUES (:ticketId, :price, :sectionId, :lineNo, :columnNo, :state)";
 
                 command = new OracleCommand(sql, connection);
                 command.Parameters.Add(new OracleParameter("ticketId", ticket.TicketID));
                 command.Parameters.Add(new OracleParameter("price", ticket.Price));
-                command.Parameters.Add(new OracleParameter("rating", ticket.Rating));
                 command.Parameters.Add(new OracleParameter("sectionId", ticket.SectionID));
                 command.Parameters.Add(new OracleParameter("lineNo", ticket.LineNo));
                 command.Parameters.Add(new OracleParameter("columnNo", ticket.ColumnNo));

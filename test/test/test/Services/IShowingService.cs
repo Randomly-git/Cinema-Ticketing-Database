@@ -14,9 +14,14 @@ namespace test.Services
         Dictionary<string, List<string>> GetAvailableSeats(Section section); // 获取指定场次的可用座位
 
         Dictionary<string, Dictionary<string, SeatStatus>> GetHallSeatStatus(Section section); //获取指定场次的所有座位状态
+        
+        /// 
         /// <summary>
-        /// 座位状态枚举
+        /// 获取某个场次已售出的座位
         /// </summary>
+        /// <param name="sectionId">场次ID</param>
+        /// <returns>已售座位列表</returns>
+        List<SeatHall> GetSoldSeatsForSection(int sectionId);
     }
 
     /// <summary>
@@ -28,4 +33,6 @@ namespace test.Services
         Sold = 1,
         Maintenance = 2
     }
+
+
 }

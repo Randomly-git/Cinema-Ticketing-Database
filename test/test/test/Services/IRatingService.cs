@@ -20,13 +20,13 @@ namespace test.Services
 
        // 用户按照订单删除影评
         void CancelRating(int orderId);
-/*
-       // 获取某部电影的全部影评情况（每个评分+评论）
+
+       // 获取某部电影的全部影评情况（每个评分+评论+日期）
         IEnumerable<Rating> GetFilmRatingDetails(string filmName);
 
         // 获取某用户的全部影评情况（包括电影名+评分+日期），便于给用户画像
-        IEnumerable<UserRating> GetUserRatings(string customerId);
-*/
+        //IEnumerable<UserRating> GetUserRatings(string customerId);
+    
     }
 
     /// <summary>

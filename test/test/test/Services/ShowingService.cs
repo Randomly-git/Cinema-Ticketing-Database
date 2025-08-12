@@ -132,5 +132,20 @@ namespace test.Services
 
             return sortedTable;
         }
+
+        /// </summary>
+        /// 获取指定场次已售出的票
+        /// </summary>
+        public List<SeatHall> GetSoldSeatsForSection(int sectionId)
+        {
+            var tickets = _showingRepository.GetSoldSeatsForSection(sectionId);
+            return tickets.Select(t => new SeatHall
+            {
+                LINENO = t.LineNo,
+                ColumnNo = t.ColumnNo
+            }).ToList();
+        }
+
+
     }
 }

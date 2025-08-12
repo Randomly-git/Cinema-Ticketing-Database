@@ -332,5 +332,39 @@ namespace test.Repositories
             }
             return orders;
         }
+
+        // 根据影厅号获取影厅信息
+        public MovieHall GetMovieHallByNo(int hallNo)
+        {
+            MovieHall hall = null;
+            using (var connection = GetConnection())
+            {
+                string sql = $@"
+            SELECT HALLNO, LINES, COLUMNS, CATEGORY
+            FROM {SchemaName}MOVIEHALL
+            WHERE HALLNO = :hallNo";
+
+                using (var command = new OracleCommand(sql, connection))
+                {
+                    command.Parameters.Add(new OracleParameter("hallNo", hallNo));
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            hall = new MovieHall
+                            {
+                                HallNo = Convert.ToInt32(reader["HALLNO"]),
+                                Lines = Convert.ToInt32(reader["LINES"]),
+                                ColumnsCount = Convert.ToInt32(reader["COLUMNS"]),
+                                Category = reader["CATEGORY"].ToString()
+
+                            };
+                        }
+                    }
+                }
+            }
+            return hall;
+        }
+
     }
 }

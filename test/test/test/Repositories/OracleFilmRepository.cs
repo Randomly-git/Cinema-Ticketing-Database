@@ -526,15 +526,15 @@ namespace test.Repositories
                             {
                                 film = new Film
                                 {
-                                    FilmName = reader["filmName"].ToString(),
-                                    Genre = reader["genre"].ToString(),
-                                    FilmLength = Convert.ToInt32(reader["filmLength"]),
-                                    NormalPrice = Convert.ToDecimal(reader["normalPrice"]),
-                                    ReleaseDate = reader["releaseDate"] as DateTime?,
-                                    EndDate = reader["endDate"] as DateTime?,
-                                    Admissions = Convert.ToInt32(reader["admissions"]),
-                                    BoxOffice = Convert.ToInt32(reader["boxOffice"]),
-                                    Score = Convert.ToDecimal(reader["score"])
+                                    FilmName = reader.IsDBNull(reader.GetOrdinal("filmName")) ? null : reader["filmName"].ToString(),
+                                    Genre = reader.IsDBNull(reader.GetOrdinal("genre")) ? null : reader["genre"].ToString(),
+                                    FilmLength = reader.IsDBNull(reader.GetOrdinal("filmLength")) ? 0 : Convert.ToInt32(reader["filmLength"]),
+                                    NormalPrice = reader.IsDBNull(reader.GetOrdinal("normalPrice")) ? 0m : Convert.ToDecimal(reader["normalPrice"]),
+                                    ReleaseDate = reader.IsDBNull(reader.GetOrdinal("releaseDate")) ? (DateTime?)null : Convert.ToDateTime(reader["releaseDate"]),
+                                    EndDate = reader.IsDBNull(reader.GetOrdinal("endDate")) ? (DateTime?)null : Convert.ToDateTime(reader["endDate"]),
+                                    Admissions = reader.IsDBNull(reader.GetOrdinal("admissions")) ? 0 : Convert.ToInt32(reader["admissions"]),
+                                    BoxOffice = reader.IsDBNull(reader.GetOrdinal("boxOffice")) ? 0 : Convert.ToInt32(reader["boxOffice"]),
+                                    Score = reader.IsDBNull(reader.GetOrdinal("score")) ? 0m : Convert.ToDecimal(reader["score"])
                                 };
                             }
                         }

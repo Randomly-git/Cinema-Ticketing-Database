@@ -63,7 +63,6 @@ namespace test.Services
                     throw new KeyNotFoundException("无法从订单确定电影名称");
                 }
 
-                Console.WriteLine($"订单{orderId}获取电影名成功");
                 return filmName;
             }
             catch (Exception ex)
@@ -186,57 +185,43 @@ namespace test.Services
                 }
             }
         }
-/*
-        /// <summary>
-        /// 获取电影的平均评分
-        /// </summary>
-        public float GetAverageRating(string filmName)
-        {
-            var film = _filmRepository.GetFilmByName(filmName);
-            if (film == null)
-            {
-                throw new KeyNotFoundException($"找不到电影'{filmName}'");
-            }
 
-            Console.WriteLine($"获取电影{filmName}的平均评分为: {film.AverageScore ?? 0f}");
-            return film.AverageScore ?? 0f;
-        }
 
         /// <summary>
         /// 获取电影的所有评分详情
         /// </summary>
-        public IEnumerable<RatingDetail> GetFilmRatingDetails(string filmName)
+        public IEnumerable<Rating> GetFilmRatingDetails(string filmName)
         {
-            // 获取该电影的所有评分
-            var ratings = _ratingRepository.GetRatingsByFilmName(filmName);
+            // 从所有订单中查找该电影的订单
+            List<OrderForTickets> AllOrder = _orderRepository.GetAllOrders();
+            var SelectedTickets = new List<string>();
+            foreach(var order in AllOrder)
+            {
+                var thisFilmName = GetFilmNamebyOrderId(order.OrderID);
+                if (thisFilmName == filmName)
+                {
+                    SelectedTickets.Add(order.TicketID);
+                } 
+            }
+
+            if (SelectedTickets.Count() == 0) // 先检查是否有符合条件的票
+            {
+                Console.WriteLine($"电影{filmName}没有相关票务记录");
+                return Enumerable.Empty<Rating>();
+            }
+
+            IEnumerable<Rating> ratings = _ratingRepository.GetRatingsByTicketIds(SelectedTickets);
+            
             if (ratings == null || !ratings.Any())
             {
                 Console.WriteLine($"电影{filmName}暂无评分记录");
-                return Enumerable.Empty<RatingDetail>();
+                return Enumerable.Empty<Rating>();
             }
-
-            // 获取这些评分对应的所有订单以获取用户信息
-            var ticketIds = ratings.Select(r => r.TicketId).ToList();
-            var orders = _orderRepository.GetOrdersByTicketIds(ticketIds);
-
-            // 组合成RatingDetail对象
-            var result = ratings.Select(r =>
-            {
-                var order = orders.FirstOrDefault(o => o.Id.ToString() == r.TicketId);
-                return new RatingDetail
-                {
-                    TicketId = r.TicketId,
-                    Score = r.Score,
-                    Comment = r.Comment,
-                    RatingDate = r.RatingDate,
-                    CustomerId = r.CustomerId,
-                    CustomerName = order?.CustomerName
-                };
-            }).ToList();
-
-            Console.WriteLine($"获取电影{filmName}的{result.Count}条评分详情");
-            return result;
+                
+            return ratings;
         }
+
+/*       
 
         /// <summary>
         /// 获取用户的所有评分记录
