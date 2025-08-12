@@ -139,7 +139,7 @@ namespace test
                     Console.WriteLine("9. 影片概况查询");
                     Console.WriteLine("10. 演职人员查询");
                     Console.WriteLine("11. 电影数据统计");
-                    Console.WriteLine("12. 评价电影"); 
+                    Console.WriteLine("12. 评价/撤评/重评电影"); 
                     Console.WriteLine("13. 删除我的账户");
                     Console.WriteLine("14. 用户登出");
                 }
@@ -1304,7 +1304,7 @@ namespace test
                     Console.WriteLine($"{i + 1}. {filmName} {ratedStatus}");
                 }
 
-                Console.Write("请选择要评分的电影(输入序号): ");
+                Console.Write("请选择要评价/撤评/重评的电影(输入序号): ");
                 if (!int.TryParse(Console.ReadLine(), out int choice) || choice < 1 || choice > finishedOrders.Count())
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
@@ -1319,14 +1319,25 @@ namespace test
                 // 检查是否已评分
                 if (_ratingService.HasRated(selectedOrder.OrderID))
                 {
-                    Console.Write($"您已为《{selectedFilmName}》评分，是否要重新评分？(Y/N): ");
-                    if (Console.ReadLine().Trim().ToUpper() != "Y")
+                    Console.Write($"您已为《{selectedFilmName}》评分，撤销评论/重新评论/直接退出（D/R/E）: ");
+                    string input = Console.ReadLine().Trim().ToUpper();
+                    switch (input)
                     {
-                        return;
-                    }
-                    else
-                    {
-                        _ratingService.CancelRating(selectedOrder.OrderID);  // 先删除原有的影评，包括评论和评分
+                        case "D":
+                            _ratingService.CancelRating(selectedOrder.OrderID);
+                            Console.WriteLine("评论已撤销。");
+                            return; // 撤销后直接退出
+
+                        case "R":
+                            // 重新评论：先撤销，再评分
+                            _ratingService.CancelRating(selectedOrder.OrderID);
+                            Console.WriteLine("请重新输入评分和评论。");
+                            break;
+
+                        case "E":
+                        default:
+                            // 直接退出
+                            return;
                     }
                 }
 
@@ -1334,7 +1345,7 @@ namespace test
                 if (!int.TryParse(Console.ReadLine(), out int score) || score < 0 || score > 10)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("评分必须在0到10之间。");
+                    Console.WriteLine("评分必须为0到10之间的整数");
                     Console.ResetColor();
                     return;
                 }

@@ -112,17 +112,18 @@ namespace test.Repositories
 
                             films.Add(new Film
                             {
-                                FilmName = reader["FILMNAME"].ToString(),
-                                Genre = reader["GENRE"].ToString(),
-                                FilmLength = Convert.ToInt32(reader["FILMLENGTH"]),
+                                FilmName = reader["FILMNAME"] == DBNull.Value ? null : reader["FILMNAME"].ToString(),
+                                Genre = reader["GENRE"] == DBNull.Value ? null : reader["GENRE"].ToString(),
+                                FilmLength = reader["FILMLENGTH"] == DBNull.Value ? 0 : Convert.ToInt32(reader["FILMLENGTH"]),
                                 NormalPrice = normalPrice, // 使用转换后的值
-                                ReleaseDate = Convert.ToDateTime(reader["RELEASEDATE"]),
-                                EndDate = reader["ENDDATE"] as DateTime?,
-                                Admissions = Convert.ToInt32(reader["ADMISSIONS"]),
-                                BoxOffice = Convert.ToInt32(reader["BOXOFFICE"]),
-                                Score = Convert.ToDecimal(reader["SCORE"]),
-                                RatingNum = Convert.ToInt32(reader["RATINGNUM"])
+                                ReleaseDate = reader["RELEASEDATE"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["RELEASEDATE"]),
+                                EndDate = reader["ENDDATE"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["ENDDATE"]),
+                                Admissions = reader["ADMISSIONS"] == DBNull.Value ? 0 : Convert.ToInt32(reader["ADMISSIONS"]),
+                                BoxOffice = reader["BOXOFFICE"] == DBNull.Value ? 0 : Convert.ToInt32(reader["BOXOFFICE"]),
+                                Score = reader["SCORE"] == DBNull.Value ? 0m : Convert.ToDecimal(reader["SCORE"]),
+                                RatingNum = reader["RATINGNUM"] == DBNull.Value ? 0 : Convert.ToInt32(reader["RATINGNUM"])
                             });
+
                         }
                     }
                 }

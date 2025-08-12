@@ -14,7 +14,6 @@ namespace test.Services
         private readonly IFilmRepository _filmRepository;
         private readonly IOrderRepository _orderRepository;
         private readonly string _connectionString;
-        private OracleConnection _connection;
 
         /// <summary>
         /// 构造函数，注入依赖
@@ -33,17 +32,11 @@ namespace test.Services
 
         private OracleConnection GetOpenConnection()
         {
-            if (_connection == null)
-            {
-                _connection = new OracleConnection(_connectionString);
-                _connection.Open();
-            }
-            else if (_connection.State != ConnectionState.Open)
-            {
-                _connection.Open();
-            }
-            return _connection;
+            var conn = new OracleConnection(_connectionString);
+            conn.Open();
+            return conn;
         }
+
 
 
         /// <summary>

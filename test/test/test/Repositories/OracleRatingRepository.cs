@@ -9,15 +9,11 @@ namespace test.Repositories
 {
     /// <summary>
     /// Oracle 版 Rating 仓储（改进版）
-    /// - 参数化查询（避免 SQL 注入）
-    /// - 对可能的保留字列名 "COMMENT" 使用双引号引用并用别名返回
-    /// - 在同一连接上检查存在性，避免重复打开连接
-    /// - 出错时打印 SQL + 参数，便于在 SQL Developer 中复现
     /// </summary>
     public class OracleRatingRepository : IRatingRepository
     {
         private readonly string _connectionString;
-        private const string SchemaName = "CBC"; // 如为空或不同，请确认
+        private const string SchemaName = "CBC"; 
 
         public OracleRatingRepository(string connectionString)
         {
