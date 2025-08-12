@@ -26,6 +26,8 @@ namespace test.Services
 
         //新增获取所有订单的方法
         List<OrderForTickets> GetAllOrders(DateTime? startDate = null, DateTime? endDate = null);
+        // 获取所有周边产品订单
+        List<OrderForProduct> GetProductOrders(DateTime? startDate = null, DateTime? endDate = null);
 
         //电影管理
         void AddFilm(Film film); // 添加新电影

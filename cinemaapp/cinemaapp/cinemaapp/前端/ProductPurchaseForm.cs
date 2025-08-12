@@ -23,12 +23,14 @@ namespace cinemaapp
         private readonly IProductService _productService;
         private readonly Customer _loggedInCustomer;
         private readonly ICustomerRepository _customerRepository;
+        private MainForm _mainForm;
 
-        public ProductPurchaseForm(IProductService productService, ICustomerRepository customerRepository, Customer loggedInCustomer)
+        public ProductPurchaseForm(IProductService productService, ICustomerRepository customerRepository, Customer loggedInCustomer, MainForm mainForm)
         {
             _productService = productService;
             _customerRepository = customerRepository;
             _loggedInCustomer = loggedInCustomer;
+            _mainForm = mainForm;
 
             InitializeComponent();
             SetupUI();
@@ -379,6 +381,8 @@ namespace cinemaapp
             // 购买后刷新界面
             UpdateProductStockAndUI(product.ProductName);
             RefreshPointsDisplay();
+            //刷新主界面的用户信息标签
+            _mainForm.UpdateUserInfoLabel();
         }
 
         private void RefreshPointsDisplay()

@@ -232,6 +232,62 @@ namespace test.Repositories
             }
             return orders;
         }
+        public List<OrderForProduct> GetProductOrders(DateTime? startDate = null, DateTime? endDate = null)
+        {
+            List<OrderForProduct> orders = new List<OrderForProduct>();
+
+            // 基础 SQL（不限制客户ID）
+            string sql = "SELECT ORDERID, CUSTOMERID, PRODUCTNAME, PURCHASENUM, DAY, STATE, PMETHOD, PRICE " +
+                         "FROM ORDERFORPRODUCTS WHERE 1=1";
+
+            // 参数集合
+            List<OracleParameter> parameters = new List<OracleParameter>();
+
+            // 如果提供了开始日期
+            if (startDate.HasValue)
+            {
+                sql += " AND DAY >= :startDate";
+                parameters.Add(new OracleParameter("startDate", startDate.Value));
+            }
+
+            // 如果提供了结束日期
+            if (endDate.HasValue)
+            {
+                sql += " AND DAY <= :endDate";
+                parameters.Add(new OracleParameter("endDate", endDate.Value));
+            }
+
+            sql += " ORDER BY DAY DESC";
+
+            using (OracleConnection connection = new OracleConnection(_connectionString))
+            {
+                using (OracleCommand command = new OracleCommand(sql, connection))
+                {
+                    command.Parameters.AddRange(parameters.ToArray());
+                    connection.Open();
+                    using (OracleDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            orders.Add(new OrderForProduct
+                            {
+                                OrderID = reader.GetInt64(0),
+                                CustomerID = reader.GetString(1),
+                                ProductName = reader.GetString(2),
+                                PurchaseNum = reader.GetInt32(3),
+                                Day = reader.GetDateTime(4),
+                                State = reader.GetString(5),
+                                PMethod = reader.GetString(6),
+                                Price = reader.GetDecimal(7)
+                            });
+                        }
+                    }
+                }
+            }
+
+            return orders;
+        }
+
     }
 }
 

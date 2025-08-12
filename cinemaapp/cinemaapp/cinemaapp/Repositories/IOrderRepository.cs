@@ -16,5 +16,8 @@ namespace test.Repositories
         // 可以添加更新订单状态、退票等方法
 
         List<OrderForTickets> GetAllOrders(DateTime? startDate = null, DateTime? endDate = null);//管理员特权方法：获取所有订单
+
+        //管理员特权方法，获取所有周边产品订单
+        List<OrderForProduct> GetProductOrders(DateTime? startDate = null, DateTime? endDate = null);
     }
 }

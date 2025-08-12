@@ -21,7 +21,7 @@ public partial class SeatMapVisualizationForm : Form
 
     private Panel _schedulePanel;
     private DateTimePicker _datePicker;
-    private Button _btnLoadSchedule;
+    //private Button _btnLoadSchedule;
     private ToolTip _toolTip;
 
     public SeatMapVisualizationForm(ISchedulingService schedulingService, IShowingService showingService)
@@ -43,20 +43,15 @@ public partial class SeatMapVisualizationForm : Form
             Location = new Point(20, 20),
             Width = 200
         };
+        // 日期改变时自动刷新
+        _datePicker.ValueChanged += (s, ev) => DrawScheduleGrid();
         Controls.Add(_datePicker);
 
-        _btnLoadSchedule = new Button
-        {
-            Text = "加载排片",
-            Location = new Point(230, 20)
-        };
-        _btnLoadSchedule.Click += (s, e) => DrawScheduleGrid();
-        Controls.Add(_btnLoadSchedule);
-
+        // ===== 新增 手动排片 按钮 =====
         _btnManualSchedule = new Button
         {
             Text = "手动排片",
-            Location = new Point(330, 20),
+            Location = new Point(230, 20),
             Width = 100
         };
         _btnManualSchedule.Click += BtnManualSchedule_Click;
@@ -71,13 +66,18 @@ public partial class SeatMapVisualizationForm : Form
         };
         Controls.Add(_schedulePanel);
 
-        // 初始化 ToolTip 并设置属性
-        _toolTip = new ToolTip();
-        _toolTip.InitialDelay = 100;
-        _toolTip.ReshowDelay = 100;
-        _toolTip.AutoPopDelay = 10000;
-        _toolTip.ShowAlways = true;
+        _toolTip = new ToolTip
+        {
+            InitialDelay = 100,
+            ReshowDelay = 100,
+            AutoPopDelay = 10000,
+            ShowAlways = true
+        };
+
+        // 窗口加载时自动绘制当天的排片
+        DrawScheduleGrid();
     }
+
 
     private void DrawScheduleGrid()
     {

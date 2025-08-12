@@ -14,9 +14,7 @@ namespace cinemaapp
     {
         private Customer _loggedInCustomer = null;
         private Administrator _loggedInAdmin = null;
-        //private ISchedulingService _schedulingService;  
-        //private IShowingService _showingService;
-
+        private Label lblUser;  // 提升为类字段
 
         public MainForm()
         {
@@ -57,13 +55,14 @@ namespace cinemaapp
             }
             else if (_loggedInCustomer != null)
             {
-                Label lblUser = new Label()
+                lblUser = new Label()
                 {
-                    Text = $"当前用户: {_loggedInCustomer.Name} (ID: {_loggedInCustomer.CustomerID}, 等级: {_loggedInCustomer.VipLevel}, 积分: {_loggedInCustomer.VIPCard?.Points ?? 0})",
                     Location = new Point(30, 70),
                     AutoSize = true
                 };
                 this.Controls.Add(lblUser);
+
+                UpdateUserInfoLabel(); // 初始化显示
 
                 AddButton("更新个人资料", 110, UpdateCustomerProfile);
                 AddButton("查看电影相关信息", 150, FilmDashBoard);
@@ -92,6 +91,18 @@ namespace cinemaapp
                 AddButton("管理员登出", 310, LogoutAdministrator);
                 AddButton("退出系统", 360, () => this.Close());
             }
+        }
+
+        // 新增：实时刷新用户信息
+        public void UpdateUserInfoLabel()
+        {
+            if (_loggedInCustomer == null) return;
+
+            var customer = Program._customerRepository.GetCustomerById(_loggedInCustomer.CustomerID);
+            var vipCard = Program._customerRepository.GetVIPCardByCustomerID(_loggedInCustomer.CustomerID);
+            int points = vipCard?.Points ?? 0;
+
+            lblUser.Text = $"当前用户: {customer.Name} (ID: {customer.CustomerID}, 等级: {customer.VipLevel}, 积分: {points})";
         }
 
         private void AddButton(string text, int top, Action onClick)
@@ -250,7 +261,7 @@ namespace cinemaapp
 
         private void PurchaseProduct()
         {
-            var form = new ProductPurchaseForm(Program._productService, Program._customerRepository ,Program._loggedInCustomer);
+            var form = new ProductPurchaseForm(Program._productService, Program._customerRepository ,Program._loggedInCustomer, this);
             form.ShowDialog(); // 模态窗口，用户必须先操作完这个窗体才能回主界面
         }
 

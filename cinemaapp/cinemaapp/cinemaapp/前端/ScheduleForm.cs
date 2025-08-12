@@ -9,10 +9,6 @@ namespace cinemaapp
     {
         private readonly ISchedulingService _schedulingService;
 
-        private Button btnManual;
-        private Button btnBatch;
-        private Button btnSmart;
-
         public ScheduleForm(ISchedulingService schedulingService)
         {
             _schedulingService = schedulingService ?? throw new ArgumentNullException(nameof(schedulingService));

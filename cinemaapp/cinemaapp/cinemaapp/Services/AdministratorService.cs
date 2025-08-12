@@ -158,7 +158,11 @@ namespace test.Services
             _filmRepository.UpdateFilm(film);
         }
 
-
+        public List<OrderForProduct> GetProductOrders(DateTime? startDate = null, DateTime? endDate = null)
+        {
+            // 调用已完成的代码，查询所有周边订单：目前只支持按日期范围筛选
+            return _orderRepository.GetProductOrders(startDate, endDate);
+        }
 
 
     }
