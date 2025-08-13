@@ -24,19 +24,20 @@ namespace test.Services
        // 获取某部电影的全部影评情况（每个评分+评论+日期）
         IEnumerable<Rating> GetFilmRatingDetails(string filmName);
 
-        // 获取某用户的全部影评情况（包括电影名+评分+日期），便于给用户画像
-        //IEnumerable<UserRating> GetUserRatings(string customerId);
-    
+        // 用户画像：根据用户的订单和现有的评分，得到每种题材给用户的印象分
+        Dictionary<string, decimal> GetUserGenreImpression(string customerId);
+
+        // 获取推荐的电影
+        IEnumerable<MovieRecommendation> GetMovieRecommendations(string customerId);
     }
 
-    /// <summary>
-    /// 用户评分DTO(包含电影信息)
-    /// </summary>
-    public class UserRating
+    public class MovieRecommendation
     {
-        public string FilmName { get; set; }
-        public int Score { get; set; }
-        public DateTime RatingDate { get; set; }
+        public string FilmName { get; set; }       // 电影名称
+        public List<string> Genres { get; set; }   // 电影类型（主+次）
+        public DateTime NearestScreening { get; set; } // 未来最近的排片日期
+        public decimal Score { get; set; }     // 电影总评分
+        public decimal RecommendationScore { get; set; } // 推荐指数（计算得分）
     }
 
 }

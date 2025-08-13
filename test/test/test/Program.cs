@@ -97,7 +97,7 @@ namespace test
             _adminService = new AdministratorService(adminRepository, _orderRepository, _filmRepository,_relatedProductRepository,_orderForProductRepository); // 新增管理员服务
             _productService = new ProductService(_relatedProductRepository, _orderForProductRepository,connectionString); // 实例化周边产品服务
             _schedulingService = new SchedulingService(connectionString);
-            _ratingService = new RatingService(_ratingRepository, _filmRepository, _orderRepository, connectionString);
+            _ratingService = new RatingService(_schedulingService, _ratingRepository, _filmRepository, _orderRepository, connectionString);
 
             RunMainMenu();
 
@@ -140,23 +140,24 @@ namespace test
                     Console.WriteLine("10. 影片概况查询");
                     Console.WriteLine("11. 演职人员查询");
                     Console.WriteLine("12. 电影数据统计");
-                    Console.WriteLine("13. 评价电影"); 
-                    Console.WriteLine("14. 删除我的账户");
-                    Console.WriteLine("15. 用户登出");
+                    Console.WriteLine("13. 评价电影");
+                    Console.WriteLine("14. 我的用户画像");
+                    Console.WriteLine("15. 个性化电影推荐");
+                    Console.WriteLine("16. 删除我的账户");
+                    Console.WriteLine("17. 用户登出");
                 }
                 else if (_loggedInAdmin != null)
                 {
                     Console.WriteLine($"当前管理员: {_loggedInAdmin.AdminName} (ID: {_loggedInAdmin.AdminID})");
-                    Console.WriteLine("1. 电影管理 (增/改)"); // 移除了删除功能
+                    Console.WriteLine("1. 电影管理 (增/改)");
                     Console.WriteLine("2. 查看所有订单");
-                    // 移除了 "3. 查看所有顾客"，因为 IAdministratorService 接口中没有此方法
                     Console.WriteLine("3. 单个添加新排片");
                     Console.WriteLine("4. 批量添加新排片");
                     Console.WriteLine("5. 自动排片");
                     Console.WriteLine("6. 查看排片");
                     Console.WriteLine("7. 删除排片");
                     Console.WriteLine("8. 添加周边产品");
-                    Console.WriteLine("9. 管理员登出"); // 原来的 5 变成了 3
+                    Console.WriteLine("9. 管理员登出"); 
                 }
                 Console.WriteLine("0. 退出系统");
                 Console.WriteLine("======================================");
@@ -236,11 +237,17 @@ namespace test
                                 RateMovieInteractive();
                                 break;
                             case "14":
+                                ViewMyProfile();
+                                break;
+                            case "15":
+                                ViewRecommendations();
+                                break;
+                            case "16":
                                 DeleteCustomerAccount();
                                 // 如果账户被删除，则退出循环，因为用户已登出
                                 if (_loggedInCustomer == null) running = false;
                                 break;
-                            case "15":
+                            case "17":
                                 LogoutCustomer();
                                 break;
                             case "0":
@@ -1577,47 +1584,92 @@ namespace test
                 Console.ResetColor();
             }
         }
-/*
+
         /// <summary>
-        /// 查看我的所有评分
+        /// 查看我的用户画像（每个类型的印象分）
         /// </summary>
-        static void ViewMyRatings()
+        static void ViewMyProfile()
         {
             if (_loggedInCustomer == null)
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("请先登录才能查看评分。");
+                Console.WriteLine("请先登录才能查看画像。");
                 Console.ResetColor();
                 return;
             }
 
             try
             {
-                Console.WriteLine("\n--- 我的评分记录 ---");
-                var ratings = _ratingService.GetUserRatings(_loggedInCustomer.CustomerID);
+                Console.WriteLine("\n--- 我的用户画像 ---");
+                Console.WriteLine("========================");
 
-                if (!ratings.Any())
+                // 获取用户画像数据
+                var genreImpression = _ratingService.GetUserGenreImpression(_loggedInCustomer.CustomerID);
+                var sortedGenres = genreImpression
+                    .OrderByDescending(kv => kv.Value)
+                    .ToList();
+
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.WriteLine("{0,-12} {1,-8}", "电影类型", "得分");
+                Console.ResetColor();
+                Console.WriteLine(new string('-', 40));
+
+                // 打印每种类型的数据
+                foreach (var genre in sortedGenres)
+                {
+                    Console.WriteLine("{0,-12} {1,-8:F1}",
+                        genre.Key,
+                        genre.Value);
+                    Console.ResetColor();
+                }
+
+                // 打印总结
+                if (sortedGenres.Any())
+                {
+                    var topGenre = sortedGenres.First();
+                    Console.WriteLine("\n★ 最偏好类型: ");
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+                    Console.WriteLine($"   {topGenre.Key} (得分: {topGenre.Value:F1})");
+                    Console.ResetColor();
+                }
+                else
                 {
                     Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine("您还没有为任何电影评分。");
+                    Console.WriteLine("\n暂无足够数据生成用户画像");
                     Console.ResetColor();
-                    return;
                 }
 
-                foreach (var rating in ratings)
-                {
-                    Console.WriteLine($"- 《{rating.FilmName}》: {rating.Score}分 (评分时间: {rating.RatingDate:yyyy-MM-dd})");
-                }
+                Console.WriteLine("\n========================");
+
 
             }
             catch (Exception ex)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine($"获取评分记录失败: {ex.Message}");
+                Console.WriteLine($"获取用户画像失败: {ex.Message}");
                 Console.ResetColor();
             }
         }
-*/
+
+        /// <summary>
+        /// 查看个性化推荐的电影
+        /// </summary>
+        static void ViewRecommendations()
+        {
+            var recommendations = _ratingService.GetMovieRecommendations(_loggedInCustomer.CustomerID);   // 获取推荐的电影
+            Console.WriteLine("\n根据您的喜好，为您推荐未来两个月的热映电影");
+            Console.WriteLine(new string('-', 40));
+            foreach (var movie in recommendations)
+            {
+                Console.WriteLine($"电影: {movie.FilmName}");
+                Console.WriteLine($"类型: {string.Join("/", movie.Genres)}");
+                Console.WriteLine($"最近场次: {movie.NearestScreening:yyyy-MM-dd HH:mm}");
+                Console.WriteLine($"当前评分: {movie.Score:F1}/10 ");
+                Console.WriteLine($"推荐指数: {movie.RecommendationScore:F1}");
+                Console.WriteLine(new string('-', 40));
+            }
+        }
+
 
         // ====================================================================
         // 管理员相关功能
@@ -1873,11 +1925,6 @@ namespace test
             }
         }
 
-        // 移除了 DeleteFilm 方法，因为它在提供的 IAdministratorService 接口中不存在。
-        // static void DeleteFilm()
-        // {
-        //    ...
-        // }
 
         /// <summary>
         /// 管理员：查看所有订单。
