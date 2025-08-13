@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using test.Models; // 引用 Models 命名空间
 
@@ -26,7 +26,8 @@ namespace test.Services // 请替换为你的项目命名空间
         int sectionId,
         List<SeatHall> selectedSeats,
         string customerId,
-        string paymentMethod
+        string paymentMethod,
+        decimal pointsToUse = 0
     );
 
         decimal CalculateFinalTicketPrice(Section section, Customer customer, string lineNo);//计算总价方法
