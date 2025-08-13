@@ -124,7 +124,7 @@ namespace test.Services
 
             // 4. 按行号和列号排序
             var sortedTable = seatStatusTable
-                .OrderBy(row => int.Parse(row.Key))
+                .OrderBy(row => row.Key)
                 .ToDictionary(
                     row => row.Key,
                     row => row.Value.OrderBy(col => int.Parse(col.Key))
