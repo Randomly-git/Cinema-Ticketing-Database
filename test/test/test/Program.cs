@@ -674,146 +674,173 @@ namespace test
         }
 
         /// <summary>
-        /// 购票功能菜单（支持单张及多张购买）。
-        /// </summary>
-        static void PurchaseTicketMenu()
+/// 购票功能菜单（支持单张及多张购买）。
+/// </summary>
+static void PurchaseTicketMenu()
+{
+    if (_loggedInCustomer == null)
+    {
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.WriteLine("请先登录才能购票。");
+        Console.ResetColor();
+        return;
+    }
+
+    Console.WriteLine("\n--- 购票 ---");
+
+    try
+    {
+        // 1. 选择电影
+        List<Film> films = _filmService.GetAvailableFilms();
+        if (!films.Any())
         {
-            if (_loggedInCustomer == null)
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("当前没有可供购票的电影。");
+            Console.ResetColor();
+            return;
+        }
+
+        Console.WriteLine("请选择要购票的电影：");
+        for (int i = 0; i < films.Count; i++)
+        {
+            Console.WriteLine($"{i + 1}. {films[i].FilmName} ({films[i].Genre}) - 基础票价: {films[i].NormalPrice:C}");
+        }
+
+        Console.Write("请输入电影序号: ");
+        if (!int.TryParse(Console.ReadLine(), out int filmChoice) || filmChoice < 0 || filmChoice > films.Count)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("无效的电影选择。");
+            Console.ResetColor();
+            return;
+        }
+        if (filmChoice == 0) return;
+        Film selectedFilm = films[filmChoice - 1];
+
+        // 2. 选择日期
+        DateTime selectedDate = GetUserSelectedDate();
+
+        // 3. 选择场次
+        List<Section> sections = _showingService.GetFilmShowings(selectedFilm.FilmName, selectedDate);
+        if (!sections.Any())
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine($"电影 '{selectedFilm.FilmName}' 在 {selectedDate.ToShortDateString()} 没有可用场次。");
+            Console.ResetColor();
+            return;
+        }
+
+        Section selectedSection = SelectSection(sections);
+        if (selectedSection == null) return;
+
+        // 4. 显示座位表
+        DisplayFullSeatMap(selectedSection);
+
+        // 5. 选择购买数量和座位
+        Console.Write("您希望购买几张票? (输入数字, 0 返回): ");
+        if (!int.TryParse(Console.ReadLine(), out int ticketCount) || ticketCount <= 0)
+        {
+            if (ticketCount == 0) return;
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("无效的票数。");
+            Console.ResetColor();
+            return;
+        }
+
+        // 调用新的方法来选择多个座位
+        List<SeatHall> selectedSeats = SelectMultipleSeats(selectedSection, ticketCount);
+        if (selectedSeats == null || !selectedSeats.Any())
+        {
+            Console.WriteLine("未选择任何座位，购票已取消。");
+            return;
+        }
+
+        // 计算每个座位票价
+        List<decimal> seatPrices = new List<decimal>();
+        decimal totalPrice = 0m;
+        foreach (var seat in selectedSeats)
+        {
+            decimal price = _bookingService.CalculateFinalTicketPrice(selectedSection, _loggedInCustomer, seat.LINENO);
+            seatPrices.Add(price);
+            totalPrice += price;
+        }
+
+        // 6. 支付流程
+        string paymentMethod = null;
+        Console.WriteLine("请选择支付方式：");
+        Console.WriteLine("1. 现金/银行卡支付");
+        Console.WriteLine("2. 使用积分支付（10积分=1元）");
+        Console.Write("输入选项: ");
+        string payChoice = Console.ReadLine();
+
+        decimal totalPointsNeeded = 0;
+        if (payChoice == "1")
+        {
+            paymentMethod = "现金/银行卡";
+        }
+        else if (payChoice == "2")
+        {
+            paymentMethod = "积分支付";
+
+            // 获取顾客积分
+            var vipCard = _customerRepository.GetVIPCardByCustomerID(_loggedInCustomer.CustomerID);
+            if (vipCard == null)
             {
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("请先登录才能购票。");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("获取积分信息失败，无法使用积分支付。");
                 Console.ResetColor();
                 return;
             }
 
-            Console.WriteLine("\n--- 购票 ---");
-
-            try
-            {
-                // 1. 选择电影
-                List<Film> films = _filmService.GetAvailableFilms();
-                if (!films.Any())
-                {
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine("当前没有可供购票的电影。");
-                    Console.ResetColor();
-                    return;
-                }
-
-                Console.WriteLine("请选择要购票的电影：");
-                for (int i = 0; i < films.Count; i++)
-                {
-                    Console.WriteLine($"{i + 1}. {films[i].FilmName} ({films[i].Genre}) - 基础票价: {films[i].NormalPrice:C}");
-                }
-
-                Console.Write("请输入电影序号: ");
-                if (!int.TryParse(Console.ReadLine(), out int filmChoice) || filmChoice < 0 || filmChoice > films.Count)
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("无效的电影选择。");
-                    Console.ResetColor();
-                    return;
-                }
-                if (filmChoice == 0) return;
-                Film selectedFilm = films[filmChoice - 1];
-
-                // 2. 选择日期
-                DateTime selectedDate = GetUserSelectedDate();
-
-                // 3. 选择场次
-                List<Section> sections = _showingService.GetFilmShowings(selectedFilm.FilmName, selectedDate);
-                if (!sections.Any())
-                {
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine($"电影 '{selectedFilm.FilmName}' 在 {selectedDate.ToShortDateString()} 没有可用场次。");
-                    Console.ResetColor();
-                    return;
-                }
-
-                Section selectedSection = SelectSection(sections);
-                if (selectedSection == null) return;
-
-                // 4. 显示座位表
-                DisplayFullSeatMap(selectedSection);
-
-                // 5. 选择购买数量和座位
-                Console.Write("您希望购买几张票? (输入数字, 0 返回): ");
-                if (!int.TryParse(Console.ReadLine(), out int ticketCount) || ticketCount <= 0)
-                {
-                    if (ticketCount == 0) return;
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("无效的票数。");
-                    Console.ResetColor();
-                    return;
-                }
-
-                // 调用新的方法来选择多个座位
-                List<SeatHall> selectedSeats = SelectMultipleSeats(selectedSection, ticketCount);
-                if (selectedSeats == null || !selectedSeats.Any())
-                {
-                    Console.WriteLine("未选择任何座位，购票已取消。");
-                    return;
-                }
-
-                // 计算每个座位票价
-                List<decimal> seatPrices = new List<decimal>();
-                decimal totalPrice = 0m;
-                foreach (var seat in selectedSeats)
-                {
-                    decimal price = _bookingService.CalculateFinalTicketPrice(selectedSection, _loggedInCustomer, seat.LINENO);
-                    seatPrices.Add(price);
-                    totalPrice += price;
-                }
-
-                // 6. 支付流程
-                string paymentMethod = SelectPaymentMethod();
-                if (paymentMethod == null) return;
-
-                // 7. 最终确认
-                Console.WriteLine("\n--- 请确认您的订单 ---");
-                Console.WriteLine($"电影: {selectedFilm.FilmName}");
-                Console.WriteLine($"场次: {selectedDate.ToShortDateString()} {selectedSection.TimeSlot.StartTime:HH:mm}");
-                Console.WriteLine($"影厅: {selectedSection.MovieHall.HallNo}号厅 ({selectedSection.MovieHall.Category})");
-
-                // 显示每个座位和对应票价
-                for (int i = 0; i < selectedSeats.Count; i++)
-                {
-                    var seat = selectedSeats[i];
-                    Console.WriteLine($"座位: {seat.LINENO}{seat.ColumnNo} 票价: {seatPrices[i]:C}");
-                }
-
-                Console.WriteLine($"总计: {ticketCount} 张票，合计金额: {totalPrice:C}");
-                Console.WriteLine("-------------------------");
-                Console.Write("确认购买以上所有票? (Y/N): ");
-                string confirmation = Console.ReadLine();
-
-                if (confirmation.Trim().Equals("Y", StringComparison.OrdinalIgnoreCase))
-                {
-                    List<OrderForTickets> newOrders = _bookingService.PurchaseMultipleTickets(
-                        selectedSection.SectionID,
-                        selectedSeats,
-                        _loggedInCustomer.CustomerID,
-                        paymentMethod
-                    );
-
-                    Console.ForegroundColor = ConsoleColor.Cyan;
-                    Console.WriteLine($"\n操作完成！共 {newOrders.Count} 笔订单已生成。请在“我的订单”中查看详情。");
-                    Console.ResetColor();
-                }
-                else
-                {
-                    Console.WriteLine("购买已取消。");
-                }
-            }
-            catch (Exception ex)
+            totalPointsNeeded = totalPrice * 10; // 10积分=1元
+            if (vipCard.Points < totalPointsNeeded)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine($"\n[操作失败] 错误: {ex.Message}");
-
-                // if (ex.InnerException != null) Console.WriteLine($"   详细信息: {ex.InnerException.Message}");
+                Console.WriteLine($"积分不足。需要 {totalPointsNeeded} 积分，您当前有 {vipCard.Points} 积分。");
                 Console.ResetColor();
+                return;
             }
         }
+        else
+        {
+            Console.WriteLine("未选择有效支付方式，返回。");
+            return;
+        }
+
+        // 7. 最终确认
+        Console.WriteLine("\n--- 请确认您的订单 ---");
+        // ... 显示订单信息
+        Console.Write("确认购买以上所有票? (Y/N): ");
+        string confirmation = Console.ReadLine();
+
+        if (confirmation.Trim().Equals("Y", StringComparison.OrdinalIgnoreCase))
+        {
+            List<OrderForTickets> newOrders = _bookingService.PurchaseMultipleTickets(
+                selectedSection.SectionID,
+                selectedSeats,
+                _loggedInCustomer.CustomerID,
+                paymentMethod,
+                totalPointsNeeded // 传给方法，用于扣积分
+            );
+
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine($"\n操作完成！共 {newOrders.Count} 笔订单已生成。请在“我的订单”中查看详情。");
+            Console.ResetColor();
+        }
+        else
+        {
+            Console.WriteLine("购买已取消。");
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine($"\n[操作失败] 错误: {ex.Message}");
+
+        // if (ex.InnerException != null) Console.WriteLine($"   详细信息: {ex.InnerException.Message}");
+        Console.ResetColor();
+    }
+}
 
         /// <summary>
         /// 辅助方法，用于让用户循环选择多个座位。
