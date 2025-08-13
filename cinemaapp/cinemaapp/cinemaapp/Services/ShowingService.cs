@@ -79,7 +79,7 @@ namespace test.Services
 
             return availableSeats;
         }
-
+        //孙修改
         public Dictionary<string, Dictionary<string, SeatStatus>> GetHallSeatStatus(Section section)
         {
             if (section == null)
@@ -122,12 +122,13 @@ namespace test.Services
                     : SeatStatus.Available;
             }
 
-            // 4. 按行号和列号排序
+            // 4. 按行号（字母A-Z）和列号（数字）排序
             var sortedTable = seatStatusTable
-                .OrderBy(row => int.Parse(row.Key))
+                .OrderBy(row => row.Key, StringComparer.OrdinalIgnoreCase) // 按字母顺序排序（A-Z）
                 .ToDictionary(
                     row => row.Key,
-                    row => row.Value.OrderBy(col => int.Parse(col.Key))
+                    row => row.Value
+                        .OrderBy(col => int.Parse(col.Key)) // 列号仍然是数字，可以继续用 int.Parse
                         .ToDictionary(col => col.Key, col => col.Value));
 
             return sortedTable;
