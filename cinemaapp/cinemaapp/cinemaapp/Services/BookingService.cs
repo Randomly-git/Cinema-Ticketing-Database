@@ -150,7 +150,7 @@ namespace test.Services
         /// <param name="customer">顾客信息</param>
         /// <param name="lineNo">座位行号</param>
         /// <returns>计算后的最终票价</returns>
-        public decimal CalculateFinalTicketPrice(Section section, Customer customer, string lineNo) //孙
+        public decimal CalculateFinalTicketPrice(Section section, Customer customer, string lineNo)
         {
             // 1. 获取基础票价
             var film = (_filmRepository as IFilmRepository)?.GetFilmByName(section.FilmName);
@@ -176,6 +176,54 @@ namespace test.Services
                         Console.WriteLine($"应用VIP厅加成后价格: {currentPrice}");
                         break;
                         // 默认普通厅不加价
+                }
+            }
+
+            // 3. 根据座区调整价格
+            string category = null;
+
+            // 从 _orderRepository 获取连接字符串并实例化 OracleShowingRepository
+            var orderRepo = _orderRepository as OracleOrderRepository;
+            if (orderRepo == null)
+            {
+                throw new InvalidOperationException("无法访问 OracleOrderRepository。");
+            }
+            var showingRepo = new OracleShowingRepository(_connectionString);
+            var seatLayout = showingRepo.GetHallSeatLayout(section.HallNo);
+
+            // 在布局中找到对应的行，取其 CATEGORY
+            var seatRow = seatLayout.FirstOrDefault(s =>
+                s.LINENO.Equals(lineNo, StringComparison.OrdinalIgnoreCase));
+
+            if (seatRow != null)
+            {
+                category = seatRow.CATEGORY;
+            }
+
+            if (string.IsNullOrEmpty(category))
+            {
+                Console.WriteLine($"未找到座区信息，按普通区处理: {currentPrice}");
+            }
+            else
+            {
+                switch (category.ToUpper())
+                {
+                    case "A": // 特价区
+                        currentPrice -= 3;
+                        Console.WriteLine($"应用特价区折扣后价格: {currentPrice}");
+                        break;
+                    case "B": // 优选区
+                        currentPrice += 5;
+                        Console.WriteLine($"应用优选区加成后价格: {currentPrice}");
+                        break;
+                    case "C": // 黄金区
+                        currentPrice += 10;
+                        Console.WriteLine($"应用黄金区加成后价格: {currentPrice}");
+                        break;
+                    case "D": // 普通区
+                    default:
+                        Console.WriteLine($"普通区，价格保持不变: {currentPrice}");
+                        break;
                 }
             }
 
