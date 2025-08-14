@@ -36,7 +36,7 @@ namespace test.Repositories
             Film film = null;
             using (var connection = GetConnection())
             {
-                string sql = $"SELECT FILMNAME, GENRE, FILMLENGTH, NORMALPRICE, RELEASEDATE, ENDDATE, ADMISSIONS, BOXOFFICE, SCORE FROM {SchemaName}FILM WHERE FILMNAME = :filmName";
+                string sql = $"SELECT FILMNAME, GENRE, FILMLENGTH, NORMALPRICE, RELEASEDATE, ENDDATE, ADMISSIONS, BOXOFFICE, SCORE, RATINGNUM, IMAGEPATH FROM {SchemaName}FILM WHERE FILMNAME = :filmName";
                 using (var command = new OracleCommand(sql, connection))
                 {
                     command.Parameters.Add(new OracleParameter("filmName", filmName));
@@ -62,15 +62,17 @@ namespace test.Repositories
 
                             film = new Film
                             {
-                                FilmName = reader["FILMNAME"].ToString(),
-                                Genre = reader["GENRE"].ToString(),
-                                FilmLength = Convert.ToInt32(reader["FILMLENGTH"]),
-                                NormalPrice = normalPrice, // 使用转换后的值
-                                ReleaseDate = Convert.ToDateTime(reader["RELEASEDATE"]),
-                                EndDate = reader["ENDDATE"] as DateTime?, // 可空日期
-                                Admissions = Convert.ToInt32(reader["ADMISSIONS"]),
-                                BoxOffice = Convert.ToInt32(reader["BOXOFFICE"]),
-                                Score = Convert.ToInt32(reader["SCORE"])
+                                FilmName = !reader.IsDBNull(reader.GetOrdinal("FILMNAME")) ? reader["FILMNAME"].ToString() : string.Empty,
+                                Genre = !reader.IsDBNull(reader.GetOrdinal("GENRE")) ? reader["GENRE"].ToString() : string.Empty,
+                                FilmLength = !reader.IsDBNull(reader.GetOrdinal("FILMLENGTH")) ? Convert.ToInt32(reader["FILMLENGTH"]) : 0,
+                                NormalPrice = normalPrice,
+                                ReleaseDate = !reader.IsDBNull(reader.GetOrdinal("RELEASEDATE")) ? Convert.ToDateTime(reader["RELEASEDATE"]) : DateTime.MinValue,
+                                EndDate = reader["ENDDATE"] as DateTime?,
+                                Admissions = !reader.IsDBNull(reader.GetOrdinal("ADMISSIONS")) ? Convert.ToInt32(reader["ADMISSIONS"]) : 0,
+                                BoxOffice = !reader.IsDBNull(reader.GetOrdinal("BOXOFFICE")) ? Convert.ToInt32(reader["BOXOFFICE"]) : 0,
+                                Score = !reader.IsDBNull(reader.GetOrdinal("SCORE")) ? Convert.ToDecimal(reader["SCORE"]) : 0m,
+                                RatingNum = !reader.IsDBNull(reader.GetOrdinal("RATINGNUM")) ? Convert.ToInt32(reader["RATINGNUM"]) : 0,
+                                ImagePath = !reader.IsDBNull(reader.GetOrdinal("IMAGEPATH")) ? reader["IMAGEPATH"].ToString() : null
                             };
                         }
                     }
@@ -87,7 +89,7 @@ namespace test.Repositories
             List<Film> films = new List<Film>();
             using (var connection = GetConnection())
             {
-                string sql = $"SELECT FILMNAME, GENRE, FILMLENGTH, NORMALPRICE, RELEASEDATE, ENDDATE, ADMISSIONS, BOXOFFICE, SCORE FROM {SchemaName}FILM";
+                string sql = $"SELECT FILMNAME, GENRE, FILMLENGTH, NORMALPRICE, RELEASEDATE, ENDDATE, ADMISSIONS, BOXOFFICE, SCORE, RATINGNUM, IMAGEPATH FROM {SchemaName}FILM";
                 using (var command = new OracleCommand(sql, connection))
                 {
                     using (var reader = command.ExecuteReader())
@@ -111,16 +113,17 @@ namespace test.Repositories
 
                             films.Add(new Film
                             {
-                                FilmName = reader["FILMNAME"].ToString(),
-                                Genre = reader["GENRE"].ToString(),
-                                FilmLength = Convert.ToInt32(reader["FILMLENGTH"]),
-                                NormalPrice = normalPrice, // 使用转换后的值
-                                ReleaseDate = Convert.ToDateTime(reader["RELEASEDATE"]),
+                                FilmName = !reader.IsDBNull(reader.GetOrdinal("FILMNAME")) ? reader["FILMNAME"].ToString() : string.Empty,
+                                Genre = !reader.IsDBNull(reader.GetOrdinal("GENRE")) ? reader["GENRE"].ToString() : string.Empty,
+                                FilmLength = !reader.IsDBNull(reader.GetOrdinal("FILMLENGTH")) ? Convert.ToInt32(reader["FILMLENGTH"]) : 0,
+                                NormalPrice = normalPrice,
+                                ReleaseDate = !reader.IsDBNull(reader.GetOrdinal("RELEASEDATE")) ? Convert.ToDateTime(reader["RELEASEDATE"]) : DateTime.MinValue,
                                 EndDate = reader["ENDDATE"] as DateTime?,
-                                Admissions = Convert.ToInt32(reader["ADMISSIONS"]),
-                                BoxOffice = Convert.ToInt32(reader["BOXOFFICE"]),
-                                // 处理 SCORE 为 NULL 的情况，转换为 0
-                                Score = reader["SCORE"] == DBNull.Value ? 0 : Convert.ToInt32(reader["SCORE"])
+                                Admissions = !reader.IsDBNull(reader.GetOrdinal("ADMISSIONS")) ? Convert.ToInt32(reader["ADMISSIONS"]) : 0,
+                                BoxOffice = !reader.IsDBNull(reader.GetOrdinal("BOXOFFICE")) ? Convert.ToInt32(reader["BOXOFFICE"]) : 0,
+                                Score = !reader.IsDBNull(reader.GetOrdinal("SCORE")) ? Convert.ToDecimal(reader["SCORE"]) : 0m,
+                                RatingNum = !reader.IsDBNull(reader.GetOrdinal("RATINGNUM")) ? Convert.ToInt32(reader["RATINGNUM"]) : 0,
+                                ImagePath = !reader.IsDBNull(reader.GetOrdinal("IMAGEPATH")) ? reader["IMAGEPATH"].ToString() : null
                             });
                         }
                     }

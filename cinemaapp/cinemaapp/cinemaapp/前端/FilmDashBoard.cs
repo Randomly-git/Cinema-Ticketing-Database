@@ -188,7 +188,7 @@ namespace cinemaapp
                 Width = 300,
                 PlaceholderText = "输入电影名搜索...",
                 Anchor = AnchorStyles.Top | AnchorStyles.Right,
-                Location = new Point(panel.Width - 310, 10)  // 右边预留10像素边距
+                Location = new Point(panel.Width - 310, 10)
             };
             txtFilmSearch.TextChanged += TxtFilmSearch_TextChanged;
 
@@ -197,24 +197,35 @@ namespace cinemaapp
             {
                 Width = 300,
                 DropDownStyle = ComboBoxStyle.DropDownList,
-                Location = new Point(10, 10)  // 左边预留10像素
+                Location = new Point(10, 10)
             };
             cmbOverviewFilms.SelectedIndexChanged += (s, e) => ShowFilmOverview();
 
-            // 文本框显示影片信息（居中偏下）
+            // 创建PictureBox用于显示海报 - 调大尺寸并去掉边框
+            PictureBox pictureBoxPoster = new PictureBox
+            {
+                SizeMode = PictureBoxSizeMode.Zoom,
+                Width = 300,  // 宽度增大
+                Height = 450, // 高度增大
+                Location = new Point(10, 50),
+                BorderStyle = BorderStyle.None  // 去掉边框
+            };
+
+            // 文本框显示影片信息（放在海报右侧）
             txtOverview = new TextBox
             {
                 Multiline = true,
                 ReadOnly = true,
-                Width = 800,
-                Height = 400,
+                Width = 550,
+                Height = 450,  // 高度与海报一致
                 ScrollBars = ScrollBars.Vertical,
-                Location = new Point(10, 50)
+                Location = new Point(320, 50)  // 位置调整
             };
 
             // 添加控件
             panel.Controls.Add(txtFilmSearch);
             panel.Controls.Add(cmbOverviewFilms);
+            panel.Controls.Add(pictureBoxPoster);
             panel.Controls.Add(txtOverview);
             tab.Controls.Add(panel);
 
@@ -248,6 +259,52 @@ namespace cinemaapp
         {
             if (cmbOverviewFilms.SelectedItem is not Film film) return;
 
+            // 查找PictureBox控件
+            PictureBox pictureBoxPoster = null;
+            foreach (Control control in tabControl.TabPages["影片概况"].Controls[0].Controls)
+            {
+                if (control is PictureBox)
+                {
+                    pictureBoxPoster = (PictureBox)control;
+                    break;
+                }
+            }
+
+            // 加载海报图片
+            if (pictureBoxPoster != null)
+            {
+                try
+                {
+                    if (!string.IsNullOrEmpty(film.ImagePath))
+                    {
+                        string imagePath = Path.Combine(Application.StartupPath, film.ImagePath);
+                        if (File.Exists(imagePath))
+                        {
+                            // 使用using确保及时释放资源
+                            using (var tempImage = Image.FromFile(imagePath))
+                            {
+                                pictureBoxPoster.Image = new Bitmap(tempImage);
+                            }
+                        }
+                        else
+                        {
+                            // 文件不存在，设置空白图片
+                            pictureBoxPoster.Image = null;
+                        }
+                    }
+                    else
+                    {
+                        // 没有图片路径，设置空白图片
+                        pictureBoxPoster.Image = null;
+                    }
+                }
+                catch (Exception)
+                {
+                    // 加载失败，设置空白图片
+                    pictureBoxPoster.Image = null;
+                }
+            }
+
             var overview = $"影片名称: {film.FilmName}\r\n" +
                            $"类型: {film.Genre}\r\n" +
                            $"时长: {film.FilmLength} 分钟\r\n" +
@@ -257,7 +314,7 @@ namespace cinemaapp
                            $"票房: {film.BoxOffice}\r\n" +
                            $"观影人次: {film.Admissions}\r\n";
 
-            // 取出演员列表（假设方法在Program._filmRepository里）
+            // 取出演员列表
             var castList = Program._filmRepository.GetCastByFilmName(film.FilmName);
 
             if (castList.Any())

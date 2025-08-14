@@ -30,98 +30,202 @@ namespace test.Services
         }
 
         /// <summary>
-        /// 购买电影票。
+        /// [新增] 购买多张电影票（如双人票）。
+        /// 处理多张票的购买，并确保所有票都在一个事务中完成。
         /// </summary>
-        /// <param name="sectionId">场次ID。</param>
-        /// <param name="lineNo">座位行号。</param>
-        /// <param name="columnNo">座位列号。</param>
-        /// <param name="customerId">顾客ID。</param>
-        /// <param name="paymentMethod">支付方式。</param>
-        /// <returns>购买成功的订单对象。</returns>
-        /// <exception cref="ArgumentException">如果场次、座位或顾客无效。</exception>
-        /// <exception cref="InvalidOperationException">如果座位已被预订或购票失败。</exception>
-        public OrderForTickets PurchaseTicket(int sectionId, string lineNo, int columnNo, string customerId, string paymentMethod)
+        /// <param name="sectionId">场次ID</param>
+        /// <param name="seats">要购买的座位列表</param>
+        /// <param name="customerId">顾客ID</param>
+        /// <param name="paymentMethod">支付方式</param>
+        /// <returns>成功生成的订单列表</returns>
+        public List<OrderForTickets> PurchaseMultipleTickets(int sectionId, List<SeatHall> seats, string customerId, string paymentMethod, decimal pointsToUse = 0) //孙
         {
-            // 使用事务确保原子性操作
+            if (seats == null || !seats.Any())
+                throw new ArgumentException("必须至少选择一个座位。");
+
+            var distinctSeats = seats.GroupBy(s => $"{s.LINENO}-{s.ColumnNo}").Count();
+            if (distinctSeats < seats.Count)
+                throw new InvalidOperationException("座位选择重复，请勿选择同一个座位多次。");
+
+            var createdOrders = new List<OrderForTickets>();
+
             using (var connection = new OracleConnection(_connectionString))
             {
                 connection.Open();
-                OracleTransaction transaction = connection.BeginTransaction(IsolationLevel.ReadCommitted); // 使用 ReadCommitted 隔离级别
+                OracleTransaction transaction = connection.BeginTransaction(IsolationLevel.ReadCommitted);
 
                 try
                 {
-                    // 1. 验证顾客是否存在
                     var customer = _customerRepository.GetCustomerById(customerId);
-                    if (customer == null)
-                    {
-                        throw new ArgumentException($"顾客ID {customerId} 不存在。");
-                    }
+                    if (customer == null) throw new ArgumentException($"顾客ID {customerId} 不存在。");
 
-                    // 2. 获取场次信息以验证和获取票价
                     var section = _showingRepository.GetSectionById(sectionId);
-                    if (section == null)
+                    if (section == null) throw new ArgumentException($"场次ID {sectionId} 不存在。");
+
+                    var soldTickets = _showingRepository.GetSoldSeatsForSection(sectionId);
+                    foreach (var seat in seats)
                     {
-                        throw new ArgumentException($"场次ID {sectionId} 不存在。");
+                        if (soldTickets.Any(t => t.LineNo == seat.LINENO && t.ColumnNo == seat.ColumnNo && t.State == "已售出"))
+                            throw new InvalidOperationException($"座位 {seat.LINENO}{seat.ColumnNo} 在场次 {sectionId} 已被预订。");
                     }
 
-                    // 3. 检查座位是否可用
-                    var soldTickets = _showingRepository.GetSoldSeatsForSection(sectionId); // 获取已售座位
-                    if (soldTickets.Any(t => t.LineNo == lineNo && t.ColumnNo == columnNo && t.State == "已售出"))
+                    // 获取VIP卡信息
+                    var vipCard = _customerRepository.GetVIPCardByCustomerID(customerId);
+                    if (vipCard == null)
+                        throw new InvalidOperationException("获取积分信息失败。");
+
+                    decimal totalPrice = 0m;
+                    List<decimal> seatPrices = new List<decimal>();
+                    foreach (var seat in seats)
                     {
-                        throw new InvalidOperationException($"座位 {lineNo}{columnNo} 在场次 {sectionId} 已被预订。");
+                        decimal finalTicketPrice = CalculateFinalTicketPrice(section, customer, seat.LINENO);
+                        seatPrices.Add(finalTicketPrice);
+                        totalPrice += finalTicketPrice;
                     }
 
-                    // 4. 计算票价
-                    // 获取电影的 NormalPrice
-                    decimal ticketUnitPrice = _filmRepository.GetFilmByName(section.FilmName)?.NormalPrice ?? 0;
-                    if (ticketUnitPrice <= 0)
+                    // 判断积分支付是否足够
+                    if (paymentMethod == "积分支付")
                     {
-                        throw new InvalidOperationException($"无法获取电影 '{section.FilmName}' 的票价。");
+                        decimal requiredPoints = totalPrice * 10;
+                        if (vipCard.Points < requiredPoints)
+                            throw new InvalidOperationException($"积分不足，需要 {requiredPoints} 积分，当前积分 {vipCard.Points}。");
+
+                        // 扣除积分
+                        _customerRepository.UpdateVIPCardPoints(customerId, -Convert.ToInt32(requiredPoints));
                     }
 
-                    // 5. 创建 Ticket 对象 (先插入 Ticket 表)
-                    Ticket newTicket = new Ticket
+                    foreach (var seat in seats)
                     {
-                        TicketID = Guid.NewGuid().ToString(), // 生成唯一票ID
-                        Price = ticketUnitPrice, // 单张票的售价
-                        //Rating = 0, // 初始评分为0
-                        SectionID = sectionId,
-                        LineNo = lineNo,
-                        ColumnNo = columnNo,
-                        State = "已售出" // 票的状态为已售出
-                    };
-                    _showingRepository.AddTicket(newTicket, transaction); // 插入票务记录
+                        decimal finalTicketPrice = CalculateFinalTicketPrice(section, customer, seat.LINENO);
 
-                    // 6. 创建 OrderForTickets 对象 (插入订单表)
-                    OrderForTickets newOrder = new OrderForTickets
-                    {
-                        // OrderID 将由数据库生成或通过序列获取
-                        TicketID = newTicket.TicketID,
-                        State = "有效", // 订单初始状态为有效
-                        CustomerID = customerId,
-                        Day = DateTime.Today, // 订单日期
-                        PaymentMethod = paymentMethod,
-                        TotalPrice = ticketUnitPrice // 假设每张票一个订单，所以订单总价等于票价
-                    };
-                    _orderRepository.AddOrderForTickets(newOrder, transaction); // 插入订单记录
+                        Ticket newTicket = new Ticket
+                        {
+                            TicketID = Guid.NewGuid().ToString(),
+                            Price = finalTicketPrice,
+                            SectionID = sectionId,
+                            LineNo = seat.LINENO,
+                            ColumnNo = seat.ColumnNo,
+                            State = "已售出"
+                        };
+                        _showingRepository.AddTicket(newTicket, transaction);
 
-                    // 7. 更新顾客积分 (可选，但推荐)
-                    // 假设每张票增加 10 积分
-                    _customerRepository.UpdateVIPCardPoints(customerId, 10); // 增加积分
+                        OrderForTickets newOrder = new OrderForTickets
+                        {
+                            TicketID = newTicket.TicketID,
+                            State = "有效",
+                            CustomerID = customerId,
+                            Day = DateTime.Today,
+                            PaymentMethod = paymentMethod,
+                            TotalPrice = finalTicketPrice
+                        };
+                        _orderRepository.AddOrderForTickets(newOrder, transaction);
 
-                    transaction.Commit(); // 提交事务
+                        createdOrders.Add(newOrder);
+                    }
+
+                    // 购买完成加积分
+                    int pointsEarned = 10 * seats.Count;
+                    if (paymentMethod != "积分支付") // 用现金支付才加积分
+                        _customerRepository.UpdateVIPCardPoints(customerId, pointsEarned);
+
+                    transaction.Commit();
                     Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine($"成功购买票并生成订单: {newOrder.ToString()}");
+                    Console.WriteLine($"成功购买 {seats.Count} 张票并生成 {createdOrders.Count} 个订单。");
                     Console.ResetColor();
-                    return newOrder;
+
+                    return createdOrders;
                 }
                 catch (Exception ex)
                 {
-                    transaction.Rollback(); // 回滚事务
+                    transaction.Rollback();
                     throw new InvalidOperationException($"购票失败: {ex.Message}", ex);
                 }
             }
         }
+
+        /// <summary>
+        /// 包含了影厅、座区、时段和会员等级的定价逻辑。
+        /// </summary>
+        /// <param name="section">场次信息</param>
+        /// <param name="customer">顾客信息</param>
+        /// <param name="lineNo">座位行号</param>
+        /// <returns>计算后的最终票价</returns>
+        public decimal CalculateFinalTicketPrice(Section section, Customer customer, string lineNo) //孙
+        {
+            // 1. 获取基础票价
+            var film = (_filmRepository as IFilmRepository)?.GetFilmByName(section.FilmName);
+            if (film == null || film.NormalPrice <= 0)
+            {
+                throw new InvalidOperationException($"无法获取电影 '{section.FilmName}' 的基础票价。");
+            }
+            decimal currentPrice = film.NormalPrice;
+            Console.WriteLine($"基础票价: {currentPrice}");
+
+            // 2. 根据影厅类型调整价格
+            var hall = (_orderRepository as OracleOrderRepository)?.GetMovieHallByNo(section.HallNo);
+            if (hall != null)
+            {
+                switch (hall.Category.ToUpper())
+                {
+                    case "IMAX":
+                        currentPrice *= 1.5m; // IMAX厅价格上浮50%
+                        Console.WriteLine($"应用IMAX厅加成后价格: {currentPrice}");
+                        break;
+                    case "VIP":
+                        currentPrice *= 2.0m; // VIP厅价格翻倍
+                        Console.WriteLine($"应用VIP厅加成后价格: {currentPrice}");
+                        break;
+                        // 默认普通厅不加价
+                }
+            }
+
+            // 3. 根据座区调整价格
+            int rowNumber;
+            if (lineNo.Length == 1 && char.IsLetter(lineNo[0]))
+            {
+                rowNumber = char.ToUpper(lineNo[0]) - 'A' + 1;
+            }
+            else if (!int.TryParse(lineNo, out rowNumber))
+            {
+                rowNumber = 99; // 如果行号格式不符，则按普通区处理
+            }
+
+            if (rowNumber == 1)
+            {
+                currentPrice -= 3; // 特价区减3元
+                Console.WriteLine($"应用特价区折扣后价格: {currentPrice}");
+            }
+            else if (rowNumber >= 2 && rowNumber <= 4)
+            {
+                currentPrice += 5; // 优选区加价5元
+                Console.WriteLine($"应用优选区加成后价格: {currentPrice}");
+            }
+            else if (rowNumber >= 5 && rowNumber <= 7)
+            {
+                currentPrice += 10; // 黄金区加价10元
+                Console.WriteLine($"应用黄金区加成后价格: {currentPrice}");
+            }
+            else
+            {
+                Console.WriteLine($"普通区，价格保持不变: {currentPrice}");
+            }
+
+            // 4. 根据会员等级应用折扣
+            // 假设会员等级越高，折扣越大 (1级不打折, 2级9折, 3级8折...)
+            if (customer.VipLevel > 1)
+            {
+                decimal discountRate = 1.0m - (customer.VipLevel - 1) * 0.1m;
+                if (discountRate < 0.5m) discountRate = 0.5m; // 最低五折
+
+                currentPrice *= discountRate;
+                Console.WriteLine($"应用会员等级 {customer.VipLevel} 折扣({discountRate})后价格: {currentPrice}");
+            }
+
+
+            // 返回最终价格，保留两位小数
+            return Math.Round(currentPrice, 2);
+        }
+
 
 
 

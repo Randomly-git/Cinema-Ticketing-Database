@@ -257,7 +257,8 @@ namespace cinemaapp
         //购票
         private void PurchaseTicketMenu()
         {
-            MessageBox.Show("购票 - 功能未实现");
+            var form = new FilmSelectionForm(Program._filmService, Program._loggedInCustomer,this);
+            form.ShowDialog(); // 模态窗口，用户必须先操作完这个窗体才能回主界面
         }
 
         private void PurchaseProduct()

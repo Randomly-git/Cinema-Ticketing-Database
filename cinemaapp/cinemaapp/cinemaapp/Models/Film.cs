@@ -16,6 +16,8 @@ namespace test.Models
         public int Admissions { get; set; }  // 观影人次
         public decimal BoxOffice { get; set; }   // 票房
         public decimal Score { get; set; }       // 评分（所有观影人次平均评分）
+        public int RatingNum { get; set; }       // 有效的评分数
+        public string ImagePath { get; set; }  // 新增，图片路径 孙
 
         // 导航属性：方便获取演职人员和场次信息
         public List<Cast> CastMembers { get; set; } = new List<Cast>();
