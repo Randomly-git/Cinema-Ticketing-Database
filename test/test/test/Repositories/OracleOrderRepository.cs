@@ -167,13 +167,16 @@ namespace test.Repositories
                 {
                     connection.Open();
 
-                    // 查询 SECTION 表对应字段
-                    // 如果它们是通过联表查询 TimeSlot 和 MovieHall 得到的，需要写 JOIN 查询
-                    string sql = "SELECT SECTIONID, FILMNAME, HALLNO, TIMEID FROM SECTION WHERE SECTIONID = :p_sectionId";
+                    // 修改SQL，添加 JOIN 查询 TimeSlot 表
+                    string sql = @"
+                SELECT s.SECTIONID, s.FILMNAME, s.HALLNO, s.TIMEID,
+                       t.TIMEID, t.STARTTIME, t.ENDTIME
+                FROM SECTION s
+                JOIN TIMESLOT t ON s.TIMEID = t.TIMEID
+                WHERE s.SECTIONID = :p_sectionId";
 
                     using (OracleCommand command = new OracleCommand(sql, connection))
                     {
-                        // 绑定参数
                         command.Parameters.Add(new OracleParameter("p_sectionId", sectionId));
 
                         using (OracleDataReader reader = command.ExecuteReader())
@@ -186,6 +189,12 @@ namespace test.Repositories
                                     FilmName = reader["FILMNAME"].ToString(),
                                     HallNo = Convert.ToInt32(reader["HALLNO"]),
                                     TimeID = reader["TIMEID"].ToString(),
+                                    TimeSlot = new TimeSlot  // 手动填充导航属性
+                                    {
+                                        TimeID = reader["TIMEID"].ToString(),
+                                        StartTime = Convert.ToDateTime(reader["STARTTIME"]),
+                                        EndTime = Convert.ToDateTime(reader["ENDTIME"])
+                                    }
                                 };
                             }
                         }
