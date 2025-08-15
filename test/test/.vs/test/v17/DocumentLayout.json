@@ -7,7 +7,7 @@
       "RelativeMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|solutionrelative:test\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|d:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\cinema-ticketing-database\\test\\test\\test\\models\\viplevels.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\test\\models\\viplevels.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{12C6422E-E915-4638-843D-6B4A7C05EC80}|test\\test.csproj|solutionrelative:test\\models\\viplevels.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -200,7 +200,7 @@
               "RelativeDocumentMoniker": "test\\Program.cs",
               "ToolTip": "D:\\\u81ED\u540C\u6D4E\u7684\\\u5927\u4E8C\\\u6570\u636E\u5E93\\Cinema-Ticketing-Database\\test\\test\\test\\Program.cs",
               "RelativeToolTip": "test\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAJgDAABaAAAAAAAAAA==",
+              "ViewState": "AgIAAIYDAAAAAAAAAAAiwJgDAABaAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-28T03:53:45.896Z",
               "IsPinned": true,
@@ -232,8 +232,7 @@
               "RelativeToolTip": "test\\Models\\VipLevels.cs",
               "ViewState": "AgIAAAQAAAAAAAAAAAAIwA0AAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-15T02:03:08.496Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-08-15T02:03:08.496Z"
             },
             {
               "$type": "Document",
@@ -293,8 +292,7 @@
               "RelativeToolTip": "test\\Repositories\\IOrderForProductRepository.cs",
               "ViewState": "AgIAAAoAAAAAAAAAAAAnwA8AAAAWAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-07T03:41:10.101Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-08-07T03:41:10.101Z"
             },
             {
               "$type": "Document",
@@ -318,8 +316,7 @@
               "RelativeToolTip": "test\\Repositories\\OracleShowingRepository.cs",
               "ViewState": "AgIAAMAAAAAAAAAAAAAYwHgAAAAcAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-28T06:32:30.492Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-28T06:32:30.492Z"
             },
             {
               "$type": "Document",
@@ -439,8 +436,7 @@
               "RelativeToolTip": "test\\Repositories\\IOrderRepository.cs",
               "ViewState": "AgIAAAYAAAAAAAAAAAAAAA4AAACFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-28T06:37:17.141Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-28T06:37:17.141Z"
             },
             {
               "$type": "Document",
@@ -452,8 +448,7 @@
               "RelativeToolTip": "test\\Repositories\\OracleFilmRepository.cs",
               "ViewState": "AgIAAFQCAAAAAAAAAAA6wFICAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-28T07:28:51.519Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-28T07:28:51.519Z"
             },
             {
               "$type": "Document",
@@ -477,8 +472,7 @@
               "RelativeToolTip": "test\\Models\\OrderForTickets.cs",
               "ViewState": "AgIAAA4AAAAAAAAAAAA3wAwAAAAaAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-28T06:26:30.657Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-28T06:26:30.657Z"
             },
             {
               "$type": "Document",
@@ -622,8 +616,7 @@
               "RelativeToolTip": "test\\Models\\Customer.cs",
               "ViewState": "AgIAAAoAAAAAAAAAAAAzwA8AAAAhAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-01T07:08:12.317Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-08-01T07:08:12.317Z"
             },
             {
               "$type": "Document",
@@ -647,8 +640,7 @@
               "RelativeToolTip": "test\\Models\\VIPCard.cs",
               "ViewState": "AgIAAAUAAAAAAAAAAAAxwAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-30T03:16:03.444Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-30T03:16:03.444Z"
             },
             {
               "$type": "Document",
@@ -660,8 +652,7 @@
               "RelativeToolTip": "test\\Services\\IBookingService.cs",
               "ViewState": "AgIAAAYAAAAAAAAAAAAuwBQAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-28T06:40:16.995Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-28T06:40:16.995Z"
             },
             {
               "$type": "Document",
@@ -697,8 +688,7 @@
               "RelativeToolTip": "test\\Repositories\\OracleCustomerRepository.cs",
               "ViewState": "AgIAAAYAAAAAAAAAAAAAAA4AAAAlAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-28T06:29:32.33Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-28T06:29:32.33Z"
             },
             {
               "$type": "Document",
@@ -710,8 +700,7 @@
               "RelativeToolTip": "test\\Repositories\\ICustomerRepository.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-28T06:28:18.464Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-28T06:28:18.464Z"
             },
             {
               "$type": "Document",
