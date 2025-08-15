@@ -102,6 +102,7 @@
     <Compile Include="Models\UserRoles.cs" />
     <Compile Include="Models\VIPCard.cs" />
     <Compile Include="Helpers\PasswordHelper.cs" />
+    <Compile Include="Models\VipLevels.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Models\UserBase.cs" />
     <Compile Include="Repositories\IAdministratorRepository.cs" />

@@ -13,6 +13,8 @@ namespace test.Models
 
         // 导航属性：方便获取会员卡信息
         public VIPCard VIPCard { get; set; }
+        // 会员等级，假设为整数类型，表示不同的会员等级
+        public int VIPLevel { get; set; }
 
         public Customer() : base() // 调用基类的构造函数
         {

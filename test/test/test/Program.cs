@@ -37,12 +37,98 @@ namespace test
         private static IOrderForProductRepository _orderForProductRepository; // 周边产品订单仓库
         private static IRatingRepository _ratingRepository;// 影评仓库
 
+        // 辅助函数vip等级相关
+        /// <summary>
+        /// 显示vip等级经验条。
+        /// </summary>
+        /// <param name="totalPoints">用户总积分</param>
+        /// <param name="currentLevel">用户当前等级</param>
+        private static void DisplayExperienceBar(int currentPoints, int nextLevelPoints, int currentLevel)
+        {
+            Console.WriteLine("\n--- 您的VIP等级经验值 ---");
+
+            if (nextLevelPoints == -1)
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"您已是最高等级 VIP{currentLevel}");
+                Console.ResetColor();
+                return;
+            }
+
+            // 获取当前等级所需的总积分
+            int currentLevelPoints = VipLevels.PointsRequired[currentLevel];
+
+            // 计算当前等级内的经验值
+            int pointsInCurrentLevel = currentPoints - currentLevelPoints;
+
+            // 计算升级到下一等级所需的总经验值
+            int pointsToNextLevel = nextLevelPoints - currentLevelPoints;
+
+            double progress = (double)pointsInCurrentLevel / pointsToNextLevel;
+            int barLength = 50; // 进度条长度
+            int filledLength = (int)Math.Round(barLength * progress);
+
+            StringBuilder bar = new StringBuilder();
+            bar.Append("[");
+            for (int i = 0; i < barLength; i++)
+            {
+                if (i < filledLength)
+                {
+                    bar.Append("█");
+                }
+                else
+                {
+                    bar.Append("-");
+                }
+            }
+            bar.Append("]");
+
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine($"VIP{currentLevel} -> VIP{currentLevel + 1}: {bar}");
+            Console.ResetColor();
+            Console.WriteLine($"经验值: {pointsInCurrentLevel}/{pointsToNextLevel}");
+        }
+        // 检查并处理VIP等级升级
+        private static void CheckForVipLevelUpgrade()
+        {
+            if (_loggedInCustomer.VIPLevel >= VipLevels.PointsRequired.Keys.Max())
+            {
+                return; // 已经是最高等级，不再检查
+            }
+
+            int oldVipLevel = _loggedInCustomer.VIPLevel;
+            int newVipLevel = _loggedInCustomer.VIPLevel;
+            int currentPoints = _loggedInCustomer.VIPCard?.Points ?? 0;
+
+            // 根据当前经验值检查新的VIP等级
+            foreach (var level in VipLevels.PointsRequired.OrderByDescending(x => x.Key))
+            {
+                if (currentPoints >= level.Value)
+                {
+                    newVipLevel = level.Key;
+                    break;
+                }
+            }
+
+            if (newVipLevel > oldVipLevel)
+            {
+                // 如果等级有提升，调用更新方法并打印提示
+                _customerRepository.UpdateCustomerVipLevel(_loggedInCustomer.CustomerID, newVipLevel);
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"\n恭喜！您的VIP等级已从 VIP{oldVipLevel} 升级到 VIP{newVipLevel}！");
+                Console.ResetColor();
+                _loggedInCustomer.VIPLevel = newVipLevel; // 更新本地对象
+            }
+
+            int nextLevelPoints = VipLevels.GetNextLevelPoints(newVipLevel);
+            DisplayExperienceBar(currentPoints, nextLevelPoints, newVipLevel);
+        }
+
         static void Main(string[] args)
         {
             Console.WriteLine("--- 启动电影院管理系统 ---");
 
             // 直接在这里定义连接字符串
-            // 请务必替换为你的实际数据库信息
             string connectionString = "Data Source=//8.148.76.54:1524/orclpdb1;User Id=cbc;Password=123456;";
 
             // 验证连接字符串是否有效
@@ -127,7 +213,15 @@ namespace test
                 }
                 else if (_loggedInCustomer != null)
                 {
-                    Console.WriteLine($"当前用户: {_loggedInCustomer.Name} (ID: {_loggedInCustomer.CustomerID}, 等级: {_loggedInCustomer.VipLevel}, 积分: {_loggedInCustomer.VIPCard?.Points ?? 0})");
+                    Console.WriteLine($"当前用户: {_loggedInCustomer.Name} (ID: {_loggedInCustomer.CustomerID}");
+                    int totalPoints = _loggedInCustomer.VIPCard?.Points ?? 0;
+                    int newVipLevel = VipLevels.CalculateVipLevel(totalPoints);
+                    _loggedInCustomer.VipLevel = newVipLevel;
+                    Console.WriteLine($"会员等级: VIP{_loggedInCustomer.VipLevel}, 积分: {totalPoints}");
+                    // 获取下一等级所需的总积分
+                    int nextLevelPoints = VipLevels.GetNextLevelPoints(newVipLevel);
+                    DisplayExperienceBar(totalPoints, nextLevelPoints, newVipLevel);
+                    Console.WriteLine();
                     Console.WriteLine("1. 更新个人资料");
                     Console.WriteLine("2. 查看电影排挡");
                     Console.WriteLine("3. 查看电影评分与评论");
@@ -390,7 +484,8 @@ namespace test
                     Console.ResetColor();
                     // 登录成功后，重新加载完整的顾客信息，包括最新的积分和等级
                     _loggedInCustomer = _customerRepository.GetCustomerById(_loggedInCustomer.CustomerID);
-                    Console.WriteLine($"会员等级: {_loggedInCustomer.VipLevel}, 积分: {_loggedInCustomer.VIPCard?.Points ?? 0})");
+                    Console.WriteLine($"会员等级: {_loggedInCustomer.VipLevel}, 积分: {_loggedInCustomer.VIPCard?.Points ?? 0}");
+                    
                 }
                 else
                 {
@@ -814,10 +909,15 @@ namespace test
                         totalPointsNeeded // 传给方法，用于扣积分
                     );
 
+                    // 假设每张票获得100经验值
+                    int experienceGained = newOrders.Count * 100;
+                    _loggedInCustomer.VIPCard.Points += experienceGained; // 更新经验值
+
                     Console.ForegroundColor = ConsoleColor.Cyan;
                     Console.WriteLine($"\n操作完成！共 {newOrders.Count} 笔订单已生成。请在“我的订单”中查看详情。");
                     // 刷新用户信息
                     _loggedInCustomer = _customerRepository.GetCustomerById(_loggedInCustomer.CustomerID);
+                    CheckForVipLevelUpgrade(); // 检查是否升级VIP等级
                     Console.WriteLine($"您的新积分: {_loggedInCustomer.VIPCard?.Points ?? 0}");
                     Console.ResetColor();
                 }
@@ -1356,7 +1456,7 @@ namespace test
                 Console.WriteLine($"\n演职人员 '{memberName}' 的参演电影:");
                 foreach (var detail in castDetails)
                 {
-                    Console.WriteLine($"- 演职人员：{detail.MemberName}，电影名称: {detail.FilmName}, 担任角色: {detail.Role}");
+                    Console.WriteLine($"- 演员：{detail.MemberName}, 电影名称: {detail.FilmName}, 担任角色: {detail.Role}");
                 }
             }
             else
@@ -1521,46 +1621,19 @@ namespace test
                 Console.WriteLine("\n--- 为电影评分 ---");
 
                 // 获取用户观看过的电影（通过订单）
-                var validOrders = _orderRepository.GetOrdersForCustomer(_loggedInCustomer.CustomerID, true)
+                var finishedOrders = _orderRepository.GetOrdersForCustomer(_loggedInCustomer.CustomerID, true)
                     .Where(o => o.State == "有效")
                     .ToList();
 
-                if (!validOrders.Any())
+                if (!finishedOrders.Any())
                 {
                     Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine("您目前没有有效的电影票订单，无法评分。");
+                    Console.WriteLine("您尚未观看过任何电影，无法评分。");
                     Console.ResetColor();
                     return;
                 }
 
-                var finishedOrders = new List<OrderForTickets>();
-                DateTime testRefundTime = new DateTime(2025, 12, 11, 14, 30, 0);
-
-                foreach (var order in validOrders)
-                {
-                    var ticket = _orderRepository.GetTicketById(order.TicketID);
-                    if (ticket == null) continue;
-                    var section = _orderRepository.GetSectionById(ticket.SectionID);
-                    if (section?.TimeSlot == null) continue;
-
-                    // 如果当前时间早于场次结束时间，则不允许评价
-                    if (DateTime.Now >= section.TimeSlot.EndTime)
-                    {
-                        finishedOrders.Add(order);
-                    }
-                    else
-                    {
-                        Console.WriteLine($"* {_ratingService.GetFilmNamebyOrderId(order.OrderID)} 尚未结束（场次结束时间: {section.TimeSlot.EndTime:yyyy-MM-dd HH:mm}）");
-                    }
-                }
-
-                if(finishedOrders.Count() == 0)
-                {
-                    Console.WriteLine("您尚未看完任何一部电影，无法评分");
-                    return;
-                }
-
-                Console.WriteLine("\n您的可评价电影：");
+                Console.WriteLine("您观看过的电影（一票一评）:");
                 for (int i = 0; i < finishedOrders.Count(); i++)
                 {
                     var order = finishedOrders[i];
@@ -1957,7 +2030,7 @@ namespace test
             if (int.TryParse(newScoreStr, out int newScore)) existingFilm.Score = newScore;
 
             Console.WriteLine($"  票房: {existingFilm.BoxOffice}");
-            Console.Write("请输入新票房 (留空则不修改): "); 
+            Console.Write("请输入新票房 (留空则不修改): ");
             string newBoxOfficeStr = Console.ReadLine();
             if (int.TryParse(newBoxOfficeStr, out int newBoxOffice)) existingFilm.BoxOffice = newBoxOffice;
 
