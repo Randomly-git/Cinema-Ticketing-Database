@@ -270,6 +270,54 @@ namespace test.Services
             }
 
             // 3. 根据座区调整价格
+            string category = null;
+
+            // 从 _orderRepository 获取连接字符串并实例化 OracleShowingRepository
+            var orderRepo = _orderRepository as OracleOrderRepository;
+            if (orderRepo == null)
+            {
+                throw new InvalidOperationException("无法访问 OracleOrderRepository。");
+            }
+            var showingRepo = new OracleShowingRepository(_connectionString);
+            var seatLayout = showingRepo.GetHallSeatLayout(section.HallNo);
+
+            // 在布局中找到对应的行，取其 CATEGORY
+            var seatRow = seatLayout.FirstOrDefault(s =>
+                s.LINENO.Equals(lineNo, StringComparison.OrdinalIgnoreCase));
+
+            if (seatRow != null)
+            {
+                category = seatRow.CATEGORY;
+            }
+
+            if (string.IsNullOrEmpty(category))
+            {
+                Console.WriteLine($"未找到座区信息，按普通区处理: {currentPrice}");
+            }
+            else
+            {
+                switch (category.ToUpper())
+                {
+                    case "A": // 特价区
+                        currentPrice -= 3;
+                        Console.WriteLine($"应用特价区折扣后价格: {currentPrice}");
+                        break;
+                    case "B": // 优选区
+                        currentPrice += 5;
+                        Console.WriteLine($"应用优选区加成后价格: {currentPrice}");
+                        break;
+                    case "C": // 黄金区
+                        currentPrice += 10;
+                        Console.WriteLine($"应用黄金区加成后价格: {currentPrice}");
+                        break;
+                    case "D": // 普通区
+                    default:
+                        Console.WriteLine($"普通区，价格保持不变: {currentPrice}");
+                        break;
+                }
+            }
+
+            // 3. 根据座区调整价格
             int rowNumber;
             if (lineNo.Length == 1 && char.IsLetter(lineNo[0]))
             {
@@ -324,18 +372,18 @@ namespace test.Services
 
             // 1. 获取订单和票信息
             string getOrderSql = @"
-SELECT 
-    o.ticketID, 
-    o.price,
-    ts.starttime AS showtime
-FROM 
-    orderfortickets o
-    JOIN ticket t ON o.ticketID = t.ticketID
-    JOIN section s ON t.sectionID = s.sectionID
-    JOIN timeslot ts ON s.timeID = ts.timeID
-WHERE 
-    o.orderID = :orderId 
-    AND o.state = '有效'";
+                              SELECT 
+                                  o.ticketID, 
+                                  o.price,
+                                  ts.starttime AS showtime
+                              FROM 
+                                  orderfortickets o
+                                  JOIN ticket t ON o.ticketID = t.ticketID
+                                  JOIN section s ON t.sectionID = s.sectionID
+                                  JOIN timeslot ts ON s.timeID = ts.timeID
+                              WHERE 
+                                  o.orderID = :orderId 
+                                  AND o.state = '有效'";
 
             var orderParam = new OracleParameter("orderId", OracleDbType.Int32)
             {

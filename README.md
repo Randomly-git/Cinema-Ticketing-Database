@@ -1,38 +1,20 @@
-2025数据库原理与应用课程设计项目
+本分支存放电影院管理系统的后端实现
 
-成员情况：
+程序结构分为Models层、仓库层、服务层，在Program.cs中运行
 
-Randomly-git        2351887-孟炜程
+本分支在提交过程中，覆盖掉了一些提交记录，特此说明：
 
-Catherine-Liu2004 2250679-刘夏
+1.双人票/多人票的有关操作与票价的动态调整
 
-hotaChen              2351839-陈百川
+（主要涉及涉及ShowingServic、BookingService和program.cs相关部分的修改） 
 
-dingzhenyao         2352488-丁桢垚
+实际由  刘夏  同学完成；
 
-iAcane0963           2352492-王宜轩
-
-shangguan2024    2352647-上官思洋
-
-usernamecccc       2353118-王瑞麟
-
-Jeery1                   2353579-孙修明
-
-lieyanzhuifeng       2353596-吴瑞泽
-
-FutuXer                 2353726-付煜超
-
-本分支在提交过程中覆盖了一些提交记录：
-
-双人票/多人票与票价的动态调整
-
-（主要涉及涉及ShowingServic、BookingService和部分program.cs的修改） 
-
-实际由刘夏同学完成；
-
-自动排片/批量操作功能
+2.自动排片/批量操作功能
 
 （主要涉及ScheduleService和部分program.cs的修改）
 
-实际由王瑞麟同学从相关整合过来
+实际由  王瑞麟  同学从对应分支整合过来
+
+服务层函数的功能在explain的表格中汇总，可以直接从外部调用
 

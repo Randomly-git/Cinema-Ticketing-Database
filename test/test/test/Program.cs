@@ -1356,7 +1356,7 @@ namespace test
                 Console.WriteLine($"\n演职人员 '{memberName}' 的参演电影:");
                 foreach (var detail in castDetails)
                 {
-                    Console.WriteLine($"- 电影名称: {detail.FilmName}, 担任角色: {detail.Role}");
+                    Console.WriteLine($"- 演职人员：{detail.MemberName}，电影名称: {detail.FilmName}, 担任角色: {detail.Role}");
                 }
             }
             else
@@ -1521,19 +1521,46 @@ namespace test
                 Console.WriteLine("\n--- 为电影评分 ---");
 
                 // 获取用户观看过的电影（通过订单）
-                var finishedOrders = _orderRepository.GetOrdersForCustomer(_loggedInCustomer.CustomerID, true)
+                var validOrders = _orderRepository.GetOrdersForCustomer(_loggedInCustomer.CustomerID, true)
                     .Where(o => o.State == "有效")
                     .ToList();
 
-                if (!finishedOrders.Any())
+                if (!validOrders.Any())
                 {
                     Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine("您尚未观看过任何电影，无法评分。");
+                    Console.WriteLine("您目前没有有效的电影票订单，无法评分。");
                     Console.ResetColor();
                     return;
                 }
 
-                Console.WriteLine("您观看过的电影（一票一评）:");
+                var finishedOrders = new List<OrderForTickets>();
+                DateTime testRefundTime = new DateTime(2025, 12, 11, 14, 30, 0);
+
+                foreach (var order in validOrders)
+                {
+                    var ticket = _orderRepository.GetTicketById(order.TicketID);
+                    if (ticket == null) continue;
+                    var section = _orderRepository.GetSectionById(ticket.SectionID);
+                    if (section?.TimeSlot == null) continue;
+
+                    // 如果当前时间早于场次结束时间，则不允许评价
+                    if (DateTime.Now >= section.TimeSlot.EndTime)
+                    {
+                        finishedOrders.Add(order);
+                    }
+                    else
+                    {
+                        Console.WriteLine($"* {_ratingService.GetFilmNamebyOrderId(order.OrderID)} 尚未结束（场次结束时间: {section.TimeSlot.EndTime:yyyy-MM-dd HH:mm}）");
+                    }
+                }
+
+                if(finishedOrders.Count() == 0)
+                {
+                    Console.WriteLine("您尚未看完任何一部电影，无法评分");
+                    return;
+                }
+
+                Console.WriteLine("\n您的可评价电影：");
                 for (int i = 0; i < finishedOrders.Count(); i++)
                 {
                     var order = finishedOrders[i];
@@ -1930,7 +1957,7 @@ namespace test
             if (int.TryParse(newScoreStr, out int newScore)) existingFilm.Score = newScore;
 
             Console.WriteLine($"  票房: {existingFilm.BoxOffice}");
-            Console.Write("请输入新票房 (留空则不修改): ");
+            Console.Write("请输入新票房 (留空则不修改): "); 
             string newBoxOfficeStr = Console.ReadLine();
             if (int.TryParse(newBoxOfficeStr, out int newBoxOffice)) existingFilm.BoxOffice = newBoxOffice;
 

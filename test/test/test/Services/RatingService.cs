@@ -113,8 +113,8 @@ namespace test.Services
 
                     var filmName = GetFilmNamebyOrderId(orderId); // 获取电影名
                     var film = _filmRepository.GetFilmByName(filmName); // 获取电影
-                    var ticketId = order.TicketID;  // 获取TicketID
-
+                    var ticketId = order.TicketID;  // 获取TicketID 
+                    
                     // 创建或更新评分
                     var rating = new Rating
                     {
@@ -224,11 +224,11 @@ namespace test.Services
             return ratings;
         }
 
-
+        // 获取用户对于所有影片的印象分
         public Dictionary<string, decimal> GetUserGenreImpression(string customerId)
         {
             // 获取该用户的所有订单
-            List<OrderForTickets> ordersOfCustomer = _orderRepository.GetOrdersForCustomer(customerId);
+            List<OrderForTickets> ordersOfCustomer = _orderRepository.GetOrdersForCustomer(customerId, true);
             var genreScores = new Dictionary<string, decimal>();
 
             foreach (var order in ordersOfCustomer)
