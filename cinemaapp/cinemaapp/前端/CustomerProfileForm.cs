@@ -139,15 +139,28 @@ namespace cinemaapp
                 return;
             }
 
-            int vipLevel = _customer.VipLevel;
             int points = _customer.VIPCard.Points;
-            int nextLevelPoints = (vipLevel + 1) * 100; // 假设每级100积分
-            int currentLevelPoints = vipLevel * 100;
-            int pointsInCurrentLevel = points - currentLevelPoints;
-            int pointsToNextLevel = nextLevelPoints - currentLevelPoints;
-            double progress = Math.Min(1.0, Math.Max(0, (double)pointsInCurrentLevel / pointsToNextLevel));
+            int vipLevel = VipLevels.CalculateVipLevel(points);
+            int nextLevelPoints = VipLevels.GetNextLevelPoints(vipLevel);
 
-            lblVipInfo.Text = $"VIP等级: {vipLevel}  |  积分: {points}  | 升级进度: {(int)(progress * 100)}%";
+            double progress;
+            string progressText;
+
+            if (nextLevelPoints == -1) // 已经是最高等级
+            {
+                progress = 1.0;
+                progressText = "已满级";
+            }
+            else
+            {
+                int currentLevelPoints = VipLevels.PointsRequired[vipLevel];
+                int pointsInCurrentLevel = points - currentLevelPoints;
+                int pointsToNextLevel = nextLevelPoints - currentLevelPoints;
+                progress = Math.Min(1.0, Math.Max(0, (double)pointsInCurrentLevel / pointsToNextLevel));
+                progressText = $"{(int)(progress * 100)}%";
+            }
+
+            lblVipInfo.Text = $"VIP等级: {vipLevel}  |  积分: {points}  | 升级进度: {progressText}";
 
             panelVipBar.Paint += (s, e) =>
             {

@@ -102,6 +102,10 @@ namespace cinemaapp
         {
             if (_loggedInCustomer == null) return;
 
+            // First update the membership level based on current points
+            Program._userService.UpdateMembershipLevel(_loggedInCustomer.CustomerID);
+
+            // Then get the updated customer information
             var customer = Program._customerRepository.GetCustomerById(_loggedInCustomer.CustomerID);
             var vipCard = Program._customerRepository.GetVIPCardByCustomerID(_loggedInCustomer.CustomerID);
             int points = vipCard?.Points ?? 0;
