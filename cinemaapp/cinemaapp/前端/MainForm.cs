@@ -71,9 +71,10 @@ namespace cinemaapp
                 AddButton("我的电影票", 270, ProcessTicketRefund);
                 AddButton("购买周边", 310, PurchaseProduct);
                 AddButton("评价电影", 350, RateFilm);  // 新增评价电影按钮
-                AddButton("删除我的账户", 390, DeleteCustomerAccount);
-                AddButton("用户登出", 430, LogoutCustomer);
-                AddButton("退出系统", 470, () => this.Close());
+                AddButton("查看用户画像", 390, ViewCustomerProfile);
+                AddButton("删除我的账户", 430, DeleteCustomerAccount);
+                AddButton("用户登出", 470, LogoutCustomer);
+                AddButton("退出系统", 510, () => this.Close());
             }
             else if (_loggedInAdmin != null)
             {
@@ -263,6 +264,17 @@ namespace cinemaapp
 
 
 
+        private void ViewCustomerProfile()
+        {
+            if (_loggedInCustomer == null)
+            {
+                MessageBox.Show("请先登录才能查看用户画像", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            var form = new CustomerProfileForm(_loggedInCustomer, Program._ratingService);
+            form.ShowDialog();
+        }
 
 
 
