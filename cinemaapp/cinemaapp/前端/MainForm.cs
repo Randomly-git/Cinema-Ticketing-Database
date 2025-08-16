@@ -236,7 +236,12 @@ namespace cinemaapp
             ratingForm.ShowDialog(); // 弹窗显示
         }
 
-
+        private void ManageFilmsMenu()
+        {
+            // 创建并显示电影管理窗体
+            var filmManagementForm = new FilmManagementForm(Program._adminService, Program._filmService);
+            filmManagementForm.ShowDialog(); // 使用 ShowDialog 使窗体模态显示
+        }
         //查看电影排挡
         private void FilmDashBoard()
         {
@@ -280,11 +285,6 @@ namespace cinemaapp
 
 
 
-        //电影管理
-        private void ManageFilmsMenu()
-        {
-            MessageBox.Show("电影管理 - 功能未实现");
-        }
 
         //查看订单
         private void ViewAllOrders()

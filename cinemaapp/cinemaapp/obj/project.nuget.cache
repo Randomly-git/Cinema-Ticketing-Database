@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "9KPcTVwtWCw=",
+  "dgSpecHash": "FvGQ5ugaKxI=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Richa\\Desktop\\cinemaapp\\cinemaapp\\cinemaapp.csproj",
+  "projectFilePath": "C:\\Users\\Richa\\Desktop\\Cinema-Ticketing-Database\\cinemaapp\\cinemaapp\\cinemaapp.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Richa\\.nuget\\packages\\oracle.manageddataaccess.core\\23.9.1\\oracle.manageddataaccess.core.23.9.1.nupkg.sha512",
     "C:\\Users\\Richa\\.nuget\\packages\\oracle.oracleclient\\4.121.2\\oracle.oracleclient.4.121.2.nupkg.sha512",
@@ -20,9 +20,9 @@
       "code": "NU1701",
       "level": "Warning",
       "message": "已使用“.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1”而不是项目目标框架“net8.0-windows7.0”还原包“Oracle.OracleClient 4.121.2”。此包可能与项目不完全兼容。",
-      "projectPath": "C:\\Users\\Richa\\Desktop\\cinemaapp\\cinemaapp\\cinemaapp.csproj",
+      "projectPath": "C:\\Users\\Richa\\Desktop\\Cinema-Ticketing-Database\\cinemaapp\\cinemaapp\\cinemaapp.csproj",
       "warningLevel": 1,
-      "filePath": "C:\\Users\\Richa\\Desktop\\cinemaapp\\cinemaapp\\cinemaapp.csproj",
+      "filePath": "C:\\Users\\Richa\\Desktop\\Cinema-Ticketing-Database\\cinemaapp\\cinemaapp\\cinemaapp.csproj",
       "libraryId": "Oracle.OracleClient",
       "targetGraphs": [
         "net8.0-windows7.0"

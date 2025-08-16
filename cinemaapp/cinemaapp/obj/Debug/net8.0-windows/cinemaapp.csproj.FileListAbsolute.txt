@@ -468,3 +468,4 @@ C:\Users\Richa\Desktop\cinemaapp\cinemaapp\obj\Debug\net8.0-windows\refint\cinem
 C:\Users\Richa\Desktop\cinemaapp\cinemaapp\obj\Debug\net8.0-windows\cinemaapp.pdb
 C:\Users\Richa\Desktop\cinemaapp\cinemaapp\obj\Debug\net8.0-windows\cinemaapp.genruntimeconfig.cache
 C:\Users\Richa\Desktop\cinemaapp\cinemaapp\obj\Debug\net8.0-windows\ref\cinemaapp.dll
+C:\Users\Richa\Desktop\Cinema-Ticketing-Database\cinemaapp\cinemaapp\obj\Debug\net8.0-windows\cinemaapp.FilmManagementForm.resources

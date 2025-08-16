@@ -16,6 +16,9 @@
     <Compile Update="前端\CustomerOrdersForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="前端\FilmManagementForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="前端\FilmSelectionForm.cs">
       <SubType>Form</SubType>
     </Compile>
