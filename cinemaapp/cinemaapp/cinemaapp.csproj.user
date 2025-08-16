@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Compile Update="前端\AddproductForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="前端\AdminFilmRatingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="前端\DeleteCustomerAccount.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="前端\FilmDashBoard.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="前端\CustomerOrdersForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="前端\FilmSelectionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="前端\FilmRatingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="前端\LoginAdministrator.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="前端\LoginCustomer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="前端\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="前端\PaymentForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="前端\ProductPurchaseForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="前端\RegisterAdministrator.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="前端\RegisterCustomer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="前端\ScheduleBatchForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="前端\ScheduleForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="前端\ScheduleManualForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="前端\ScheduleSmartAutoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="前端\SeatMapVisualizationForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="前端\SeatSelectionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="前端\SeatStatusForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="前端\SectionSelectionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="前端\TicketRefundForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="前端\UpdateCustomerProfile.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="前端\ViewAllOrders.cs">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+</Project>
