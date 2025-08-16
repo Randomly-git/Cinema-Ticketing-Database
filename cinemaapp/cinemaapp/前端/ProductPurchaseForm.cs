@@ -378,27 +378,18 @@ namespace cinemaapp
                 }
             }
 
+
+            //刷新主界面的用户信息标签
+            _mainForm.UpdateUserInfoLabel();
             // 购买后刷新界面
             UpdateProductStockAndUI(product.ProductName);
             RefreshPointsDisplay();
-            //刷新主界面的用户信息标签
-            _mainForm.UpdateUserInfoLabel();
         }
 
         private void RefreshPointsDisplay()
         {
-            var vipCard = _customerRepository.GetVIPCardByCustomerID(_loggedInCustomer.CustomerID);
-            int points = vipCard?.Points ?? 0;
-
-            if (_loggedInCustomer.VIPCard != null)
-            {
-                _loggedInCustomer.VIPCard.Points = points;
-            }
-            else
-            {
-                _loggedInCustomer.VIPCard = vipCard;
-            }
-
+            // 完全信任内存中已更新的值（因为UpdateUserInfoLabel已经确保同步了）
+            int points = _loggedInCustomer?.VIPCard?.Points ?? 0;
             lblCurrentPoints.Text = $"当前积分: {points}";
         }
 

@@ -102,14 +102,22 @@ namespace cinemaapp
         {
             if (_loggedInCustomer == null) return;
 
-            // First update the membership level based on current points
+            // 首先根据当前积分更新会员等级（数据库层面）
             Program._userService.UpdateMembershipLevel(_loggedInCustomer.CustomerID);
 
-            // Then get the updated customer information
+            // 获取更新后的客户信息
             var customer = Program._customerRepository.GetCustomerById(_loggedInCustomer.CustomerID);
             var vipCard = Program._customerRepository.GetVIPCardByCustomerID(_loggedInCustomer.CustomerID);
             int points = vipCard?.Points ?? 0;
 
+            // 更新当前登录用户对象的属性
+            _loggedInCustomer.VipLevel = customer.VipLevel;
+            if (_loggedInCustomer.VIPCard != null)
+            {
+                _loggedInCustomer.VIPCard.Points = points;
+            }
+
+            // 更新UI显示
             lblUser.Text = $"当前用户: {customer.Name} (ID: {customer.CustomerID}, 等级: {customer.VipLevel}, 积分: {points})";
         }
 
