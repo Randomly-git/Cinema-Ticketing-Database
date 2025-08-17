@@ -14,14 +14,16 @@ namespace test.Services
 
         // 用户查询某个订单是否已经被自己评论过
         bool HasRated(int orderId);
+        //通过orderID获取影评
+        Rating GetRating(int orderId);
 
-       // 用户按照订单对电影进行影评（订单能够从用户直接查到）
-        void RateOrder(int orderId, int score, string comment = null);
+        // 用户按照订单对电影进行影评（订单能够从用户直接查到）
+        void RateOrder(int orderId, string filmName, int score, string comment = null);
 
-       // 用户按照订单删除影评
-        void CancelRating(int orderId);
+        // 用户按照订单删除影评
+        void CancelRating(int orderId, string filmName);
 
-       // 获取某部电影的全部影评情况（每个评分+评论+日期）
+        // 获取某部电影的全部影评情况（每个评分+评论+日期）
         IEnumerable<Rating> GetFilmRatingDetails(string filmName);
 
         // 用户画像：根据用户的订单和现有的评分，得到每种题材给用户的印象分

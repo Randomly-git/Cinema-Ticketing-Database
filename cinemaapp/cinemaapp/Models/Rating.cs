@@ -20,6 +20,8 @@ namespace test.Models
         // 导航属性（关联查询 TICKET 及后续电影信息）
         public Ticket Ticket { get; set; }        // 关联的电影票
 
+        public string FilmName { get; set; }      // 所评价的电影名称
+
         public override string ToString()
         {
             return $"票ID: {TicketID}, 评分: {Score}, 评论: {Comment}, 时间: {RatingDate.ToShortDateString()}";

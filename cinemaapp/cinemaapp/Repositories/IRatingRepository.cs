@@ -20,5 +20,7 @@ namespace test.Repositories
         void RemoveRating(string ticketId);    // 移除影评
 
         IEnumerable<Rating> GetRatingsByTicketIds(IEnumerable<string> ticketIds); // 批量查询
+
+        IEnumerable<Rating> GetRatingsByFilmName(string filmName);        // 根据电影名查询
     }
 }

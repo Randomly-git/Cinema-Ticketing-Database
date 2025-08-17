@@ -88,11 +88,22 @@ namespace test.Services
             var ticket = _orderRepository.GetTicketById(order.TicketID);
             return _ratingRepository.GetRating(ticket.TicketID) != null;
         }
+        //通过orderID获取影评
+        public Rating GetRating(int orderId)
+        {
+            var order = _orderRepository.GetOrderForTicketsById(orderId);
+            if (order == null)
+            {
+                throw new KeyNotFoundException($"找不到ID为{orderId}的订单");
+            }
+            var ticket = _orderRepository.GetTicketById(order.TicketID);
+            return _ratingRepository.GetRating(ticket.TicketID);
+        }
 
         /// <summary>
         /// 用户对电影票进行评分
         /// </summary>
-        public void RateOrder(int orderId, int score, string comment = null)
+        public void RateOrder(int orderId, string filmName, int score, string comment = null)
         {
             // 验证评分范围
             if (score < 0 || score > 10)
@@ -111,14 +122,14 @@ namespace test.Services
                         throw new KeyNotFoundException($"找不到ID为{orderId}的订单");
                     }
 
-                    var filmName = GetFilmNamebyOrderId(orderId); // 获取电影名
                     var film = _filmRepository.GetFilmByName(filmName); // 获取电影
                     var ticketId = order.TicketID;  // 获取TicketID 
-                    
+
                     // 创建或更新评分
                     var rating = new Rating
                     {
                         TicketID = ticketId,
+                        FilmName = filmName,
                         Score = score,
                         Comment = comment,
                         RatingDate = DateTime.Now,
@@ -144,7 +155,7 @@ namespace test.Services
         /// <summary>
         /// 用户撤销对电影票的评分
         /// </summary>
-        public void CancelRating(int orderId)
+        public void CancelRating(int orderId, string filmName)
         {
             using (var connection = GetOpenConnection())
             using (var transaction = connection.BeginTransaction())
@@ -157,7 +168,6 @@ namespace test.Services
                         throw new KeyNotFoundException($"找不到ID为{orderId}的订单");
                     }
 
-                    var filmName = GetFilmNamebyOrderId(orderId); // 获取电影名
                     var film = _filmRepository.GetFilmByName(filmName); // 获取电影
                     var ticketId = order.TicketID;  // 获取TicketID
                     var rating = _ratingRepository.GetRating(ticketId); // 获取影评
@@ -195,33 +205,7 @@ namespace test.Services
         /// </summary>
         public IEnumerable<Rating> GetFilmRatingDetails(string filmName)
         {
-            // 从所有订单中查找该电影的订单
-            List<OrderForTickets> AllOrder = _orderRepository.GetAllOrders();
-            var SelectedTickets = new List<string>();
-            foreach(var order in AllOrder)
-            {
-                var thisFilmName = GetFilmNamebyOrderId(order.OrderID);
-                if (thisFilmName == filmName)
-                {
-                    SelectedTickets.Add(order.TicketID);
-                } 
-            }
-
-            if (SelectedTickets.Count() == 0) // 先检查是否有符合条件的票
-            {
-                Console.WriteLine($"电影{filmName}没有相关票务记录");
-                return Enumerable.Empty<Rating>();
-            }
-
-            IEnumerable<Rating> ratings = _ratingRepository.GetRatingsByTicketIds(SelectedTickets);
-            
-            if (ratings == null || !ratings.Any())
-            {
-                Console.WriteLine($"电影{filmName}暂无评分记录");
-                return Enumerable.Empty<Rating>();
-            }
-                
-            return ratings;
+            return _ratingRepository.GetRatingsByFilmName(filmName);
         }
 
         // 获取用户对于所有影片的印象分
@@ -338,7 +322,7 @@ namespace test.Services
 
             // 2. 获取用户已观看的电影名称集合
             var watchedFilms = _orderRepository.GetOrdersForCustomer(customerId)
-                .AsParallel() 
+                .AsParallel()
                 .Select(order => GetFilmNamebyOrderId(order.OrderID))
                 .Where(name => !string.IsNullOrEmpty(name))
                 .Distinct(StringComparer.OrdinalIgnoreCase)

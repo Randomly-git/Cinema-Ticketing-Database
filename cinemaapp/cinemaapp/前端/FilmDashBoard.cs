@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -31,10 +32,12 @@ namespace cinemaapp
 
         private DataGridView dgvStatistics;
         private IFilmService _filmService;
+        private IRatingService _ratingService;
 
         public FilmDashboard()
         {
             _filmService = Program._filmService;  // 赋值
+            _ratingService = Program._ratingService;  // 赋值
             InitializeComponent();
             LoadShowingsFilms();
             LoadOverviewFilms();
@@ -201,35 +204,44 @@ namespace cinemaapp
             };
             cmbOverviewFilms.SelectedIndexChanged += (s, e) => ShowFilmOverview();
 
-            // 创建PictureBox用于显示海报 - 调大尺寸并去掉边框
+            // 创建PictureBox用于显示海报
             PictureBox pictureBoxPoster = new PictureBox
             {
                 SizeMode = PictureBoxSizeMode.Zoom,
-                Width = 300,  // 宽度增大
-                Height = 450, // 高度增大
+                Width = 300,
+                Height = 450,
                 Location = new Point(10, 50),
-                BorderStyle = BorderStyle.None  // 去掉边框
+                BorderStyle = BorderStyle.None
             };
 
-            // 文本框显示影片信息（放在海报右侧）
+            // 文本框显示影片信息
             txtOverview = new TextBox
             {
                 Multiline = true,
                 ReadOnly = true,
                 Width = 550,
-                Height = 450,  // 高度与海报一致
+                Height = 450,
                 ScrollBars = ScrollBars.Vertical,
-                Location = new Point(320, 50)  // 位置调整
+                Location = new Point(320, 50)
             };
+
+            // 添加"查看评论"按钮
+            Button btnViewRatings = new Button
+            {
+                Text = "查看评论",
+                Location = new Point(320, 10),
+                Size = new Size(100, 30)
+            };
+            btnViewRatings.Click += BtnViewRatings_Click;
 
             // 添加控件
             panel.Controls.Add(txtFilmSearch);
             panel.Controls.Add(cmbOverviewFilms);
             panel.Controls.Add(pictureBoxPoster);
             panel.Controls.Add(txtOverview);
+            panel.Controls.Add(btnViewRatings);
             tab.Controls.Add(panel);
 
-            // 响应 Panel Resize（动态更新搜索框位置）
             panel.Resize += (s, e) =>
             {
                 txtFilmSearch.Location = new Point(panel.Width - txtFilmSearch.Width - 10, 10);
@@ -237,6 +249,113 @@ namespace cinemaapp
 
             return tab;
         }
+
+        private void BtnViewRatings_Click(object sender, EventArgs e)
+        {
+            if (cmbOverviewFilms.SelectedItem is not Film selectedFilm)
+            {
+                MessageBox.Show("请先选择一部电影");
+                return;
+            }
+
+            try
+            {
+                var ratings = _ratingService.GetFilmRatingDetails(selectedFilm.FilmName);
+
+                if (!ratings.Any())
+                {
+                    MessageBox.Show("该电影暂无评论");
+                    return;
+                }
+
+                // 创建评论显示窗体
+                Form ratingForm = new Form
+                {
+                    Text = $"《{selectedFilm.FilmName}》的影评",
+                    Size = new Size(600, 500), // 留出空间给下方评论区
+                    StartPosition = FormStartPosition.CenterParent
+                };
+
+                // 创建 DataGridView
+                DataGridView dgvRatings = new DataGridView
+                {
+                    Dock = DockStyle.Top,
+                    Height = 350, // 上方表格高度
+                    ReadOnly = true,
+                    AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
+                    AllowUserToResizeRows = false,
+                    DefaultCellStyle = { WrapMode = DataGridViewTriState.True },
+                    AutoGenerateColumns = false
+                };
+
+                // 创建列
+                dgvRatings.Columns.Add(new DataGridViewTextBoxColumn()
+                {
+                    HeaderText = "评分",
+                    DataPropertyName = "Score",
+                    AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells // 根据内容自动调整
+                });
+
+                dgvRatings.Columns.Add(new DataGridViewTextBoxColumn()
+                {
+                    HeaderText = "评论",
+                    DataPropertyName = "Comment",
+                    AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+                    DefaultCellStyle = { WrapMode = DataGridViewTriState.True }
+                });
+
+                dgvRatings.Columns.Add(new DataGridViewTextBoxColumn()
+                {
+                    HeaderText = "评价时间",
+                    DataPropertyName = "RatingDate",
+                    Width = 120
+                });
+
+                // 准备显示数据
+                var displayData = ratings.Select(r => new
+                {
+                    Score = r.Score,
+                    Comment = string.IsNullOrEmpty(r.Comment) ? "无文字评论" : r.Comment,
+                    RatingDate = r.RatingDate.ToString("yyyy-MM-dd HH:mm")
+                }).ToList();
+
+                dgvRatings.DataSource = displayData;
+
+                // 创建下方评论显示区
+                TextBox txtFullComment = new TextBox
+                {
+                    Dock = DockStyle.Bottom,
+                    Height = 100, // 评论显示区域高度
+                    Multiline = true,
+                    ReadOnly = true,
+                    ScrollBars = ScrollBars.Vertical,
+                    Font = new Font("微软雅黑", 10),
+                    BackColor = Color.White
+                };
+
+                // 双击行显示完整评论
+                dgvRatings.CellDoubleClick += (s, ev) =>
+                {
+                    if (ev.RowIndex >= 0 && ev.RowIndex < displayData.Count)
+                    {
+                        string comment = displayData[ev.RowIndex].Comment;
+                        txtFullComment.Text = comment;
+                    }
+                };
+
+                // 添加控件
+                ratingForm.Controls.Add(dgvRatings);
+                ratingForm.Controls.Add(txtFullComment);
+
+                ratingForm.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("获取评论失败: " + ex.Message);
+            }
+        }
+
+
 
 
 

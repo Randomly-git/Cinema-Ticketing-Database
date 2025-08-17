@@ -13,7 +13,7 @@ namespace test.Repositories
     public class OracleRatingRepository : IRatingRepository
     {
         private readonly string _connectionString;
-        private const string SchemaName = "CBC"; 
+        private const string SchemaName = "CBC";
 
         public OracleRatingRepository(string connectionString)
         {
@@ -65,7 +65,7 @@ namespace test.Repositories
             {
                 // NOTE: "COMMENT" 被双引号引用，并用别名 COMMENTS 返回，避免关键字冲突
                 string sql = $@"
-                    SELECT TICKETID, SCORE, ""COMMENT"" AS COMMENTS, RATINGDATE
+                    SELECT TICKETID, FILMNAME, SCORE, ""COMMENT"" AS COMMENTS, RATINGDATE
                     FROM {SchemaName}.RATING
                     WHERE TICKETID = :ticketId";
 
@@ -82,6 +82,7 @@ namespace test.Repositories
                                 return new Rating
                                 {
                                     TicketID = reader["TICKETID"].ToString(),
+                                    FilmName = reader["FILMNAME"].ToString(),
                                     Score = Convert.ToInt32(reader["SCORE"]),
                                     Comment = reader["COMMENTS"] == DBNull.Value ? null : reader["COMMENTS"].ToString(),
                                     RatingDate = Convert.ToDateTime(reader["RATINGDATE"])
@@ -107,71 +108,49 @@ namespace test.Repositories
         public void AddOrUpdateRating(Rating rating)
         {
             if (rating == null) throw new ArgumentNullException(nameof(rating));
-            if (string.IsNullOrWhiteSpace(rating.TicketID)) throw new ArgumentException("TicketID 不能为空", nameof(rating));
+            if (string.IsNullOrWhiteSpace(rating.TicketID))
+                throw new ArgumentException("TicketID 不能为空", nameof(rating));
 
             using (var connection = GetConnection())
             {
-                // 在同一连接内检查是否存在
                 bool exists = false;
                 string existSql = $@"SELECT COUNT(1) FROM {SchemaName}.RATING WHERE TICKETID = :ticketId";
                 using (var existCmd = new OracleCommand(existSql, connection))
                 {
                     existCmd.Parameters.Add(new OracleParameter("ticketId", OracleDbType.Varchar2) { Value = rating.TicketID });
-                    try
-                    {
-                        var o = existCmd.ExecuteScalar();
-                        int count = 0;
-                        if (o != null && o != DBNull.Value)
-                        {
-                            // ExecuteScalar 在 Oracle 中常返回 decimal 类型
-                            count = Convert.ToInt32(o);
-                        }
-                        exists = count > 0;
-                    }
-                    catch (OracleException ex)
-                    {
-                        Console.WriteLine($"OracleException when checking existence: Code={ex.Number}, Msg={ex.Message}");
-                        LogCommand(existCmd);
-                        throw;
-                    }
+                    var o = existCmd.ExecuteScalar();
+                    int count = (o == null || o == DBNull.Value) ? 0 : Convert.ToInt32(o);
+                    exists = count > 0;
                 }
 
-                // 根据存在性决定 INSERT 或 UPDATE（并引用 "COMMENT" 列）
                 string sql = exists
                     ? $@"
-                        UPDATE {SchemaName}.RATING
-                        SET SCORE = :score,
-                            ""COMMENT"" = :p_comment,
-                            RATINGDATE = SYSDATE
-                        WHERE TICKETID = :p_ticketId"
+                UPDATE {SchemaName}.RATING
+                SET FILMNAME = :filmName,
+                    SCORE = :score,
+                    ""COMMENT"" = :p_comment,
+                    RATINGDATE = SYSDATE
+                WHERE TICKETID = :ticketId"
                     : $@"
-                        INSERT INTO {SchemaName}.RATING
-                        (TICKETID, SCORE, ""COMMENT"", RATINGDATE)
-                        VALUES (:ticketId, :score, :p_comment, SYSDATE)";
+                INSERT INTO {SchemaName}.RATING
+                (TICKETID, FILMNAME, SCORE, ""COMMENT"", RATINGDATE)
+                VALUES (:ticketId, :filmName, :score, :p_comment, SYSDATE)";
 
                 using (var command = new OracleCommand(sql, connection))
                 {
                     command.Parameters.Add(new OracleParameter("ticketId", OracleDbType.Varchar2) { Value = rating.TicketID });
+                    command.Parameters.Add(new OracleParameter("filmName", OracleDbType.Varchar2) { Value = rating.FilmName });
                     command.Parameters.Add(new OracleParameter("score", OracleDbType.Decimal) { Value = rating.Score });
                     command.Parameters.Add(new OracleParameter("p_comment", OracleDbType.Varchar2)
                     {
                         Value = string.IsNullOrEmpty(rating.Comment) ? DBNull.Value : (object)rating.Comment
                     });
 
-                    try
-                    {
-                        int rows = command.ExecuteNonQuery();
-                        // 可根据需要打印 rows
-                    }
-                    catch (OracleException ex)
-                    {
-                        Console.WriteLine($"OracleException in AddOrUpdateRating: Code={ex.Number}, Msg={ex.Message}");
-                        LogCommand(command);
-                        throw;
-                    }
+                    command.ExecuteNonQuery();
                 }
             }
         }
+
 
         /// <summary>
         /// 删除评分
@@ -241,7 +220,7 @@ namespace test.Repositories
             {
                 var paramNames = idList.Select((id, idx) => $":id{idx}").ToArray();
                 string sql = $@"
-                    SELECT TICKETID, SCORE, ""COMMENT"" AS COMMENTS, RATINGDATE
+                    SELECT TICKETID, FILMNAME, SCORE, ""COMMENT"" AS COMMENTS, RATINGDATE
                     FROM {SchemaName}.RATING
                     WHERE TICKETID IN ({string.Join(",", paramNames)})";
 
@@ -261,6 +240,7 @@ namespace test.Repositories
                                 ratings.Add(new Rating
                                 {
                                     TicketID = reader["TICKETID"].ToString(),
+                                    FilmName = reader["FILMNAME"].ToString(),
                                     Score = Convert.ToInt32(reader["SCORE"]),
                                     Comment = reader["COMMENTS"] == DBNull.Value ? null : reader["COMMENTS"].ToString(),
                                     RatingDate = Convert.ToDateTime(reader["RATINGDATE"])
@@ -271,6 +251,54 @@ namespace test.Repositories
                     catch (OracleException ex)
                     {
                         Console.WriteLine($"OracleException in GetRatingsByTicketIds_Internal: Code={ex.Number}, Msg={ex.Message}");
+                        LogCommand(command);
+                        throw;
+                    }
+                }
+            }
+            return ratings;
+        }
+
+        /// <summary>
+        /// 根据电影名称获取所有评分
+        /// </summary>
+        /// <param name="filmName">电影名称</param>
+        /// <returns>该电影的所有评分列表</returns>
+        public IEnumerable<Rating> GetRatingsByFilmName(string filmName)
+        {
+            var ratings = new List<Rating>();
+            using (var connection = GetConnection())
+            {
+                string sql = $@"
+            SELECT TICKETID, FILMNAME, SCORE, ""COMMENT"" AS COMMENTS, RATINGDATE
+            FROM {SchemaName}.RATING
+            WHERE FILMNAME = :filmName
+            ORDER BY RATINGDATE DESC";  // 按评分日期降序排列
+
+                using (var command = new OracleCommand(sql, connection))
+                {
+                    command.Parameters.Add(new OracleParameter("filmName", OracleDbType.Varchar2) { Value = filmName });
+
+                    try
+                    {
+                        using (var reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                ratings.Add(new Rating
+                                {
+                                    TicketID = reader["TICKETID"].ToString(),
+                                    FilmName = reader["FILMNAME"].ToString(),
+                                    Score = Convert.ToInt32(reader["SCORE"]),
+                                    Comment = reader["COMMENTS"] == DBNull.Value ? null : reader["COMMENTS"].ToString(),
+                                    RatingDate = Convert.ToDateTime(reader["RATINGDATE"])
+                                });
+                            }
+                        }
+                    }
+                    catch (OracleException ex)
+                    {
+                        Console.WriteLine($"OracleException in GetRatingsByFilmName: Code={ex.Number}, Msg={ex.Message}");
                         LogCommand(command);
                         throw;
                     }

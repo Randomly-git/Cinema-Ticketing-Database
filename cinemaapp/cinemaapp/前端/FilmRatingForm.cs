@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -8,6 +10,12 @@ using test.Services;
 
 namespace cinemaapp
 {
+    public class OrderDisplay
+    {
+        public int OrderID { get; set; }
+        public string FilmName { get; set; }
+        public string Rated { get; set; }  // "已评分" / "未评分"
+    }
     public class FilmRatingForm : Form
     {
         private readonly Customer _customer;
@@ -92,27 +100,47 @@ namespace cinemaapp
             };
             btnCancelRating.Click += BtnCancelRating_Click;
             this.Controls.Add(btnCancelRating);
+
+            // 添加DataGridView选择改变事件
+            dgvOrders.SelectionChanged += DgvOrders_SelectionChanged;
         }
+
+        private BindingList<OrderDisplay> finishedOrders; // 类成员
 
         private void LoadOrders()
         {
-            var finishedOrders = _orderRepository
+            var validOrders = _orderRepository
                 .GetOrdersForCustomer(_customer.CustomerID, true)
                 .Where(o => o.State == "有效")
-                .Select(o => new
-                {
-                    o.OrderID,
-                    FilmName = _ratingService.GetFilmNamebyOrderId(o.OrderID),
-                    Rated = _ratingService.HasRated(o.OrderID) ? "已评分" : "未评分"
-                })
                 .ToList();
+
+            finishedOrders = new BindingList<OrderDisplay>();
+
+            foreach (var order in validOrders)
+            {
+                var ticket = _orderRepository.GetTicketById(order.TicketID);
+                if (ticket == null) continue;
+
+                var section = _orderRepository.GetSectionById(ticket.SectionID);
+                if (section?.TimeSlot == null) continue;
+
+                if (DateTime.Now >= section.TimeSlot.EndTime)
+                {
+                    finishedOrders.Add(new OrderDisplay
+                    {
+                        OrderID = order.OrderID,
+                        FilmName = _ratingService.GetFilmNamebyOrderId(order.OrderID),
+                        Rated = _ratingService.HasRated(order.OrderID) ? "已评分" : "未评分"
+                    });
+                }
+            }
 
             dgvOrders.DataSource = finishedOrders;
 
-            // 每次加载后绑定选择改变事件，更新按钮文字
-            dgvOrders.SelectionChanged -= DgvOrders_SelectionChanged;
-            dgvOrders.SelectionChanged += DgvOrders_SelectionChanged;
+            nudScore.Value = 0;
+            txtComment.Text = string.Empty;
         }
+
 
         private void DgvOrders_SelectionChanged(object sender, EventArgs e)
         {
@@ -128,8 +156,20 @@ namespace cinemaapp
 
             btnSubmit.Text = hasRated ? "修改评论" : "提交评分";
             btnCancelRating.Enabled = hasRated;
-        }
 
+            // 获取并显示评分和评论
+            if (hasRated)
+            {
+                var rating = _ratingService.GetRating(orderId);
+                nudScore.Value = rating.Score;
+                txtComment.Text = rating.Comment;
+            }
+            else
+            {
+                nudScore.Value = 0;
+                txtComment.Text = string.Empty;
+            }
+        }
 
         private void BtnSubmit_Click(object sender, EventArgs e)
         {
@@ -139,27 +179,38 @@ namespace cinemaapp
                 return;
             }
 
-            var orderId = (int)dgvOrders.SelectedRows[0].Cells["OrderID"].Value;
+            var selectedRow = dgvOrders.SelectedRows[0];
+            var orderDisplay = (OrderDisplay)selectedRow.DataBoundItem;  // 获取绑定对象
+
+            var orderId = orderDisplay.OrderID;
             var score = (int)nudScore.Value;
             var comment = txtComment.Text.Trim();
+            var filmName = orderDisplay.FilmName;
+
+            bool wasRated = _ratingService.HasRated(orderId);
 
             try
             {
-                _ratingService.RateOrder(orderId, score, comment);
-                MessageBox.Show(_ratingService.HasRated(orderId) ? "评论已修改！" : "评分成功！", "成功", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if (wasRated)
+                {
+                    _ratingService.CancelRating(orderId, filmName);
+                }
 
-                // 更新当前行的 Rated 列
-                dgvOrders.SelectedRows[0].Cells["Rated"].Value = "已评分";
+                _ratingService.RateOrder(orderId, filmName, score, comment);
 
-                // 更新按钮文字
-                DgvOrders_SelectionChanged(null, null);
+                // 修改绑定对象属性，UI 会自动刷新
+                orderDisplay.Rated = "已评分";
+                btnSubmit.Text = "修改评论";
+                btnCancelRating.Enabled = true;
+
+                MessageBox.Show(wasRated ? "评论已修改！" : "评分成功！", "成功",
+                               MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
                 MessageBox.Show("操作失败：" + ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
 
 
         private void BtnCancelRating_Click(object sender, EventArgs e)
@@ -170,15 +221,26 @@ namespace cinemaapp
                 return;
             }
 
-            var orderId = (int)dgvOrders.SelectedRows[0].Cells["OrderID"].Value;
+            var selectedRow = dgvOrders.SelectedRows[0];
+            var orderDisplay = (OrderDisplay)selectedRow.DataBoundItem; // 获取绑定对象
+
+            var orderId = orderDisplay.OrderID;
+            var filmName = orderDisplay.FilmName;
 
             try
             {
                 if (_ratingService.HasRated(orderId))
                 {
-                    _ratingService.CancelRating(orderId);
+                    _ratingService.CancelRating(orderId, filmName);
+
+                    // 修改绑定对象属性，UI 自动刷新
+                    orderDisplay.Rated = "未评分";
+                    btnSubmit.Text = "提交评分";
+                    btnCancelRating.Enabled = false;
+                    nudScore.Value = 0;
+                    txtComment.Text = string.Empty;
+
                     MessageBox.Show("评分已撤销！", "成功", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    LoadOrders();
                 }
                 else
                 {
@@ -190,7 +252,18 @@ namespace cinemaapp
                 MessageBox.Show("撤销评分失败：" + ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+
+        private void ReselectOrder(int orderId)
+        {
+            foreach (DataGridViewRow row in dgvOrders.Rows)
+            {
+                if ((int)row.Cells["OrderID"].Value == orderId)
+                {
+                    row.Selected = true;
+                    break;
+                }
+            }
+        }
     }
 }
-
-
