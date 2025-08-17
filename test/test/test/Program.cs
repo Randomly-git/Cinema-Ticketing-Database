@@ -1324,9 +1324,10 @@ namespace test
                 }
 
                 var selectedOrder = validOrders[selectedIndex - 1];
+                var selectedFilmName = _ratingService.GetFilmNamebyOrderId(selectedOrder.OrderID);
 
                 // 4. 确认退票
-                Console.Write($"\n确认要退订单 {selectedOrder.OrderID} 吗？(Y/N): ");
+                Console.Write($"\n确认要退电影《{selectedFilmName}》的订单 {selectedOrder.OrderID} 吗？(Y/N): ");
                 var confirm = Console.ReadLine().Trim().ToUpper();
                 if (confirm != "Y")
                 {
@@ -1343,7 +1344,7 @@ namespace test
                     testRefundTime, // 使用测试时间而非DateTime.Now
                     out refundFee,
                     out refundAmount);
-                _ratingService.CancelRating(selectedOrder.OrderID);  // 如果有评论也一并撤销（正常情况下不应该出现）
+                _ratingService.CancelRating(selectedOrder.OrderID, selectedFilmName);  // 如果有评论也一并撤销（正常情况下不应该出现）
 
                 if (success)
                 {
@@ -1621,19 +1622,45 @@ namespace test
                 Console.WriteLine("\n--- 为电影评分 ---");
 
                 // 获取用户观看过的电影（通过订单）
-                var finishedOrders = _orderRepository.GetOrdersForCustomer(_loggedInCustomer.CustomerID, true)
+                var validOrders = _orderRepository.GetOrdersForCustomer(_loggedInCustomer.CustomerID, true)
                     .Where(o => o.State == "有效")
                     .ToList();
 
-                if (!finishedOrders.Any())
+                if (!validOrders.Any())
                 {
                     Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine("您尚未观看过任何电影，无法评分。");
+                    Console.WriteLine("您目前没有有效的电影票订单，无法评分。");
                     Console.ResetColor();
                     return;
                 }
+                var finishedOrders = new List<OrderForTickets>();
+                DateTime testRefundTime = new DateTime(2025, 12, 11, 14, 30, 0);
 
-                Console.WriteLine("您观看过的电影（一票一评）:");
+                foreach (var order in validOrders)
+                {
+                    var ticket = _orderRepository.GetTicketById(order.TicketID);
+                    if (ticket == null) continue;
+                    var section = _orderRepository.GetSectionById(ticket.SectionID);
+                    if (section?.TimeSlot == null) continue;
+
+                    // 如果当前时间早于场次结束时间，则不允许评价
+                    if (DateTime.Now >= section.TimeSlot.EndTime)
+                    {
+                        finishedOrders.Add(order);
+                    }
+                    else
+                    {
+                        Console.WriteLine($"* {_ratingService.GetFilmNamebyOrderId(order.OrderID)} 尚未结束（场次结束时间: {section.TimeSlot.EndTime:yyyy-MM-dd HH:mm}）");
+                    }
+                }
+
+                if (finishedOrders.Count() == 0)
+                {
+                    Console.WriteLine("您尚未看完任何一部电影，无法评分");
+                    return;
+                }
+
+                Console.WriteLine("\n您的可评价电影：");
                 for (int i = 0; i < finishedOrders.Count(); i++)
                 {
                     var order = finishedOrders[i];
@@ -1663,13 +1690,13 @@ namespace test
                     switch (input)
                     {
                         case "D":
-                            _ratingService.CancelRating(selectedOrder.OrderID);
+                            _ratingService.CancelRating(selectedOrder.OrderID, selectedFilmName);
                             Console.WriteLine("评论已撤销。");
                             return; // 撤销后直接退出
 
                         case "R":
                             // 重新评论：先撤销，再评分
-                            _ratingService.CancelRating(selectedOrder.OrderID);
+                            _ratingService.CancelRating(selectedOrder.OrderID, selectedFilmName);
                             Console.WriteLine("请重新输入评分和评论。");
                             break;
 
@@ -1701,7 +1728,7 @@ namespace test
                         : comment;
                 }
 
-                _ratingService.RateOrder(selectedOrder.OrderID, score, comment);
+                _ratingService.RateOrder(selectedOrder.OrderID, selectedFilmName,score, comment);
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine($"评分成功！您为《{selectedFilmName}》打了{score}分。");
                 Console.ResetColor();

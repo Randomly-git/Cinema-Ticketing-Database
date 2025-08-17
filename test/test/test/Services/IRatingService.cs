@@ -16,10 +16,10 @@ namespace test.Services
         bool HasRated(int orderId);
 
        // 用户按照订单对电影进行影评（订单能够从用户直接查到）
-        void RateOrder(int orderId, int score, string comment = null);
+        void RateOrder(int orderId, string filmName,int score, string comment = null);
 
        // 用户按照订单删除影评
-        void CancelRating(int orderId);
+        void CancelRating(int orderId, string filmName);
 
        // 获取某部电影的全部影评情况（每个评分+评论+日期）
         IEnumerable<Rating> GetFilmRatingDetails(string filmName);

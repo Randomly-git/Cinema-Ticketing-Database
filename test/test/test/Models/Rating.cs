@@ -13,6 +13,8 @@ namespace test.Models
     public class Rating
     {
         public string TicketID { get; set; }      // 对应的电影票ID（主键 & 外键关联 TICKET 表）
+
+        public string FilmName { get; set; }      // 所评价的电影名称
         public int Score { get; set; }            // 用户评分（整数，0-10）
         public string Comment { get; set; }       // 用户评论（可选）
         public DateTime RatingDate { get; set; }  // 评分时间
