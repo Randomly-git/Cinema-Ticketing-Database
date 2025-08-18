@@ -4,7 +4,6 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using test.Models;
-using test.Repositories;
 using test.Services;
 
 namespace cinemaapp
@@ -16,6 +15,8 @@ namespace cinemaapp
 
         private ComboBox cmbFilms;
         private DataGridView dgvRatings;
+        private Label lblFullComment;
+        private TextBox txtFullComment;
 
         public AdminFilmRatingForm(IFilmService filmService, IRatingService ratingService)
         {
@@ -47,12 +48,34 @@ namespace cinemaapp
             dgvRatings = new DataGridView
             {
                 Location = new Point(20, 60),
-                Size = new Size(740, 480),
+                Size = new Size(740, 400),
                 ReadOnly = true,
                 AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
                 SelectionMode = DataGridViewSelectionMode.FullRowSelect
             };
+            dgvRatings.CellDoubleClick += DgvRatings_CellDoubleClick;
             this.Controls.Add(dgvRatings);
+
+            // 完整评论标签
+            lblFullComment = new Label
+            {
+                Text = "完整评论显示：",
+                Location = new Point(20, 470),
+                AutoSize = true
+            };
+            this.Controls.Add(lblFullComment);
+
+            // 完整评论框
+            txtFullComment = new TextBox
+            {
+                Location = new Point(20, 500),
+                Size = new Size(740, 60),
+                Multiline = true,
+                ReadOnly = true,
+                ScrollBars = ScrollBars.Vertical,
+                BackColor = Color.White
+            };
+            this.Controls.Add(txtFullComment);
         }
 
         private void LoadFilmList()
@@ -88,8 +111,45 @@ namespace cinemaapp
                 r.Comment,
                 RatingDate = r.RatingDate.ToString("yyyy-MM-dd HH:mm")
             }).ToList();
-
+           
             dgvRatings.DataSource = ratingData;
+            NarrowScoreColumn(); // <- 收窄评分列
+        }
+
+        // 绑定完成后调用：把“评分”列收窄
+        private void NarrowScoreColumn()
+        {
+            // 先按 DataPropertyName，再按 Name，最后按 HeaderText（中文“评分”）
+            var scoreCol = dgvRatings.Columns.Cast<DataGridViewColumn>()
+                .FirstOrDefault(c =>
+                    string.Equals(c.DataPropertyName, "Score", StringComparison.OrdinalIgnoreCase) ||
+                    string.Equals(c.Name, "Score", StringComparison.OrdinalIgnoreCase) ||
+                    c.HeaderText.Trim().Equals("评分", StringComparison.OrdinalIgnoreCase));
+
+            if (scoreCol != null)
+            {
+                scoreCol.AutoSizeMode = DataGridViewAutoSizeColumnMode.None; // 禁止随 Fill 撑开
+                scoreCol.Width = 50; // 想更窄可设 40~60
+            }
+        }
+
+
+        private void DgvRatings_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                var row = dgvRatings.Rows[e.RowIndex];
+                var comment = row.Cells["Comment"].Value?.ToString();
+
+                if (!string.IsNullOrEmpty(comment))
+                {
+                    txtFullComment.Text = comment;
+                }
+                else
+                {
+                    txtFullComment.Text = "（无评论内容）";
+                }
+            }
         }
     }
 }

@@ -51,7 +51,8 @@ namespace cinemaapp
                 Height = 200,
                 ReadOnly = true,
                 SelectionMode = DataGridViewSelectionMode.FullRowSelect,
-                AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
+                AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
+                AllowUserToAddRows = false // ← 禁止自动新增行
             };
             this.Controls.Add(dgvOrders);
 
@@ -111,7 +112,6 @@ namespace cinemaapp
         {
             var validOrders = _orderRepository
                 .GetOrdersForCustomer(_customer.CustomerID, true)
-                .Where(o => o.State == "有效")
                 .ToList();
 
             finishedOrders = new BindingList<OrderDisplay>();
@@ -129,7 +129,7 @@ namespace cinemaapp
                     finishedOrders.Add(new OrderDisplay
                     {
                         OrderID = order.OrderID,
-                        FilmName = _ratingService.GetFilmNamebyOrderId(order.OrderID),
+                        FilmName = section.FilmName,
                         Rated = _ratingService.HasRated(order.OrderID) ? "已评分" : "未评分"
                     });
                 }
@@ -250,19 +250,6 @@ namespace cinemaapp
             catch (Exception ex)
             {
                 MessageBox.Show("撤销评分失败：" + ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-
-        private void ReselectOrder(int orderId)
-        {
-            foreach (DataGridViewRow row in dgvOrders.Rows)
-            {
-                if ((int)row.Cells["OrderID"].Value == orderId)
-                {
-                    row.Selected = true;
-                    break;
-                }
             }
         }
     }

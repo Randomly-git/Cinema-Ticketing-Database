@@ -272,7 +272,7 @@ namespace cinemaapp
                 Form ratingForm = new Form
                 {
                     Text = $"《{selectedFilm.FilmName}》的影评",
-                    Size = new Size(600, 500), // 留出空间给下方评论区
+                    Size = new Size(600, 520), // 留出空间给下方评论区
                     StartPosition = FormStartPosition.CenterParent
                 };
 
@@ -321,6 +321,24 @@ namespace cinemaapp
 
                 dgvRatings.DataSource = displayData;
 
+                // 创建下方评论显示区 Panel
+                Panel commentPanel = new Panel
+                {
+                    Dock = DockStyle.Bottom,
+                    Height = 130 // Label(30) + TextBox(100)
+                };
+
+                // 创建标题标签
+                Label lblFullComment = new Label
+                {
+                    Text = "完整评论显示：",
+                    Dock = DockStyle.Top,
+                    Height = 20,
+                    TextAlign = ContentAlignment.MiddleLeft,
+                    Font = new Font("微软雅黑", 10, FontStyle.Bold),
+                    Padding = new Padding(5, 0, 0, 0)
+                };
+
                 // 创建下方评论显示区
                 TextBox txtFullComment = new TextBox
                 {
@@ -332,6 +350,10 @@ namespace cinemaapp
                     Font = new Font("微软雅黑", 10),
                     BackColor = Color.White
                 };
+
+                // 把 Label 和 TextBox 放进 Panel
+                commentPanel.Controls.Add(txtFullComment);
+                commentPanel.Controls.Add(lblFullComment);
 
                 // 双击行显示完整评论
                 dgvRatings.CellDoubleClick += (s, ev) =>
@@ -345,7 +367,7 @@ namespace cinemaapp
 
                 // 添加控件
                 ratingForm.Controls.Add(dgvRatings);
-                ratingForm.Controls.Add(txtFullComment);
+                ratingForm.Controls.Add(commentPanel);
 
                 ratingForm.ShowDialog();
             }
