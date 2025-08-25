@@ -138,26 +138,7 @@ namespace test.Services
             if (vipCard == null) return;
 
             int currentPoints = vipCard.Points;
-            int newVipLevel = 0; // 默认无会员
-
-            // 根据你的会员等级规则来判断
-            // 假设：0-无会员，1-铜牌（100积分），2-银牌（500积分），3-金牌（1000积分）
-            if (currentPoints >= 1000)
-            {
-                newVipLevel = 3;
-            }
-            else if (currentPoints >= 500)
-            {
-                newVipLevel = 2;
-            }
-            else if (currentPoints >= 100)
-            {
-                newVipLevel = 1;
-            }
-            else
-            {
-                newVipLevel = 0;
-            }
+            int newVipLevel = VipLevels.CalculateVipLevel(currentPoints);
 
             // 如果等级发生变化，则更新数据库
             var customer = _customerRepository.GetCustomerById(customerId);
