@@ -317,37 +317,6 @@ namespace test.Services
                 }
             }
 
-            // 3. 根据座区调整价格
-            int rowNumber;
-            if (lineNo.Length == 1 && char.IsLetter(lineNo[0]))
-            {
-                rowNumber = char.ToUpper(lineNo[0]) - 'A' + 1;
-            }
-            else if (!int.TryParse(lineNo, out rowNumber))
-            {
-                rowNumber = 99; // 如果行号格式不符，则按普通区处理
-            }
-
-            if (rowNumber == 1)
-            {
-                currentPrice -= 3; // 特价区减3元
-                Console.WriteLine($"应用特价区折扣后价格: {currentPrice}");
-            }
-            else if (rowNumber >= 2 && rowNumber <= 4)
-            {
-                currentPrice += 5; // 优选区加价5元
-                Console.WriteLine($"应用优选区加成后价格: {currentPrice}");
-            }
-            else if (rowNumber >= 5 && rowNumber <= 7)
-            {
-                currentPrice += 10; // 黄金区加价10元
-                Console.WriteLine($"应用黄金区加成后价格: {currentPrice}");
-            }
-            else
-            {
-                Console.WriteLine($"普通区，价格保持不变: {currentPrice}");
-            }
-
             // 4. 根据会员等级应用折扣
             // 假设会员等级越高，折扣越大 (1级不打折, 2级9折, 3级8折...)
             if (customer.VipLevel > 1)
