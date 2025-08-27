@@ -1692,11 +1692,17 @@ namespace test
                         case "D":
                             _ratingService.CancelRating(selectedOrder.OrderID, selectedFilmName);
                             Console.WriteLine("评论已撤销。");
+                            _customerRepository.UpdateVIPCardPoints(_loggedInCustomer.CustomerID, -2);
+                            _loggedInCustomer = _customerRepository.GetCustomerById(_loggedInCustomer.CustomerID);
+                            Console.WriteLine($"您的新积分: {_loggedInCustomer.VIPCard?.Points ?? 0}");
                             return; // 撤销后直接退出
 
                         case "R":
                             // 重新评论：先撤销，再评分
                             _ratingService.CancelRating(selectedOrder.OrderID, selectedFilmName);
+                            _customerRepository.UpdateVIPCardPoints(_loggedInCustomer.CustomerID, -2);
+                            _loggedInCustomer = _customerRepository.GetCustomerById(_loggedInCustomer.CustomerID);
+                            Console.WriteLine($"您的新积分: {_loggedInCustomer.VIPCard?.Points ?? 0}");
                             Console.WriteLine("请重新输入评分和评论。");
                             break;
 
@@ -1731,6 +1737,9 @@ namespace test
                 _ratingService.RateOrder(selectedOrder.OrderID, selectedFilmName,score, comment);
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine($"评分成功！您为《{selectedFilmName}》打了{score}分。");
+                _customerRepository.UpdateVIPCardPoints(_loggedInCustomer.CustomerID, 2);
+                _loggedInCustomer = _customerRepository.GetCustomerById(_loggedInCustomer.CustomerID);
+                Console.WriteLine($"您的新积分: {_loggedInCustomer.VIPCard?.Points ?? 0}");
                 Console.ResetColor();
             }
             catch (Exception ex)
