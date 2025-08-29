@@ -1,4 +1,5 @@
 ﻿
+using cinemaapp.前端;
 using System;
 using System.Diagnostics;
 using System.Drawing;
@@ -7,11 +8,13 @@ using System.Windows.Forms;
 using test.Models;
 using test.Repositories;
 using test.Services;
+using System.IO;
 
 namespace cinemaapp
 {
     public partial class MainForm : Form
     {
+        private FlowLayoutPanel posterStrip; // 横向海报条
         private Customer _loggedInCustomer = null;
         private Administrator _loggedInAdmin = null;
         private Label lblUser;  // 提升为类字段
@@ -25,7 +28,7 @@ namespace cinemaapp
         private void InitUI()
         {
             this.Text = "电影院管理系统";
-            this.Size = new Size(500, 600);
+            this.Size = new Size(1200, 800);
             this.StartPosition = FormStartPosition.CenterScreen;
 
             RefreshMenu();
@@ -40,10 +43,12 @@ namespace cinemaapp
             {
                 Text = "电影院管理系统主菜单",
                 Font = new Font("微软雅黑", 16, FontStyle.Bold),
-                Location = new Point(140, 20),
+                Location = new Point(490, 20),
                 AutoSize = true
             };
             this.Controls.Add(lblTitle);
+
+            LoadExitSystemImage(); // 加载退出按钮
 
             if (_loggedInCustomer == null && _loggedInAdmin == null)
             {
@@ -51,30 +56,64 @@ namespace cinemaapp
                 AddButton("顾客登录", 120, LoginCustomer);
                 AddButton("管理员注册", 170, RegisterAdministrator);
                 AddButton("管理员登录", 220, LoginAdministrator);
-                AddButton("退出系统", 270, () => this.Close());
+                //AddButton("退出系统", 270, () => this.Close());
             }
             else if (_loggedInCustomer != null)
             {
                 lblUser = new Label()
                 {
-                    Location = new Point(30, 70),
+                    Location = new Point(120, 10),
                     AutoSize = true
                 };
                 this.Controls.Add(lblUser);
 
                 UpdateUserInfoLabel(); // 初始化显示
 
-                AddButton("更新个人资料", 110, UpdateCustomerProfile);
-                AddButton("查看电影相关信息", 150, FilmDashBoard);
-                AddButton("购票", 190, PurchaseTicketMenu);
-                AddButton("我的所有有效订单", 230, DisplayCustomerPaidOrders);
-                AddButton("我的电影票", 270, ProcessTicketRefund);
-                AddButton("购买周边", 310, PurchaseProduct);
-                AddButton("评价电影", 350, RateFilm);  // 新增评价电影按钮
-                AddButton("查看用户画像", 390, ViewCustomerProfile);
-                AddButton("删除我的账户", 430, DeleteCustomerAccount);
-                AddButton("用户登出", 470, LogoutCustomer);
-                AddButton("退出系统", 510, () => this.Close());
+                AddButtonCustomer("我的", 10, 120, OpenCustomerMineForm);
+                AddButtonCustomer("更多电影信息", 500,600, FilmDashBoard);
+                AddButtonCustomer("购票", 700,600, PurchaseTicketMenu);
+                AddButtonCustomer("我的电影票", 900,600 ,ProcessTicketRefund);
+                AddButtonCustomer("购买周边", 500,700, PurchaseProduct);
+                AddButtonCustomer("评价电影", 700,700, RateFilm);  // 新增评价电影按钮
+                AddButtonCustomer("删除我的账户", 900,700, DeleteCustomerAccount);
+                //AddButtonCustomer("更新个人资料", 110, UpdateCustomerProfile);
+                //AddButtonCustomer("我的所有有效订单", 230, DisplayCustomerPaidOrders);
+                //AddButtonCustomer("查看用户画像", 390, ViewCustomerProfile);
+                //AddButtonCustomer("用户登出", 470, LogoutCustomer);
+                //AddButton("退出系统", 510, () => this.Close());
+
+                // 加载头像图片
+                LoadCustomerAvatar();
+
+                //  创建并添加海报条
+                posterStrip = BuildPosterStrip();//创建 posterStrip（注意：每次 RefreshMenu() 都清空控件，所以要重建）
+                this.Controls.Add(posterStrip);// 添加到页面（这样滚动条会按实际宽度计算）
+
+                //准备海报清单（片名 + 文件名）
+                var films = new (string name, string fileName)[]
+                {
+                    ("霸王别姬", "霸王别姬.jpg"),
+                    ("肖申克的救赎", "肖申克的救赎.jpg"),
+                    ("阿甘正传", "阿甘正传.jpg"),
+                    ("千与千寻", "千与千寻.jpg"),
+                    ("星际穿越", "星际穿越.jpg"),
+                    ("泰坦尼克号", "泰坦尼克号.jpg"),
+                    ("美丽人生", "美丽人生.jpg"),
+                    ("这个杀手不太冷", "这个杀手不太冷.jpg"),
+                    ("盗梦空间", "盗梦空间.jpg"),
+                    ("楚门的世界", "楚门的世界.jpg"),
+                };
+
+                // 4) 逐个添加到海报条（使用 images 目录）
+                foreach (var f in films)
+                {
+                    string avatarPath = Path.Combine(Application.StartupPath, "images", f.fileName);
+                    AddPosterItem(posterStrip, f.name, avatarPath);
+                }
+
+
+
+
             }
             else if (_loggedInAdmin != null)
             {
@@ -93,8 +132,10 @@ namespace cinemaapp
                 AddButton("排片和座位图可视化", 310, ShowCinemaScheduleAndSeatMap);
                 AddButton("查看电影评价", 360, ShowFilmRatings);
                 AddButton("管理员登出", 410, LogoutAdministrator);
-                AddButton("退出系统", 460, () => this.Close());
+                //AddButton("退出系统", 460, () => this.Close());
             }
+
+            
         }
 
         // 新增：实时刷新用户信息
@@ -118,7 +159,8 @@ namespace cinemaapp
             }
 
             // 更新UI显示
-            lblUser.Text = $"当前用户: {customer.Name} (ID: {customer.CustomerID}, 等级: {customer.VipLevel}, 积分: {points})";
+            lblUser.Text = $"Hi, {customer.Name} !  Lv: {customer.VipLevel}\nID: {customer.CustomerID},  当前积分: {points}";
+            lblUser.Font = new Font("微软雅黑", 12, FontStyle.Regular);
         }
 
         private void AddButton(string text, int top, Action onClick)
@@ -126,8 +168,31 @@ namespace cinemaapp
             var btn = new Button()
             {
                 Text = text,
-                Location = new Point(170, top),
+                Location = new Point(520, top),
                 Size = new Size(150, 40),
+            };
+            btn.Click += (s, e) =>
+            {
+                try
+                {
+                    onClick();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("操作失败: " + ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            };
+            this.Controls.Add(btn);
+        }
+
+
+        private void AddButtonCustomer(string text, int length, int top, Action onClick)
+        {
+            var btn = new Button()
+            {
+                Text = text,
+                Location = new Point(length, top),
+                Size = new Size(100, 50),
             };
             btn.Click += (s, e) =>
             {
@@ -202,26 +267,6 @@ namespace cinemaapp
             MessageBox.Show("管理员已登出");
             RefreshMenu();
         }
-
-        // 更新个人资料
-        private void UpdateCustomerProfile()
-        {
-            if (Program._loggedInCustomer == null)
-            {
-                MessageBox.Show("请先登录后再更新资料", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            using (var updateForm = new UpdateCustomerProfile(Program._loggedInCustomer))
-            {
-                if (updateForm.ShowDialog() == DialogResult.OK)
-                {
-                    // 更新成功后刷新界面（如果你有显示姓名或手机号之类信息）
-                    RefreshMenu();
-                }
-            }
-        }
-
         //删除账户
         private void DeleteCustomerAccount()
         {
@@ -274,23 +319,6 @@ namespace cinemaapp
             form.ShowDialog();
         }
 
-
-
-        private void ViewCustomerProfile()
-        {
-            if (_loggedInCustomer == null)
-            {
-                MessageBox.Show("请先登录才能查看用户画像", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            var form = new CustomerProfileForm(_loggedInCustomer, Program._ratingService);
-            form.ShowDialog();
-        }
-
-
-
-
         //购票
         private void PurchaseTicketMenu()
         {
@@ -316,27 +344,6 @@ namespace cinemaapp
             var form = new ViewAllOrders();
             form.ShowDialog();
         }
-
-
-
-
-
-
-
-
-        // 4. 查看所有有效订单
-        private void DisplayCustomerPaidOrders()
-        {
-            if (_loggedInCustomer == null)
-            {
-                MessageBox.Show("请先登录才能查看订单。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return; 
-            }
-
-            var form = new CustomerOrdersForm(_loggedInCustomer, Program._orderRepository, Program._orderForProductRepository);
-            form.ShowDialog(); // 或 Show()，看你的窗口逻辑
-        }
-
 
         // 5. 退票
 
@@ -430,5 +437,266 @@ namespace cinemaapp
             form.ShowDialog();
         }
 
+        // 打开 CustomerMineForm 窗体
+        private void OpenCustomerMineForm()
+        {
+            var customerMineForm = new CustomerMineForm(_loggedInCustomer);
+            customerMineForm.ShowDialog();
+            RefreshMenu();
+        }
+
+
+        // 加载并显示顾客头像
+        private void LoadCustomerAvatar()
+        {
+            var avatarPictureBox = new PictureBox
+            {
+                Width = 100, // 设置宽度
+                Height = 100, // 设置高度
+                Location = new Point(10, 10), // 设置图片位置：左上角
+                SizeMode = PictureBoxSizeMode.StretchImage, // 设置图片拉伸方式，填充控件区域
+                //BorderStyle = BorderStyle.None // 可选，去掉边框
+            };
+
+            string avatarPath = Path.Combine(Application.StartupPath, "images", "#顾客头像.png");// 构建图片路径
+
+            if (File.Exists(avatarPath))
+            {
+                avatarPictureBox.Image = Image.FromFile(avatarPath); // 加载图片
+            }
+            else
+            {
+                // 如果图片不存在，显示默认的头像或其他默认图片
+                avatarPictureBox.Image = CreateDefaultAvatar();
+            }
+
+            // 将头像图片控件添加到窗体中
+            this.Controls.Add(avatarPictureBox);
+        }
+        private Image CreateDefaultAvatar()
+        {
+            
+            var img = new Bitmap(100, 100);
+            using (var g = Graphics.FromImage(img))
+            {
+                g.Clear(Color.Gray); // 设置背景颜色
+                using (var font = new Font("Arial", 12))
+                using (var brush = new SolidBrush(Color.White))
+                {
+                    g.DrawString("无头像", font, brush, new PointF(10, 10));
+                }
+            }
+            return img;
+        }
+
+        private void LoadExitSystemImage()
+        {
+            var exitPictureBox = new PictureBox
+            {
+                Width = 50, // 设置图片宽度
+                Height = 50, // 设置图片高度
+                Location = new Point(10, this.ClientSize.Height - 60), // 设置图片位置：左下角
+                SizeMode = PictureBoxSizeMode.StretchImage, // 设置图片拉伸方式，填充控件区域
+                BorderStyle = BorderStyle.None // 可选，去掉边框
+            };
+
+            string exitImagePath = Path.Combine(Application.StartupPath, "images", "#退出系统标识.png");
+
+            if (File.Exists(exitImagePath))
+            {
+                exitPictureBox.Image = Image.FromFile(exitImagePath); // 加载图片
+            }
+            else
+            {
+                // 如果没有图片，使用默认图片或创建一个默认图片
+                exitPictureBox.Image = CreateDefaultExitImage();
+            }
+
+            // 添加点击事件，点击图片时关闭窗体
+            exitPictureBox.Click += (sender, e) => this.Close();
+
+            // 将图片控件添加到窗体
+            this.Controls.Add(exitPictureBox);
+        }
+
+        private Image CreateDefaultExitImage()
+        {
+            // 创建一个默认的退出图标（当图片加载失败时）
+            var img = new Bitmap(50, 50);
+            using (var g = Graphics.FromImage(img))
+            {
+                g.Clear(Color.Gray); // 设置背景颜色
+                using (var font = new Font("Arial", 12))
+                using (var brush = new SolidBrush(Color.White))
+                {
+                    g.DrawString("退出", font, brush, new PointF(10, 10)); // 在图片上绘制文字
+                }
+            }
+            return img;
+        }
+
+        //海报展示
+        private FlowLayoutPanel BuildPosterStrip()
+        {
+            var flp = new FlowLayoutPanel
+            {
+                WrapContents = false,                       // 单行横向
+                FlowDirection = FlowDirection.LeftToRight,  // 左→右
+                AutoScroll = true,                          // 超出显示水平滚动条
+                Dock = DockStyle.None,                       
+                Location = new Point(400, 60),
+                Size = new Size(this.ClientSize.Width - 40, 450), // 设置大小：预留两边空白（40px）// 150(海报) + 30(片名) + 上下余量
+                Padding = new Padding(0),
+                Margin = new Padding(0)
+            };
+            return flp;
+        }
+
+        // ——————————— 添加一个海报项 ———————————
+        private void AddPosterItem(FlowLayoutPanel target, string filmName, string absoluteImagePath)
+        {
+            var itemPanel = new Panel
+            {
+                Width = 300,
+                Height = 400,
+                Margin = new Padding(10) // 相邻项水平总空隙 20px（左右各10）
+            };
+
+            var pic = new PictureBox
+            {
+                Width = 280,
+                Height = 350,
+                Location = new Point(10, 10),
+                SizeMode = PictureBoxSizeMode.Zoom,
+                BorderStyle = BorderStyle.None,
+                Image = LoadPosterThumbnail(absoluteImagePath, 280, 350)
+            };
+
+            var name = new Label
+            {
+                Text = string.IsNullOrWhiteSpace(filmName) ? "未命名" : filmName,
+                Width = 280,
+                Height = 40,
+                AutoSize = false,
+                Location = new Point(10, 360),
+                TextAlign = ContentAlignment.MiddleCenter,
+                Font = new Font("微软雅黑", 9, FontStyle.Bold)
+            };
+
+            itemPanel.Controls.Add(pic);
+            itemPanel.Controls.Add(name);
+            target.Controls.Add(itemPanel);
+        }
+
+        // ——————————— 加载缩略图（本地路径 → 130×150） ———————————
+        private Image LoadPosterThumbnail(string absolutePath, int w, int h)
+        {
+            try
+            {
+                if (!string.IsNullOrWhiteSpace(absolutePath) && File.Exists(absolutePath))
+                {
+                    using var original = Image.FromFile(absolutePath);
+                    return ResizeImageHighQuality(original, w, h);
+                }
+            }
+            catch { /* 忽略，走默认图或占位 */ }
+
+            // 默认图：{StartupPath}\images\默认.jpg
+            try
+            {
+                string fallback = Path.Combine(Application.StartupPath, "images", "默认.jpg");
+                if (File.Exists(fallback))
+                {
+                    using var def = Image.FromFile(fallback);
+                    return ResizeImageHighQuality(def, w, h);
+                }
+            }
+            catch { }
+
+            // 灰色占位
+            var bmp = new Bitmap(w, h);
+            using var g = Graphics.FromImage(bmp);
+            g.Clear(Color.LightGray);
+            using var font = new Font("Arial", 10);
+            using var brush = new SolidBrush(Color.Black);
+            var text = "暂无海报";
+            var size = g.MeasureString(text, font);
+            g.DrawString(text, font, brush, (w - size.Width) / 2f, (h - size.Height) / 2f);
+            return bmp;
+        }
+
+        // ——————————— 高质量缩放 ———————————
+        private static Image ResizeImageHighQuality(Image original, int width, int height)
+        {
+            var destRect = new Rectangle(0, 0, width, height);
+            var destImage = new Bitmap(width, height);
+            destImage.SetResolution(original.HorizontalResolution, original.VerticalResolution);
+
+            using (var graphics = Graphics.FromImage(destImage))
+            {
+                graphics.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
+                graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+                graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+                graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
+
+                using var wrapMode = new System.Drawing.Imaging.ImageAttributes();
+                wrapMode.SetWrapMode(System.Drawing.Drawing2D.WrapMode.TileFlipXY);
+                graphics.DrawImage(original, destRect, 0, 0, original.Width, original.Height,
+                    GraphicsUnit.Pixel, wrapMode);
+            }
+            return destImage;
+        }
+
+
+
+        /*        以下功能更改为在CustomerMineForm中实现
+        // 更新个人资料
+        private void UpdateCustomerProfile()
+        {
+            if (Program._loggedInCustomer == null)
+            {
+                MessageBox.Show("请先登录后再更新资料", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            using (var updateForm = new UpdateCustomerProfile(Program._loggedInCustomer))
+            {
+                if (updateForm.ShowDialog() == DialogResult.OK)
+                {
+                    // 更新成功后刷新界面（如果你有显示姓名或手机号之类信息）
+                    RefreshMenu();
+                }
+            }
+        }
+        // 4. 查看所有有效订单
+        private void DisplayCustomerPaidOrders()
+        {
+            if (_loggedInCustomer == null)
+            {
+                MessageBox.Show("请先登录才能查看订单。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return; 
+            }
+
+            var form = new CustomerOrdersForm(_loggedInCustomer, Program._orderRepository, Program._orderForProductRepository);
+            form.ShowDialog(); // 或 Show()，看你的窗口逻辑
+        }
+        // 查看用户画像
+        private void ViewCustomerProfile()
+        {
+            if (_loggedInCustomer == null)
+            {
+                MessageBox.Show("请先登录才能查看用户画像", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            var form = new CustomerProfileForm(_loggedInCustomer, Program._ratingService);
+            form.ShowDialog();
+        }
+*/
+
+
+
     }
+
 }
