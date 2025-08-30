@@ -505,23 +505,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Richa\\.nuget\\packages\\": {},
-    "D:\\vs2022zujian\\NuGetPackages": {}
+    "C:\\Users\\Acane\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Richa\\Desktop\\Cinema-Ticketing-Database\\cinemaapp\\cinemaapp\\cinemaapp.csproj",
+      "projectUniqueName": "E:\\new前端\\Cinema-Ticketing-Database\\cinemaapp\\cinemaapp\\cinemaapp.csproj",
       "projectName": "cinemaapp",
-      "projectPath": "C:\\Users\\Richa\\Desktop\\Cinema-Ticketing-Database\\cinemaapp\\cinemaapp\\cinemaapp.csproj",
-      "packagesPath": "C:\\Users\\Richa\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Richa\\Desktop\\Cinema-Ticketing-Database\\cinemaapp\\cinemaapp\\obj\\",
+      "projectPath": "E:\\new前端\\Cinema-Ticketing-Database\\cinemaapp\\cinemaapp\\cinemaapp.csproj",
+      "packagesPath": "C:\\Users\\Acane\\.nuget\\packages\\",
+      "outputPath": "E:\\new前端\\Cinema-Ticketing-Database\\cinemaapp\\cinemaapp\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "D:\\vs2022zujian\\NuGetPackages"
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\Richa\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Acane\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -546,9 +546,9 @@
       "restoreAuditProperties": {
         "enableAudit": "true",
         "auditLevel": "low",
-        "auditMode": "direct"
+        "auditMode": "all"
       },
-      "SdkAnalysisLevel": "9.0.300"
+      "SdkAnalysisLevel": "9.0.100"
     },
     "frameworks": {
       "net8.0-windows7.0": {
@@ -582,7 +582,7 @@
             "privateAssets": "none"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.304/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.100/PortableRuntimeIdentifierGraph.json"
       }
     }
   },
