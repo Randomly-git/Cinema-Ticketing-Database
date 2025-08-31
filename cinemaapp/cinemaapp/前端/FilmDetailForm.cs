@@ -3,26 +3,11 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using test.Models;
-using test.Services; // 假设 SectionService 在这里，但本类不直接使用数据库
+using test.Services;
 
 namespace cinemaapp
 {
-    // FilmDetailForm 的UI组件，请在设计师中创建以下控件:
-    // PictureBox pictureBoxPoster
-    // Label lblFilmName
-    // Label lblGenre
-    // Label lblDuration
-    // Label lblScore
-    // Label lblBoxOffice
-    // Label lblAdmissions
-    // Label lblPrice
-    // DateTimePicker dateTimePicker
-    // Button btnSearchSections
 
-    /// <summary>
-    /// 电影详细信息窗体，用于显示单个电影的详细信息和场次。
-    /// 本窗体不直接连接数据库，而是依赖于外部传入的 Film 对象。
-    /// </summary>
     public partial class FilmDetailForm : Form
     {
         private readonly Film _selectedFilm;
@@ -39,9 +24,6 @@ namespace cinemaapp
             DisplayFilmDetails();
         }
 
-        /// <summary>
-        /// 显示电影详细信息，逻辑参照 FilmSelectionForm 中的 DisplayFilmDetails 方法。
-        /// </summary>
         private void DisplayFilmDetails()
         {
             // 显示大图
