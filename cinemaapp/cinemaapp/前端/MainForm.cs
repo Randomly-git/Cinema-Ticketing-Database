@@ -27,7 +27,7 @@ namespace cinemaapp
         private void InitUI()
         {
             this.Text = "电影院管理系统";
-            this.Size = new Size(1200, 800);
+            this.Size = new Size(1200, 700);
             this.StartPosition = FormStartPosition.CenterScreen;
 
             RefreshMenu();
@@ -38,14 +38,6 @@ namespace cinemaapp
         {
             this.Controls.Clear();
 
-            Label lblTitle = new Label()
-            {
-                Text = "电影院管理系统主菜单",
-                Font = new Font("微软雅黑", 16, FontStyle.Bold),
-                Location = new Point(490, 20),
-                AutoSize = true
-            };
-            this.Controls.Add(lblTitle);
 
             LoadExitSystemImage(); // 加载退出按钮
 
@@ -61,28 +53,30 @@ namespace cinemaapp
             {
                 lblUser = new Label()
                 {
-                    Location = new Point(120, 10),
+                    Location = new Point(10, 120),
                     AutoSize = true
                 };
                 this.Controls.Add(lblUser);
 
                 UpdateUserInfoLabel(); // 初始化显示
 
-                AddButtonCustomer("我的", 10, 120, OpenCustomerMineForm);
-                AddButtonCustomer("更多电影信息", 500, 600, FilmDashBoard);
-                AddButtonCustomer("购票", 700, 600, PurchaseTicketMenu);
-                AddButtonCustomer("我的电影票", 900, 600, ProcessTicketRefund);
-                AddButtonCustomer("购买周边", 500, 700, PurchaseProduct);
-                AddButtonCustomer("评价电影", 700, 700, RateFilm);  // 新增评价电影按钮
-                AddButtonCustomer("删除我的账户", 900, 700, DeleteCustomerAccount);
+                AddButtonCustomer("我的", 10, 150, OpenCustomerMineForm);
+                AddButtonCustomer("更多电影信息", 200, 550, FilmDashBoard);
+                AddButtonCustomer("我的电影票", 350, 550, ProcessTicketRefund);
+                AddButtonCustomer("购买周边", 500, 550, PurchaseProduct);
+                AddButtonCustomer("评价电影", 650, 550, RateFilm);  // 新增评价电影按钮
+                AddButtonCustomer("删除我的账户", 800, 550, DeleteCustomerAccount);
+                AddButtonCustomer("用户登出", 950,550, LogoutCustomer);
+                //AddButtonCustomer("购票", 700, 600, PurchaseTicketMenu);
                 //AddButtonCustomer("更新个人资料", 110, UpdateCustomerProfile);
                 //AddButtonCustomer("我的所有有效订单", 230, DisplayCustomerPaidOrders);
                 //AddButtonCustomer("查看用户画像", 390, ViewCustomerProfile);
-                //AddButtonCustomer("用户登出", 470, LogoutCustomer);
+                
                 //AddButton("退出系统", 510, () => this.Close());
 
                 // 加载头像图片
                 LoadCustomerAvatar();
+                AddHorizontalSeparator(170, 0, 700, Color.Black);
 
                 //  创建并添加海报条
                 posterStrip = BuildPosterStrip();//创建 posterStrip（注意：每次 RefreshMenu() 都清空控件，所以要重建）
@@ -158,7 +152,7 @@ namespace cinemaapp
             }
 
             // 更新UI显示
-            lblUser.Text = $"Hi, {customer.Name} !  Lv: {customer.VipLevel}\nID: {customer.CustomerID},  当前积分: {points}";
+            lblUser.Text = $"Hi, {customer.Name} !  Lv: {customer.VipLevel} ";
             lblUser.Font = new Font("微软雅黑", 12, FontStyle.Regular);
         }
 
@@ -170,6 +164,7 @@ namespace cinemaapp
                 Location = new Point(520, top),
                 Size = new Size(150, 40),
             };
+
             btn.Click += (s, e) =>
             {
                 try
@@ -192,7 +187,15 @@ namespace cinemaapp
                 Text = text,
                 Location = new Point(length, top),
                 Size = new Size(100, 50),
+                UseVisualStyleBackColor = false,
+                FlatStyle = FlatStyle.Flat,
+                BackColor = Color.FromArgb(76, 175, 80),   // 绿色主题
+                ForeColor = Color.White,
             };
+            btn.FlatAppearance.BorderSize = 0;
+            btn.FlatAppearance.MouseOverBackColor = Color.FromArgb(67, 160, 71);
+            btn.FlatAppearance.MouseDownBackColor = Color.FromArgb(56, 142, 60);
+
             btn.Click += (s, e) =>
             {
                 try
@@ -543,7 +546,7 @@ namespace cinemaapp
                 FlowDirection = FlowDirection.LeftToRight, // 左→右
                 AutoScroll = true,                 // 超出显示水平滚动条
                 Dock = DockStyle.None,
-                Location = new Point(400, 60),
+                Location = new Point(200, 40),
                 Size = new Size(this.ClientSize.Width - 40, 450), // 设置大小：预留两边空白（40px）// 150(海报) + 30(片名) + 上下余量
                 Padding = new Padding(0),
                 Margin = new Padding(0)
@@ -665,6 +668,18 @@ namespace cinemaapp
                   GraphicsUnit.Pixel, wrapMode);
             }
             return destImage;
+        }
+
+        private void AddHorizontalSeparator(int x, int y, int hight, Color color)
+        {
+            var separator = new Panel()
+            {
+                Height = hight,                      // 线的厚度
+                Width = 2,                   // 线的长度
+                BackColor = color,               // 线的颜色
+                Location = new Point(x, y)       // 线的位置
+            };
+            this.Controls.Add(separator);
         }
 
 

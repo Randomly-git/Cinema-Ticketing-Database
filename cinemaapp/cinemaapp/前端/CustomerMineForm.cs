@@ -4,10 +4,12 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using test.Models;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace cinemaapp.前端
 {
@@ -37,10 +39,23 @@ namespace cinemaapp.前端
             };
             this.Controls.Add(lblTitle);
 
+            var customer = Program._customerRepository.GetCustomerById(_loggedInCustomer.CustomerID);
+            var vipCard = Program._customerRepository.GetVIPCardByCustomerID(_loggedInCustomer.CustomerID);
+            int points = vipCard?.Points ?? 0;
+
+            Label lblUser = new Label()
+            {
+                Location = new Point(320, 70),
+                AutoSize = true,
+                Text = $"name: {customer.Name}   Lv: {customer.VipLevel}\nID: {customer.CustomerID},  当前积分: {points}",
+                Font = new Font("微软雅黑", 12, FontStyle.Regular),
+            };
+            this.Controls.Add(lblUser);
+
             // 添加按钮
-            AddButton("更新个人资料", 70, UpdateCustomerProfile);
-            AddButton("我的所有有效订单", 120, ViewAllOrders);
-            AddButton("查看用户画像", 170, ViewCustomerProfile);
+            AddButton("更新个人资料", 170, UpdateCustomerProfile);
+            AddButton("我的所有有效订单", 220, ViewAllOrders);
+            AddButton("查看电影推荐", 270, ViewCustomerProfile);
         }
 
         private void AddButton(string text, int top, Action onClick)
