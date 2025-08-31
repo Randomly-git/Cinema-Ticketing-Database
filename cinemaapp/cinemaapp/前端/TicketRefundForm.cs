@@ -33,7 +33,7 @@ namespace cinemaapp
         {
             this.Text = "电影票退票";
             this.StartPosition = FormStartPosition.CenterScreen;
-            this.Size = new System.Drawing.Size(600, 450);
+            this.Size = new System.Drawing.Size(1050, 600);
 
             // 添加DataGridView显示订单
             dataGridView1.Dock = DockStyle.Fill;
@@ -120,6 +120,9 @@ namespace cinemaapp
                 序号 = index + 1,
                 订单ID = order.OrderID,
                 电影票ID = order.TicketID,
+                电影名称=_orderRepository.GetFilmByOrderID(order.OrderID).FilmName,
+                放映开始时间 = _orderRepository.GetTimeslotByOrderID(order.OrderID).StartTime.ToString("yyyy-MM-dd HH:mm"),
+                放映结束时间 = _orderRepository.GetTimeslotByOrderID(order.OrderID).EndTime.ToString("yyyy-MM-dd HH:mm"),
                 订单日期 = order.Day.ToString("yyyy-MM-dd"),
                 支付金额 = order.TotalPrice.ToString("C")
             }).ToList();
@@ -152,6 +155,33 @@ namespace cinemaapp
                 Name = "电影票ID列",
                 HeaderText = "电影票ID",
                 DataPropertyName = "电影票ID",
+                Width = 100,
+                ReadOnly = true
+            });
+
+            dataGridView1.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "电影名称列",
+                HeaderText = "电影名称",
+                DataPropertyName = "电影名称",
+                Width = 100,
+                ReadOnly = true
+            });
+
+            dataGridView1.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "放映开始时间列",
+                HeaderText = "放映开始时间",
+                DataPropertyName = "放映开始时间",
+                Width = 100,
+                ReadOnly = true
+            });
+
+            dataGridView1.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "放映结束时间列",
+                HeaderText = "放映结束时间",
+                DataPropertyName = "放映结束时间",
                 Width = 100,
                 ReadOnly = true
             });

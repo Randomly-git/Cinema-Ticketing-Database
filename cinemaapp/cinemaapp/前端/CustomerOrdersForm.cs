@@ -60,6 +60,12 @@ namespace cinemaapp
         {
             try
             {
+                //通过订单ID查找对应的sectionID，再通过sectionID查找对应的电影名称
+
+                
+
+
+
                 var paidTicketOrders = _orderRepository.GetOrdersForCustomer(_loggedInCustomer.CustomerID, true)
                                                        .Where(o => o.State == "有效")
                                                        .OrderByDescending(o => o.Day)
@@ -67,10 +73,12 @@ namespace cinemaapp
                                                        {
                                                            o.OrderID,
                                                            订单日期 = o.Day.ToString("yyyy-MM-dd HH:mm"),
+                                                           电影名称 = _orderRepository.GetFilmByOrderID(o.OrderID).FilmName,
                                                            o.TicketID,
                                                            支付方式 = o.PaymentMethod,
                                                            金额 = o.TotalPrice,
                                                            状态 = o.State
+                                                           
                                                        })
                                                        .ToList();
 
