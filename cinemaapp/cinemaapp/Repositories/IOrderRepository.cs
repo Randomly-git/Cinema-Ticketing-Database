@@ -20,5 +20,9 @@ namespace test.Repositories
 
         // 获取所有周边产品订单
         List<OrderForProduct> GetProductOrders(DateTime? startDate = null, DateTime? endDate = null);
+
+        Section GetFilmByOrderID(int sectionId); //根据sectionID获取filmID
+
+        TimeSlot GetTimeslotByOrderID(int orderID);
     }
 }

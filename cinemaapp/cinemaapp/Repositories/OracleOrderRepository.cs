@@ -431,6 +431,73 @@ namespace test.Repositories
 
             return orders;
         }
+        public Section GetFilmByOrderID(int orderID)
+        {
+            Section selectedsection = null;
+            string sql = @"
+            SELECT s.SECTIONID, s.FILMNAME, s.HALLNO, s.TIMEID
+            FROM SECTION s
+            JOIN TICKET t ON s.SECTIONID = t.SECTIONID
+            JOIN ORDERFORTICKETS o ON t.TICKETID = o.TICKETID
+            WHERE o.ORDERID = :orderID
+            ";
+            using (var connection = GetConnection())
+            {
+                using (var command = new OracleCommand(sql, connection))
+                {
+                    command.Parameters.Add(new OracleParameter("orderID", orderID));
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            selectedsection = new Section
+                            {
+                                SectionID = Convert.ToInt32(reader["SECTIONID"]),
+                                FilmName = reader["FILMNAME"].ToString(),
+                                HallNo = Convert.ToInt32(reader["HALLNO"]),
+                                TimeID = reader["TIMEID"].ToString(),
+                                
+                            };
+                        }
+                    }
+                }
+            }
+            return selectedsection;
+        }
 
+
+        public TimeSlot GetTimeslotByOrderID(int orderID)
+        {
+            TimeSlot timeslot = null;
+            string sql = @"
+            SELECT ts.TIMEID, ts.STARTTIME, ts.ENDTIME
+            FROM TIMESLOT ts
+            JOIN SECTION s ON ts.TIMEID = s.TIMEID
+            JOIN TICKET t ON s.SECTIONID = t.SECTIONID
+            JOIN ORDERFORTICKETS o ON t.TICKETID = o.TICKETID
+            WHERE o.ORDERID = :orderID
+            ";
+            using (var connection = GetConnection())
+            {
+                using (var command = new OracleCommand(sql, connection))
+                {
+                    command.Parameters.Add(new OracleParameter("orderID", orderID));
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            timeslot = new TimeSlot
+                            {
+                                TimeID = reader["TIMEID"].ToString(),
+                                StartTime = Convert.ToDateTime(reader["STARTTIME"]),
+                                EndTime = Convert.ToDateTime(reader["ENDTIME"])
+                            };
+                        }
+                    }
+                }
+            }
+            return timeslot;
+        }
     }
+
 }
