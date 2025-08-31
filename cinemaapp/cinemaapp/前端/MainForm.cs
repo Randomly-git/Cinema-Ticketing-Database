@@ -1,4 +1,3 @@
-﻿
 using cinemaapp.前端;
 using System;
 using System.Diagnostics;
@@ -70,12 +69,12 @@ namespace cinemaapp
                 UpdateUserInfoLabel(); // 初始化显示
 
                 AddButtonCustomer("我的", 10, 120, OpenCustomerMineForm);
-                AddButtonCustomer("更多电影信息", 500,600, FilmDashBoard);
-                AddButtonCustomer("购票", 700,600, PurchaseTicketMenu);
-                AddButtonCustomer("我的电影票", 900,600 ,ProcessTicketRefund);
-                AddButtonCustomer("购买周边", 500,700, PurchaseProduct);
-                AddButtonCustomer("评价电影", 700,700, RateFilm);  // 新增评价电影按钮
-                AddButtonCustomer("删除我的账户", 900,700, DeleteCustomerAccount);
+                AddButtonCustomer("更多电影信息", 500, 600, FilmDashBoard);
+                AddButtonCustomer("购票", 700, 600, PurchaseTicketMenu);
+                AddButtonCustomer("我的电影票", 900, 600, ProcessTicketRefund);
+                AddButtonCustomer("购买周边", 500, 700, PurchaseProduct);
+                AddButtonCustomer("评价电影", 700, 700, RateFilm);  // 新增评价电影按钮
+                AddButtonCustomer("删除我的账户", 900, 700, DeleteCustomerAccount);
                 //AddButtonCustomer("更新个人资料", 110, UpdateCustomerProfile);
                 //AddButtonCustomer("我的所有有效订单", 230, DisplayCustomerPaidOrders);
                 //AddButtonCustomer("查看用户画像", 390, ViewCustomerProfile);
@@ -91,18 +90,18 @@ namespace cinemaapp
 
                 //准备海报清单（片名 + 文件名）
                 var films = new (string name, string fileName)[]
-                {
-                    ("霸王别姬", "霸王别姬.jpg"),
-                    ("肖申克的救赎", "肖申克的救赎.jpg"),
-                    ("阿甘正传", "阿甘正传.jpg"),
-                    ("千与千寻", "千与千寻.jpg"),
-                    ("星际穿越", "星际穿越.jpg"),
-                    ("泰坦尼克号", "泰坦尼克号.jpg"),
-                    ("美丽人生", "美丽人生.jpg"),
-                    ("这个杀手不太冷", "这个杀手不太冷.jpg"),
-                    ("盗梦空间", "盗梦空间.jpg"),
-                    ("楚门的世界", "楚门的世界.jpg"),
-                };
+        {
+            ("霸王别姬", "霸王别姬.jpg"),
+            ("肖申克的救赎", "肖申克的救赎.jpg"),
+            ("阿甘正传", "阿甘正传.jpg"),
+            ("千与千寻", "千与千寻.jpg"),
+            ("星际穿越", "星际穿越.jpg"),
+            ("泰坦尼克号", "泰坦尼克号.jpg"),
+            ("美丽人生", "美丽人生.jpg"),
+            ("这个杀手不太冷", "这个杀手不太冷.jpg"),
+            ("盗梦空间", "盗梦空间.jpg"),
+            ("楚门的世界", "楚门的世界.jpg"),
+        };
 
                 // 4) 逐个添加到海报条（使用 images 目录）
                 foreach (var f in films)
@@ -135,7 +134,7 @@ namespace cinemaapp
                 //AddButton("退出系统", 460, () => this.Close());
             }
 
-            
+
         }
 
         // 新增：实时刷新用户信息
@@ -245,7 +244,7 @@ namespace cinemaapp
             var form = new RegisterAdministrator();
             form.ShowDialog();
         }
-        
+
         //管理员登录
         private void LoginAdministrator()
         {
@@ -259,7 +258,7 @@ namespace cinemaapp
                 }
             }
         }
-        
+
         //管理员登出
         private void LogoutAdministrator()
         {
@@ -313,8 +312,8 @@ namespace cinemaapp
         private void ShowCinemaScheduleAndSeatMap()
         {
             var form = new SeatMapVisualizationForm(
-                cinemaapp.Program._schedulingService,
-                cinemaapp.Program._showingService 
+              cinemaapp.Program._schedulingService,
+              cinemaapp.Program._showingService
             );
             form.ShowDialog();
         }
@@ -322,13 +321,13 @@ namespace cinemaapp
         //购票
         private void PurchaseTicketMenu()
         {
-            var form = new FilmSelectionForm(Program._filmService, Program._loggedInCustomer,this);
+            var form = new FilmSelectionForm(Program._filmService, Program._loggedInCustomer, this);
             form.ShowDialog(); // 模态窗口，用户必须先操作完这个窗体才能回主界面
         }
 
         private void PurchaseProduct()
         {
-            var form = new ProductPurchaseForm(Program._productService, Program._customerRepository ,Program._loggedInCustomer, this);
+            var form = new ProductPurchaseForm(Program._productService, Program._customerRepository, Program._loggedInCustomer, this);
             form.ShowDialog(); // 模态窗口，用户必须先操作完这个窗体才能回主界面
         }
 
@@ -355,7 +354,7 @@ namespace cinemaapp
                 if (_loggedInCustomer == null)
                 {
                     MessageBox.Show("请先登录才能退票", "提示",
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                      MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
@@ -363,16 +362,16 @@ namespace cinemaapp
                 if (Program._orderRepository == null || Program._bookingService == null)
                 {
                     MessageBox.Show("系统服务未初始化，无法办理退票", "错误",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                      MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
                 // 3. 创建并显示退票窗体
                 using (var refundForm = new TicketRefundForm(
-                    _loggedInCustomer,
-                    Program._orderRepository,
-                    Program._bookingService,
-                    Program._ticketService))
+          _loggedInCustomer,
+          Program._orderRepository,
+          Program._bookingService,
+          Program._ticketService))
                 {
                     // 4. 处理窗体结果
                     var result = refundForm.ShowDialog();
@@ -381,7 +380,7 @@ namespace cinemaapp
                     {
                         // 可添加退票成功后的处理逻辑
                         MessageBox.Show("退票操作已完成", "成功",
-                            MessageBoxButtons.OK, MessageBoxIcon.Information);
+              MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
             }
@@ -389,7 +388,7 @@ namespace cinemaapp
             {
                 // 5. 捕获全局异常
                 MessageBox.Show($"退票过程中发生错误：{ex.Message}", "系统错误",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+          MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                 // 记录日志（实际项目中应使用日志框架）
                 Debug.WriteLine($"退票错误：{ex.ToString()}");
@@ -407,9 +406,9 @@ namespace cinemaapp
             }
 
             using (var form = new FilmRatingForm(
-                _loggedInCustomer,
-                Program._orderRepository,
-                Program._ratingService))
+              _loggedInCustomer,
+              Program._orderRepository,
+              Program._ratingService))
             {
                 form.ShowDialog();
             }
@@ -475,7 +474,7 @@ namespace cinemaapp
         }
         private Image CreateDefaultAvatar()
         {
-            
+
             var img = new Bitmap(100, 100);
             using (var g = Graphics.FromImage(img))
             {
@@ -540,10 +539,10 @@ namespace cinemaapp
         {
             var flp = new FlowLayoutPanel
             {
-                WrapContents = false,                       // 单行横向
-                FlowDirection = FlowDirection.LeftToRight,  // 左→右
-                AutoScroll = true,                          // 超出显示水平滚动条
-                Dock = DockStyle.None,                       
+                WrapContents = false,              // 单行横向
+                FlowDirection = FlowDirection.LeftToRight, // 左→右
+                AutoScroll = true,                 // 超出显示水平滚动条
+                Dock = DockStyle.None,
                 Location = new Point(400, 60),
                 Size = new Size(this.ClientSize.Width - 40, 450), // 设置大小：预留两边空白（40px）// 150(海报) + 30(片名) + 上下余量
                 Padding = new Padding(0),
@@ -570,6 +569,26 @@ namespace cinemaapp
                 SizeMode = PictureBoxSizeMode.Zoom,
                 BorderStyle = BorderStyle.None,
                 Image = LoadPosterThumbnail(absoluteImagePath, 280, 350)
+            };
+            // 为海报添加点击事件
+            pic.Click += (s, e) =>
+            {
+                // 确保用户已登录，否则无法查看电影详情
+                if (_loggedInCustomer == null)
+                {
+                    MessageBox.Show("请先登录才能查看电影详情！", "未登录", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                var film = Program._filmService.GetAvailableFilms().FirstOrDefault(f => f.FilmName == filmName);
+                if (film == null)
+                {
+                    MessageBox.Show("未找到该电影的信息。", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                var detailForm = new FilmDetailForm(film, _loggedInCustomer, this);
+                detailForm.ShowDialog();
             };
 
             var name = new Label
@@ -643,14 +662,14 @@ namespace cinemaapp
                 using var wrapMode = new System.Drawing.Imaging.ImageAttributes();
                 wrapMode.SetWrapMode(System.Drawing.Drawing2D.WrapMode.TileFlipXY);
                 graphics.DrawImage(original, destRect, 0, 0, original.Width, original.Height,
-                    GraphicsUnit.Pixel, wrapMode);
+                  GraphicsUnit.Pixel, wrapMode);
             }
             return destImage;
         }
 
 
 
-        /*        以下功能更改为在CustomerMineForm中实现
+        /* 以下功能更改为在CustomerMineForm中实现
         // 更新个人资料
         private void UpdateCustomerProfile()
         {
@@ -675,7 +694,7 @@ namespace cinemaapp
             if (_loggedInCustomer == null)
             {
                 MessageBox.Show("请先登录才能查看订单。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return; 
+                return;  
             }
 
             var form = new CustomerOrdersForm(_loggedInCustomer, Program._orderRepository, Program._orderForProductRepository);
@@ -694,7 +713,6 @@ namespace cinemaapp
             form.ShowDialog();
         }
 */
-
 
 
     }
