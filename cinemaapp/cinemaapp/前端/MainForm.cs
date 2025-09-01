@@ -17,6 +17,7 @@ namespace cinemaapp
         private Customer _loggedInCustomer = null;
         private Administrator _loggedInAdmin = null;
         private Label lblUser;  // 提升为类字段
+        private MonthCalendar calendar;
 
         public MainForm()
         {
@@ -47,7 +48,6 @@ namespace cinemaapp
                 AddButton("顾客登录", 120, LoginCustomer);
                 AddButton("管理员注册", 170, RegisterAdministrator);
                 AddButton("管理员登录", 220, LoginAdministrator);
-                //AddButton("退出系统", 270, () => this.Close());
             }
             else if (_loggedInCustomer != null)
             {
@@ -57,57 +57,48 @@ namespace cinemaapp
                     AutoSize = true
                 };
                 this.Controls.Add(lblUser);
+                UpdateUserInfoLabel();
 
-                UpdateUserInfoLabel(); // 初始化显示
-
-                AddButtonCustomer("我的", 10, 150, OpenCustomerMineForm);
-                AddButtonCustomer("更多电影信息", 200, 550, FilmDashBoard);
-                AddButtonCustomer("我的电影票", 350, 550, ProcessTicketRefund);
-                AddButtonCustomer("购买周边", 500, 550, PurchaseProduct);
-                AddButtonCustomer("评价电影", 650, 550, RateFilm);  // 新增评价电影按钮
-                AddButtonCustomer("删除我的账户", 800, 550, DeleteCustomerAccount);
-                AddButtonCustomer("用户登出", 950,550, LogoutCustomer);
-                //AddButtonCustomer("购票", 700, 600, PurchaseTicketMenu);
-                //AddButtonCustomer("更新个人资料", 110, UpdateCustomerProfile);
-                //AddButtonCustomer("我的所有有效订单", 230, DisplayCustomerPaidOrders);
-                //AddButtonCustomer("查看用户画像", 390, ViewCustomerProfile);
-                
-                //AddButton("退出系统", 510, () => this.Close());
-
-                // 加载头像图片
+                // 加载头像
                 LoadCustomerAvatar();
-                AddHorizontalSeparator(170, 0, 700, Color.Black);
 
-                //  创建并添加海报条
-                posterStrip = BuildPosterStrip();//创建 posterStrip（注意：每次 RefreshMenu() 都清空控件，所以要重建）
-                this.Controls.Add(posterStrip);// 添加到页面（这样滚动条会按实际宽度计算）
+                // 加宽左边，留出日历空间
+                int leftPanelWidth = 250;
 
-                //准备海报清单（片名 + 文件名）
-                var films = new (string name, string fileName)[]
-        {
-            ("霸王别姬", "霸王别姬.jpg"),
-            ("肖申克的救赎", "肖申克的救赎.jpg"),
-            ("阿甘正传", "阿甘正传.jpg"),
-            ("千与千寻", "千与千寻.jpg"),
-            ("星际穿越", "星际穿越.jpg"),
-            ("泰坦尼克号", "泰坦尼克号.jpg"),
-            ("美丽人生", "美丽人生.jpg"),
-            ("这个杀手不太冷", "这个杀手不太冷.jpg"),
-            ("盗梦空间", "盗梦空间.jpg"),
-            ("楚门的世界", "楚门的世界.jpg"),
-        };
-
-                // 4) 逐个添加到海报条（使用 images 目录）
-                foreach (var f in films)
+                // 日历控件
+                calendar = new MonthCalendar()
                 {
-                    string avatarPath = Path.Combine(Application.StartupPath, "images", f.fileName);
-                    AddPosterItem(posterStrip, f.name, avatarPath);
-                }
+                    Location = new Point(10, 150),   // 头像下方
+                    MaxSelectionCount = 1
+                };
+                calendar.SetDate(DateTime.Now);
+                calendar.DateChanged += Calendar_DateChanged;
+                calendar.MinDate = DateTime.Today;
+                this.Controls.Add(calendar);
 
+                // 调整分隔线位置（比原来往右移）
+                AddHorizontalSeparator(leftPanelWidth, 0, 700, Color.Black);
 
+                // 海报条右移，预留出左边日历空间
+                posterStrip = BuildPosterStrip();
+                posterStrip.Location = new Point(leftPanelWidth + 20, 40);
+                posterStrip.Size = new Size(this.ClientSize.Width - leftPanelWidth - 40, 450);
+                this.Controls.Add(posterStrip);
 
+                // 加载当天海报
+                LoadPostersForDate(DateTime.Now);
 
+                // 底部按钮区保持不动
+                AddButtonCustomer("我的", 70, 350, OpenCustomerMineForm);
+                AddButtonCustomer("更多电影信息", 260, 550, FilmDashBoard);
+                AddButtonCustomer("我的电影票", 410, 550, ProcessTicketRefund);
+                AddButtonCustomer("购买周边", 560, 550, PurchaseProduct);
+                AddButtonCustomer("评价电影", 710, 550, RateFilm);
+                AddButtonCustomer("删除我的账户", 860, 550, DeleteCustomerAccount);
+                AddButtonCustomer("用户登出", 1010, 550, LogoutCustomer);
             }
+
+
             else if (_loggedInAdmin != null)
             {
                 Label lblAdmin = new Label()
@@ -125,11 +116,36 @@ namespace cinemaapp
                 AddButton("排片和座位图可视化", 310, ShowCinemaScheduleAndSeatMap);
                 AddButton("查看电影评价", 360, ShowFilmRatings);
                 AddButton("管理员登出", 410, LogoutAdministrator);
-                //AddButton("退出系统", 460, () => this.Close());
             }
 
 
         }
+
+        private void Calendar_DateChanged(object sender, DateRangeEventArgs e)
+        {
+            DateTime selectedDate = e.Start;
+            LoadPostersForDate(selectedDate);
+        }
+
+        private void LoadPostersForDate(DateTime date)
+        {
+            posterStrip.Controls.Clear();
+
+            // 获取所有可查询的电影
+            var films = Program._filmService.GetAvailableFilms();
+
+            foreach (var film in films)
+            {
+                // 根据选中日期获取该电影的场次
+                var showings = Program._showingService.GetFilmShowings(film.FilmName, date);
+                if (showings != null && showings.Count > 0)
+                {
+                    string posterPath = Path.Combine(Application.StartupPath, film.ImagePath);
+                    AddPosterItem(posterStrip, film.FilmName, posterPath);
+                }
+            }
+        }
+
 
         // 新增：实时刷新用户信息
         public void UpdateUserInfoLabel()
@@ -321,13 +337,7 @@ namespace cinemaapp
             form.ShowDialog();
         }
 
-        //购票
-        private void PurchaseTicketMenu()
-        {
-            var form = new FilmSelectionForm(Program._filmService, Program._loggedInCustomer, this);
-            form.ShowDialog(); // 模态窗口，用户必须先操作完这个窗体才能回主界面
-        }
-
+        //购买周边
         private void PurchaseProduct()
         {
             var form = new ProductPurchaseForm(Program._productService, Program._customerRepository, Program._loggedInCustomer, this);
@@ -444,8 +454,11 @@ namespace cinemaapp
         {
             var customerMineForm = new CustomerMineForm(_loggedInCustomer);
             customerMineForm.ShowDialog();
-            RefreshMenu();
+
+            // 不要调用 RefreshMenu()，只更新用户信息
+            UpdateUserInfoLabel();
         }
+
 
 
         // 加载并显示顾客头像
@@ -590,7 +603,11 @@ namespace cinemaapp
                     return;
                 }
 
-                var detailForm = new FilmDetailForm(film, _loggedInCustomer, this);
+                // 获取主界面当前选中的日期
+                DateTime selectedDate = calendar.SelectionStart.Date;
+
+                // 把日期也传进去
+                var detailForm = new FilmDetailForm(film, _loggedInCustomer, this, selectedDate);
                 detailForm.ShowDialog();
             };
 
@@ -681,55 +698,6 @@ namespace cinemaapp
             };
             this.Controls.Add(separator);
         }
-
-
-
-        /* 以下功能更改为在CustomerMineForm中实现
-        // 更新个人资料
-        private void UpdateCustomerProfile()
-        {
-            if (Program._loggedInCustomer == null)
-            {
-                MessageBox.Show("请先登录后再更新资料", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            using (var updateForm = new UpdateCustomerProfile(Program._loggedInCustomer))
-            {
-                if (updateForm.ShowDialog() == DialogResult.OK)
-                {
-                    // 更新成功后刷新界面（如果你有显示姓名或手机号之类信息）
-                    RefreshMenu();
-                }
-            }
-        }
-        // 4. 查看所有有效订单
-        private void DisplayCustomerPaidOrders()
-        {
-            if (_loggedInCustomer == null)
-            {
-                MessageBox.Show("请先登录才能查看订单。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;  
-            }
-
-            var form = new CustomerOrdersForm(_loggedInCustomer, Program._orderRepository, Program._orderForProductRepository);
-            form.ShowDialog(); // 或 Show()，看你的窗口逻辑
-        }
-        // 查看用户画像
-        private void ViewCustomerProfile()
-        {
-            if (_loggedInCustomer == null)
-            {
-                MessageBox.Show("请先登录才能查看用户画像", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            var form = new CustomerProfileForm(_loggedInCustomer, Program._ratingService);
-            form.ShowDialog();
-        }
-*/
-
-
     }
 
 }

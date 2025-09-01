@@ -13,14 +13,16 @@ namespace cinemaapp
         private readonly Film _selectedFilm;
         private readonly Customer _loggedInCustomer;
         private readonly MainForm _mainForm;
+        private readonly DateTime _selectedDate;
 
         // 构造函数接收 Film 对象，以及其他可能需要的依赖
-        public FilmDetailForm(Film selectedFilm, Customer loggedInCustomer, MainForm mainForm)
+        public FilmDetailForm(Film selectedFilm, Customer loggedInCustomer, MainForm mainForm, DateTime selectedDate)
         {
             InitializeComponent();
             _selectedFilm = selectedFilm;
             _loggedInCustomer = loggedInCustomer;
             _mainForm = mainForm;
+            _selectedDate = selectedDate;
             DisplayFilmDetails();
         }
 
@@ -91,15 +93,6 @@ namespace cinemaapp
             {
                 minDate = _selectedFilm.ReleaseDate.Value.Date;
             }
-
-            // 设置日期选择器的最小日期
-            dateTimePicker.MinDate = minDate;
-
-            // 设置日期选择器的最大日期
-            dateTimePicker.MaxDate = _selectedFilm.EndDate ?? today.AddMonths(1);
-
-            // 设置默认选中日期为最小可用日期
-            dateTimePicker.Value = minDate;
         }
 
         /// <summary>
@@ -107,14 +100,12 @@ namespace cinemaapp
         /// </summary>
         private void btnSearchSections_Click(object sender, EventArgs e)
         {
-            var date = dateTimePicker.Value.Date;
-
-            // 打开场次选择窗体
-            var sectionForm = new SectionSelectionForm(_selectedFilm, date, _loggedInCustomer, _mainForm);
+            var sectionForm = new SectionSelectionForm(_selectedFilm, _selectedDate, _loggedInCustomer, _mainForm);
             if (sectionForm.ShowDialog() == DialogResult.OK)
             {
                 MessageBox.Show("购票成功!", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
+
     }
 }

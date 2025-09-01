@@ -36,7 +36,7 @@
             this.lblBoxOffice = new System.Windows.Forms.Label();
             this.lblAdmissions = new System.Windows.Forms.Label();
             this.lblPrice = new System.Windows.Forms.Label();
-            this.dateTimePicker = new System.Windows.Forms.DateTimePicker();
+            //this.dateTimePicker = new System.Windows.Forms.DateTimePicker();
             this.btnSearchSections = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPoster)).BeginInit();
             this.SuspendLayout();
@@ -122,11 +122,11 @@
             // 
             // dateTimePicker
             // 
-            this.dateTimePicker.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.dateTimePicker.Location = new System.Drawing.Point(30, 400);
-            this.dateTimePicker.Name = "dateTimePicker";
-            this.dateTimePicker.Size = new System.Drawing.Size(200, 23);
-            this.dateTimePicker.TabIndex = 8;
+            //this.dateTimePicker.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            //this.dateTimePicker.Location = new System.Drawing.Point(30, 400);
+            //this.dateTimePicker.Name = "dateTimePicker";
+            //this.dateTimePicker.Size = new System.Drawing.Size(200, 23);
+            //this.dateTimePicker.TabIndex = 8;
             // 
             // btnSearchSections
             // 
@@ -145,7 +145,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 600);
             this.Controls.Add(this.btnSearchSections);
-            this.Controls.Add(this.dateTimePicker);
+            //this.Controls.Add(this.dateTimePicker);
             this.Controls.Add(this.lblPrice);
             this.Controls.Add(this.lblAdmissions);
             this.Controls.Add(this.lblBoxOffice);
@@ -172,7 +172,7 @@
         private System.Windows.Forms.Label lblBoxOffice;
         private System.Windows.Forms.Label lblAdmissions;
         private System.Windows.Forms.Label lblPrice;
-        private System.Windows.Forms.DateTimePicker dateTimePicker;
+        //private System.Windows.Forms.DateTimePicker dateTimePicker;
         private System.Windows.Forms.Button btnSearchSections;
     }
 }
