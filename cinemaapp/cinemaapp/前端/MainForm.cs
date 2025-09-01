@@ -62,6 +62,9 @@ namespace cinemaapp
                 // 加载头像
                 LoadCustomerAvatar();
 
+                // 新增：用户登出图标（门形按钮）
+                LoadLogoutIcon();
+
                 // 加宽左边，留出日历空间
                 int leftPanelWidth = 250;
 
@@ -88,14 +91,18 @@ namespace cinemaapp
                 // 加载当天海报
                 LoadPostersForDate(DateTime.Now);
 
-                // 底部按钮区保持不动
+                // 删除“用户登出”按钮后重新排列底部按钮
+                int btnWidth = 100;
+                int spacing = 50; // 按钮间间距
+                int startX = 200;  // 第一个按钮左边起始位置
+                int topY = 550;   // 按钮垂直位置固定
+
                 AddButtonCustomer("我的", 70, 350, OpenCustomerMineForm);
-                AddButtonCustomer("更多电影信息", 260, 550, FilmDashBoard);
-                AddButtonCustomer("我的电影票", 410, 550, ProcessTicketRefund);
-                AddButtonCustomer("购买周边", 560, 550, PurchaseProduct);
-                AddButtonCustomer("评价电影", 710, 550, RateFilm);
-                AddButtonCustomer("删除我的账户", 860, 550, DeleteCustomerAccount);
-                AddButtonCustomer("用户登出", 1010, 550, LogoutCustomer);
+                AddButtonCustomer("更多电影信息", startX + (btnWidth + spacing) * 1, topY, FilmDashBoard);
+                AddButtonCustomer("我的电影票", startX + (btnWidth + spacing) * 2, topY, ProcessTicketRefund);
+                AddButtonCustomer("购买周边", startX + (btnWidth + spacing) * 3, topY, PurchaseProduct);
+                AddButtonCustomer("评价电影", startX + (btnWidth + spacing) * 4, topY, RateFilm);
+                AddButtonCustomer("删除我的账户", startX + (btnWidth + spacing) * 5, topY, DeleteCustomerAccount);
             }
 
 
@@ -488,6 +495,51 @@ namespace cinemaapp
             // 将头像图片控件添加到窗体中
             this.Controls.Add(avatarPictureBox);
         }
+
+        private void LoadLogoutIcon()
+        {
+            var logoutPictureBox = new PictureBox
+            {
+                Width = 70,
+                Height = 70,
+                Location = new Point(150, 30), // 头像右侧 10px 间距
+                SizeMode = PictureBoxSizeMode.StretchImage,
+                Cursor = Cursors.Hand
+            };
+
+            string logoutImagePath = Path.Combine(Application.StartupPath, "images", "logout_door.png");
+            if (File.Exists(logoutImagePath))
+            {
+                logoutPictureBox.Image = Image.FromFile(logoutImagePath);
+            }
+            else
+            {
+                logoutPictureBox.Image = CreateDefaultLogoutIcon(); // 没有图片用默认图
+            }
+
+            logoutPictureBox.Click += (s, e) =>
+            {
+                LogoutCustomer(); // 调用原有登出方法
+            };
+
+            this.Controls.Add(logoutPictureBox);
+        }
+
+        // 默认门图标（灰色门）
+        private Image CreateDefaultLogoutIcon()
+        {
+            var bmp = new Bitmap(40, 40);
+            using (var g = Graphics.FromImage(bmp))
+            {
+                g.Clear(Color.Gray);
+                using var pen = new Pen(Color.White, 2);
+                g.DrawRectangle(pen, 5, 5, 30, 30); // 简单门框
+                g.DrawLine(pen, 25, 20, 25, 25);   // 门把手
+            }
+            return bmp;
+        }
+
+
         private Image CreateDefaultAvatar()
         {
 
