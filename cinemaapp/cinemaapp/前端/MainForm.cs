@@ -62,7 +62,7 @@ namespace cinemaapp
                 // 加载头像
                 LoadCustomerAvatar();
 
-                // 新增：用户登出图标（门形按钮）
+                // 用户登出图标（门形按钮）
                 LoadLogoutIcon();
 
                 // 加宽左边，留出日历空间
@@ -71,7 +71,7 @@ namespace cinemaapp
                 // 日历控件
                 calendar = new MonthCalendar()
                 {
-                    Location = new Point(10, 150),   // 头像下方
+                    Location = new Point(10, 180),   // 头像下方
                     MaxSelectionCount = 1
                 };
                 calendar.SetDate(DateTime.Now);
@@ -91,18 +91,18 @@ namespace cinemaapp
                 // 加载当天海报
                 LoadPostersForDate(DateTime.Now);
 
-                // 删除“用户登出”按钮后重新排列底部按钮
-                int btnWidth = 100;
-                int spacing = 50; // 按钮间间距
-                int startX = 200;  // 第一个按钮左边起始位置
-                int topY = 550;   // 按钮垂直位置固定
+                // 排列底部按钮
+                int btnWidth = 160;
+                int spacing = 20; // 按钮间间距
+                int startX = 100;  // 第一个按钮左边起始位置
+                int topY = 530;   // 按钮垂直位置固定
 
-                AddButtonCustomer("我的", 70, 350, OpenCustomerMineForm);
-                AddButtonCustomer("更多电影信息", startX + (btnWidth + spacing) * 1, topY, FilmDashBoard);
+                AddButtonCustomer("个人信息", 120, 60, OpenCustomerMineForm, 80, 40, 10);
+                AddButtonCustomer("更多电影", startX + (btnWidth + spacing) * 1, topY, FilmDashBoard);
                 AddButtonCustomer("我的电影票", startX + (btnWidth + spacing) * 2, topY, ProcessTicketRefund);
                 AddButtonCustomer("购买周边", startX + (btnWidth + spacing) * 3, topY, PurchaseProduct);
                 AddButtonCustomer("评价电影", startX + (btnWidth + spacing) * 4, topY, RateFilm);
-                AddButtonCustomer("删除我的账户", startX + (btnWidth + spacing) * 5, topY, DeleteCustomerAccount);
+                AddButtonCustomer("猜您想看", startX + (btnWidth + spacing) * 5, topY, ViewCustomerProfile);
             }
 
 
@@ -154,7 +154,7 @@ namespace cinemaapp
         }
 
 
-        // 新增：实时刷新用户信息
+        // 实时刷新用户信息
         public void UpdateUserInfoLabel()
         {
             if (_loggedInCustomer == null) return;
@@ -203,17 +203,19 @@ namespace cinemaapp
         }
 
 
-        private void AddButtonCustomer(string text, int length, int top, Action onClick)
+        private void AddButtonCustomer(string text, int x, int y, Action onClick, int width = 160, int height = 90, int size = 20)
         {
             var btn = new Button()
             {
                 Text = text,
-                Location = new Point(length, top),
-                Size = new Size(100, 50),
+                Location = new Point(x, y),
+                Size = new Size(width, height),
                 UseVisualStyleBackColor = false,
                 FlatStyle = FlatStyle.Flat,
                 BackColor = Color.FromArgb(76, 175, 80),   // 绿色主题
                 ForeColor = Color.White,
+                Font = new Font("微软雅黑", size, FontStyle.Bold), // 设置字体、大小和样式
+                TextAlign = ContentAlignment.MiddleCenter   // 文字居中显示
             };
             btn.FlatAppearance.BorderSize = 0;
             btn.FlatAppearance.MouseOverBackColor = Color.FromArgb(67, 160, 71);
@@ -292,24 +294,7 @@ namespace cinemaapp
             MessageBox.Show("管理员已登出");
             RefreshMenu();
         }
-        //删除账户
-        private void DeleteCustomerAccount()
-        {
-            if (Program._loggedInCustomer == null)
-            {
-                MessageBox.Show("请先登录再删除账户", "未登录", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            var deleteForm = new DeleteCustomerAccount();
-            var result = deleteForm.ShowDialog();
-
-            if (result == DialogResult.OK)
-            {
-                Program._loggedInCustomer = null;
-                RefreshMenu(); // 若你界面中有菜单或按钮状态刷新
-            }
-        }
+ 
 
 
         private void ShowFilmRatings()
@@ -352,10 +337,16 @@ namespace cinemaapp
         }
 
 
-
-
-
-
+        /// <summary>
+        /// 查看用户画像/推荐
+        /// </summary>
+        private void ViewCustomerProfile()
+        {
+            using (var form = new CustomerProfileForm(_loggedInCustomer, Program._ratingService))
+            {
+                form.ShowDialog();
+            }
+        }
 
         //查看订单
         private void ViewAllOrders()
@@ -434,12 +425,6 @@ namespace cinemaapp
             }
         }
 
-
-
-
-
-        // 2. 查看所有订单（已实现或正在实现）
-
         // 3. 添加新排片
         private void AddSectionInteractive()
         {
@@ -460,10 +445,14 @@ namespace cinemaapp
         private void OpenCustomerMineForm()
         {
             var customerMineForm = new CustomerMineForm(_loggedInCustomer);
-            customerMineForm.ShowDialog();
+            var result = customerMineForm.ShowDialog();
 
-            // 不要调用 RefreshMenu()，只更新用户信息
-            UpdateUserInfoLabel();
+            // 检查是否是因为账户被删除而关闭
+            if (result == DialogResult.Abort)
+            {
+                _loggedInCustomer = null;    // 清除登录状态
+                RefreshMenu();
+            }
         }
 
 
@@ -500,9 +489,9 @@ namespace cinemaapp
         {
             var logoutPictureBox = new PictureBox
             {
-                Width = 70,
-                Height = 70,
-                Location = new Point(150, 30), // 头像右侧 10px 间距
+                Width = 35,
+                Height = 35,
+                Location = new Point(120, 5), 
                 SizeMode = PictureBoxSizeMode.StretchImage,
                 Cursor = Cursors.Hand
             };

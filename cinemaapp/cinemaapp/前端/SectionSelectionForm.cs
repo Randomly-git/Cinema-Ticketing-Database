@@ -50,7 +50,8 @@ namespace cinemaapp
             // 添加列
             listViewSections.Columns.Add("开始时间", 150, HorizontalAlignment.Center);
             listViewSections.Columns.Add("结束时间", 150, HorizontalAlignment.Center);
-            listViewSections.Columns.Add("影厅", 120, HorizontalAlignment.Center);
+            listViewSections.Columns.Add("影厅", 80, HorizontalAlignment.Center);
+            listViewSections.Columns.Add("影厅类型", 200, HorizontalAlignment.Center);
 
             // 双击事件
             listViewSections.DoubleClick += (sender, e) =>
@@ -91,6 +92,7 @@ namespace cinemaapp
                 var item = new ListViewItem(section.TimeSlot.StartTime.ToString("HH\\:mm"));
                 item.SubItems.Add(section.TimeSlot.EndTime.ToString("HH\\:mm"));
                 item.SubItems.Add(section.MovieHall.HallNo.ToString());         // int转string
+                item.SubItems.Add(section.MovieHall.Category.ToString());
                 item.Tag = section;
 
                 listViewSections.Items.Add(item);

@@ -39,7 +39,7 @@ namespace cinemaapp.前端
             // 按钮区
             AddButton("更新个人资料", 170, UpdateCustomerProfile);
             AddButton("我的所有有效订单", 220, ViewAllOrders);
-            AddButton("查看电影推荐", 270, ViewCustomerProfile);
+            AddButton("删除此账号", 270, DeleteCustomerAccount);
         }
 
         /// <summary>
@@ -120,13 +120,39 @@ namespace cinemaapp.前端
         }
 
         /// <summary>
-        /// 查看用户画像/推荐
+        /// 删除账户
         /// </summary>
-        private void ViewCustomerProfile()
+        private void DeleteCustomerAccount()
         {
-            using (var form = new CustomerProfileForm(_loggedInCustomer, Program._ratingService))
+            if (Program._loggedInCustomer == null)
             {
-                form.ShowDialog();
+                MessageBox.Show("请先登录再删除账户", "未登录", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // 确认删除
+            var confirmResult = MessageBox.Show("确定要删除账户吗？此操作不可恢复！",
+                "确认删除", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+            if (confirmResult != DialogResult.Yes)
+                return;
+
+            try
+            {
+                // 执行删除操作
+                var deleteForm = new DeleteCustomerAccount();
+                var result = deleteForm.ShowDialog();
+
+                if (result == DialogResult.OK)
+                {
+                    // 设置对话框结果并关闭当前窗体
+                    this.DialogResult = DialogResult.Abort;
+                    this.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"删除账户失败: {ex.Message}", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

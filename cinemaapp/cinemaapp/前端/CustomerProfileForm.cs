@@ -28,7 +28,7 @@ namespace cinemaapp
 
         private void InitializeUI()
         {
-            this.Text = "用户画像";
+            this.Text = "猜您想看";
             this.Size = new Size(800, 600);
             this.StartPosition = FormStartPosition.CenterParent;
 
@@ -53,7 +53,7 @@ namespace cinemaapp
             // 用户画像: 类型偏好
             Label lblGenre = new Label
             {
-                Text = "电影类型偏好：",
+                Text = "您的类型偏好：",
                 Location = new Point(20, 85),
                 AutoSize = true
             };
@@ -97,6 +97,22 @@ namespace cinemaapp
             dgvRecommendations.Columns.Add("NearestScreening", "最近场次");
             dgvRecommendations.Columns.Add("Score", "评分");
             dgvRecommendations.Columns.Add("RecommendationScore", "推荐指数");
+
+            // 设置"最近场次"列的宽度为其他列的两倍
+            // 先获取当前平均列宽，然后设置为两倍
+            int averageWidth = dgvRecommendations.Width / dgvRecommendations.Columns.Count;
+            dgvRecommendations.Columns["NearestScreening"].Width = averageWidth * 2;
+
+            // 重新调整其他列的填充权重
+            foreach (DataGridViewColumn column in dgvRecommendations.Columns)
+            {
+                if (column.Name != "NearestScreening")
+                {
+                    column.FillWeight = 100; // 默认权重
+                }
+            }
+            dgvRecommendations.Columns["NearestScreening"].FillWeight = 150; // 双倍权重
+
             this.Controls.Add(dgvRecommendations);
         }
 
