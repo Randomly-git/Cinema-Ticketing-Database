@@ -16,7 +16,8 @@ namespace cinemaapp
         private FlowLayoutPanel posterStrip; // 横向海报条
         private Customer _loggedInCustomer = null;
         private Administrator _loggedInAdmin = null;
-        private Label lblUser;  // 提升为类字段
+        private Label lblUser;
+        private Label tip;
         private MonthCalendar calendar;
 
         public MainForm()
@@ -67,6 +68,13 @@ namespace cinemaapp
 
                 // 加宽左边，留出日历空间
                 int leftPanelWidth = 250;
+
+                tip = new Label()
+                {
+                    Location = new Point(300, 10),
+                    AutoSize = true
+                };
+                this.Controls.Add(tip);
 
                 // 日历控件
                 calendar = new MonthCalendar()
@@ -137,6 +145,10 @@ namespace cinemaapp
         private void LoadPostersForDate(DateTime date)
         {
             posterStrip.Controls.Clear();
+
+            // 更新UI显示
+            tip.Text = $"双击海报以查看/购票： ";
+            tip.Font = new Font("微软雅黑", 16, FontStyle.Regular);
 
             // 获取所有可查询的电影
             var films = Program._filmService.GetAvailableFilms();
@@ -660,7 +672,7 @@ namespace cinemaapp
                 AutoSize = false,
                 Location = new Point(10, 360),
                 TextAlign = ContentAlignment.MiddleCenter,
-                Font = new Font("微软雅黑", 9, FontStyle.Bold)
+                Font = new Font("微软雅黑", 12, FontStyle.Bold)
             };
 
             itemPanel.Controls.Add(pic);

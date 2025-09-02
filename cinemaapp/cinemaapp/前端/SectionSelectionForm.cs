@@ -27,7 +27,7 @@ namespace cinemaapp
             _mainForm = mainForm;
 
             // 设置窗体属性
-            this.Text = $"{_selectedFilm.FilmName} - {_selectedDate:yyyy-MM-dd} 场次";
+            this.Text = $"{_selectedFilm.FilmName} - {_selectedDate:yyyy-MM-dd} 场次，双击任意一行进入该场次的选座界面：";
             this.StartPosition = FormStartPosition.CenterParent;
             this.Size = new Size(600, 800);
 
