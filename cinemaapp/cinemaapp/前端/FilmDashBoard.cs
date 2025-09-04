@@ -34,7 +34,7 @@ namespace cinemaapp
         private IFilmService _filmService;
         private IRatingService _ratingService;
 
-        public FilmDashboard()
+        public FilmDashboard(string? filmname = null)
         {
             _filmService = Program._filmService;  // 赋值
             _ratingService = Program._ratingService;  // 赋值
@@ -42,6 +42,19 @@ namespace cinemaapp
             LoadShowingsFilms();
             LoadOverviewFilms();
             AttachStatisticsRowClickEvent();  // 绑定事件
+
+            // 如果传入了电影名称，填充搜索框并触发搜索
+            if (!string.IsNullOrEmpty(filmname))
+            {
+                // 填充影片概况页的搜索框
+                txtFilmSearch.Text = filmname;
+                // 触发搜索事件
+                TxtFilmSearch_TextChanged(this, EventArgs.Empty);
+
+                // 可选：同时填充排挡页的搜索框
+                txtShowingsSearch.Text = filmname;
+                TxtShowingsSearch_TextChanged(this, EventArgs.Empty);
+            }
         }
 
         private void AttachStatisticsRowClickEvent()

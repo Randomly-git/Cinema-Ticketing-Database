@@ -99,8 +99,14 @@ namespace cinemaapp
             dgvRecommendations.Columns.Add("RecommendationScore", "推荐指数");
             dgvRecommendations.Columns.Add(new DataGridViewButtonColumn
             {
-                Name = "GoToPay",
+                Name = "购票链接",
                 Text = "去购票",
+                UseColumnTextForButtonValue = true // 按钮显示固定文本
+            });
+            dgvRecommendations.Columns.Add(new DataGridViewButtonColumn
+            {
+                Name = "更多",
+                Text = "查看更多",
                 UseColumnTextForButtonValue = true // 按钮显示固定文本
             });
 
@@ -152,7 +158,7 @@ namespace cinemaapp
             dgvRecommendations.CellContentClick += (sender, e) =>
             {
                 // 检查是否点击了按钮列
-                if (e.ColumnIndex == dgvRecommendations.Columns["GoToPay"].Index && e.RowIndex >= 0)
+                if (e.ColumnIndex == dgvRecommendations.Columns["购票链接"].Index && e.RowIndex >= 0)
                 {
                     // 获取当前行数据
                     var row = dgvRecommendations.Rows[e.RowIndex];
@@ -174,6 +180,29 @@ namespace cinemaapp
                         selectedDate
                     );
                     filmDetailForm.ShowDialog();
+                }
+            };
+            
+            dgvRecommendations.CellContentClick += (sender, e) =>
+            {
+                // 检查是否点击了按钮列
+                if (e.ColumnIndex == dgvRecommendations.Columns["更多"].Index && e.RowIndex >= 0)
+                {
+                    // 获取当前行数据
+                    var row = dgvRecommendations.Rows[e.RowIndex];
+                    string filmName = row.Cells["FilmName"].Value.ToString();
+            
+                    if (filmName == null)
+                    {
+                        MessageBox.Show("未找到该电影的信息。", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+
+                    // 打开详情页面
+                    var filmDashboard = new FilmDashboard(
+                        filmName
+                    );
+                    filmDashboard.ShowDialog();
                 }
             };
         }
