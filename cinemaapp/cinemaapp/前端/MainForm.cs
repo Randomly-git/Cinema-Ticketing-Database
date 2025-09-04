@@ -354,7 +354,7 @@ namespace cinemaapp
         /// </summary>
         private void ViewCustomerProfile()
         {
-            using (var form = new CustomerProfileForm(_loggedInCustomer, Program._ratingService))
+            using (var form = new CustomerProfileForm(_loggedInCustomer, Program._ratingService,this))
             {
                 form.ShowDialog();
             }

@@ -11,17 +11,17 @@ namespace cinemaapp
     {
         private readonly Customer _customer;
         private readonly IRatingService _ratingService;
-
+        private readonly MainForm _mainForm;
         private Label lblVipInfo;
         private Panel panelVipBar;
         private DataGridView dgvGenreImpression;
         private DataGridView dgvRecommendations;
 
-        public CustomerProfileForm(Customer customer, IRatingService ratingService)
+        public CustomerProfileForm(Customer customer, IRatingService ratingService, MainForm mainForm)
         {
             _customer = customer ?? throw new ArgumentNullException(nameof(customer));
             _ratingService = ratingService ?? throw new ArgumentNullException(nameof(ratingService));
-
+            _mainForm = mainForm ?? throw new ArgumentNullException(nameof(mainForm));
             InitializeUI();
             LoadProfile();
         }
@@ -97,7 +97,13 @@ namespace cinemaapp
             dgvRecommendations.Columns.Add("NearestScreening", "最近场次");
             dgvRecommendations.Columns.Add("Score", "评分");
             dgvRecommendations.Columns.Add("RecommendationScore", "推荐指数");
-            //跳转购买
+            dgvRecommendations.Columns.Add(new DataGridViewButtonColumn
+            {
+                Name = "GoToPay",
+                Text = "去购票",
+                UseColumnTextForButtonValue = true // 按钮显示固定文本
+            });
+
             // 设置"最近场次"列的宽度为其他列的两倍
             // 先获取当前平均列宽，然后设置为两倍
             int averageWidth = dgvRecommendations.Width / dgvRecommendations.Columns.Count;
@@ -143,6 +149,33 @@ namespace cinemaapp
                     movie.RecommendationScore.ToString("F1")
                 );
             }
+            dgvRecommendations.CellContentClick += (sender, e) =>
+            {
+                // 检查是否点击了按钮列
+                if (e.ColumnIndex == dgvRecommendations.Columns["GoToPay"].Index && e.RowIndex >= 0)
+                {
+                    // 获取当前行数据
+                    var row = dgvRecommendations.Rows[e.RowIndex];
+                    string filmName = row.Cells["FilmName"].Value.ToString();
+                    DateTime selectedDate = DateTime.Parse(row.Cells["NearestScreening"].Value.ToString());
+
+                    var film = Program._filmService.GetAvailableFilms().FirstOrDefault(f => f.FilmName == filmName);
+                    if (film == null)
+                    {
+                        MessageBox.Show("未找到该电影的信息。", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+
+                    // 打开详情页面
+                    var filmDetailForm = new FilmDetailForm(
+                        film,
+                        _customer,  
+                        _mainForm,   // 已有的主窗体
+                        selectedDate
+                    );
+                    filmDetailForm.ShowDialog();
+                }
+            };
         }
 
         private void DrawVipInfo()
