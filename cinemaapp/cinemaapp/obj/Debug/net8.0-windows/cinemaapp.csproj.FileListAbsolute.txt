@@ -695,3 +695,4 @@ E:\cinemacode\Cinema-Ticketing-Database\cinemaapp\cinemaapp\obj\Debug\net8.0-win
 E:\cinemacode\Cinema-Ticketing-Database\cinemaapp\cinemaapp\obj\Debug\net8.0-windows\cinemaapp.genruntimeconfig.cache
 E:\cinemacode\Cinema-Ticketing-Database\cinemaapp\cinemaapp\obj\Debug\net8.0-windows\ref\cinemaapp.dll
 E:\cinemacode\Cinema-Ticketing-Database\cinemaapp\cinemaapp\obj\Debug\net8.0-windows\cinemaapp.TicketRefundForm.resources
+E:\cinemacode\Cinema-Ticketing-Database\cinemaapp\cinemaapp\obj\Debug\net8.0-windows\cinemaapp.CustomerProfileForm.resources

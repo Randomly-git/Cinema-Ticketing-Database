@@ -97,7 +97,7 @@
                 _schedulingService = new SchedulingService(connectionString);
                 _productService = new ProductService(_relatedProductRepository, _orderForProductRepository, connectionString);
                 _ticketService = new TicketService(_ticketRepository);
-                _ratingService = new RatingService(_schedulingService, _ratingRepository, _filmRepository, _orderRepository, connectionString);
+                _ratingService = new RatingService(_schedulingService, _ratingRepository, _filmRepository, _orderRepository,_customerRepository, connectionString);
 
                 // ✅ 启动主窗体（MainForm）
                 Application.EnableVisualStyles();

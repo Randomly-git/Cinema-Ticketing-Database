@@ -14,6 +14,7 @@ namespace test.Services
         private readonly IRatingRepository _ratingRepository;
         private readonly IFilmRepository _filmRepository;
         private readonly IOrderRepository _orderRepository;
+        private readonly ICustomerRepository _customerRepository;
         private readonly string _connectionString;
 
         /// <summary>
@@ -24,6 +25,7 @@ namespace test.Services
             IRatingRepository ratingRepository,
             IFilmRepository filmRepository,
             IOrderRepository orderRepository,
+            ICustomerRepository customerRepository,
             string connectionString)
         {
             _schedulingService = schedulingService ?? throw new ArgumentNullException(nameof(schedulingService));
@@ -31,6 +33,7 @@ namespace test.Services
             _filmRepository = filmRepository ?? throw new ArgumentNullException(nameof(filmRepository));
             _orderRepository = orderRepository ?? throw new ArgumentNullException(nameof(orderRepository));
             _connectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));
+            _customerRepository = customerRepository ?? throw new ArgumentNullException(nameof(customerRepository));
         }
 
         private OracleConnection GetOpenConnection()
@@ -125,6 +128,7 @@ namespace test.Services
                     var film = _filmRepository.GetFilmByName(filmName); // 获取电影
                     var ticketId = order.TicketID;  // 获取TicketID 
 
+
                     // 创建或更新评分
                     var rating = new Rating
                     {
@@ -139,6 +143,11 @@ namespace test.Services
 
                     // 重新计算并更新电影的平均分
                     _filmRepository.UpdateAverageScore(film, score);
+
+                    //评分成功后添加顾客积分
+                    var customerid = order.CustomerID;
+                    _customerRepository.UpdateVIPCardPoints(customerid, 2) ; // 每次评分加2积分
+
 
                     transaction.Commit();
                     Console.WriteLine($"订单{orderId}评分成功");
@@ -186,6 +195,10 @@ namespace test.Services
 
                     // 重新计算并更新电影的平均分
                     _filmRepository.UpdateAverageScore(film, score, -1);
+
+                    //撤销评分后扣除顾客积分
+                    var customerid = order.CustomerID;
+                    _customerRepository.UpdateVIPCardPoints(customerid, -2); // 每次撤销评分扣2积分
 
                     transaction.Commit();
                     Console.WriteLine($"订单{orderId}评分撤销成功");

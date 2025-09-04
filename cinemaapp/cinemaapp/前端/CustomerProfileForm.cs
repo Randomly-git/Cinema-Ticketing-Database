@@ -97,7 +97,7 @@ namespace cinemaapp
             dgvRecommendations.Columns.Add("NearestScreening", "最近场次");
             dgvRecommendations.Columns.Add("Score", "评分");
             dgvRecommendations.Columns.Add("RecommendationScore", "推荐指数");
-
+            //跳转购买
             // 设置"最近场次"列的宽度为其他列的两倍
             // 先获取当前平均列宽，然后设置为两倍
             int averageWidth = dgvRecommendations.Width / dgvRecommendations.Columns.Count;
