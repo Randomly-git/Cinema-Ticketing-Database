@@ -313,6 +313,7 @@ namespace test.Services
         {
             refundFee = 0m;
             refundAmount = 0;
+            
 
             // 1. 获取订单和票信息
             string getOrderSql = @"
@@ -357,6 +358,8 @@ WHERE
             refundFee = CalculateRefundFee(showtime, refundTime, paidPrice);
             refundAmount = paidPrice - refundFee;
 
+            
+
             // 4. 执行退款事务
             using (var transaction = _dbService.BeginTransaction())
             {
@@ -380,6 +383,24 @@ WHERE
                         errorMessage = "释放座位失败";
                         return false;
                     }
+                    //4.3 减积分
+                    string getPaymentMethodSql = "SELECT PMethod FROM orderfortickets WHERE orderID = :orderId";
+                    var paymentParam = new OracleParameter("orderId", OracleDbType.Int32) { Value = orderId };
+                    var paymentResult = _dbService.ExecuteQuery(getPaymentMethodSql, paymentParam);
+                    string paymentMethod = paymentResult.Rows[0]["PMethod"].ToString();
+
+                    string getcustomeridMethodSql = "SELECT CustomerID FROM orderfortickets WHERE orderID = :orderId";
+                    var customeridParam = new OracleParameter("orderId", OracleDbType.Int32) { Value = orderId };
+                    var customeridResult = _dbService.ExecuteQuery(getcustomeridMethodSql, customeridParam);
+                    string customerId = customeridResult.Rows[0]["CustomerID"].ToString();
+                    // 2) 只有现金支付的订单才需要扣除积分（购买时加了10积分/张）
+                    if (paymentMethod != "积分支付")
+                    {
+                        int pointsToDeduct = -10;  // 每张票对应10积分，退票时扣除
+                        _customerRepository.UpdateVIPCardPoints(customerId, pointsToDeduct);
+                    }
+
+
 
                     transaction.Commit();
                     errorMessage = $"退票成功，应退款金额: {refundAmount}元";

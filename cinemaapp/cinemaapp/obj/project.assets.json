@@ -505,23 +505,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Acane\\.nuget\\packages\\": {},
+    "C:\\Users\\23634\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\new前端\\Cinema-Ticketing-Database\\cinemaapp\\cinemaapp\\cinemaapp.csproj",
+      "projectUniqueName": "E:\\cinemacode\\Cinema-Ticketing-Database\\cinemaapp\\cinemaapp\\cinemaapp.csproj",
       "projectName": "cinemaapp",
-      "projectPath": "E:\\new前端\\Cinema-Ticketing-Database\\cinemaapp\\cinemaapp\\cinemaapp.csproj",
-      "packagesPath": "C:\\Users\\Acane\\.nuget\\packages\\",
-      "outputPath": "E:\\new前端\\Cinema-Ticketing-Database\\cinemaapp\\cinemaapp\\obj\\",
+      "projectPath": "E:\\cinemacode\\Cinema-Ticketing-Database\\cinemaapp\\cinemaapp\\cinemaapp.csproj",
+      "packagesPath": "C:\\Users\\23634\\.nuget\\packages\\",
+      "outputPath": "E:\\cinemacode\\Cinema-Ticketing-Database\\cinemaapp\\cinemaapp\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\Acane\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\23634\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -546,9 +546,8 @@
       "restoreAuditProperties": {
         "enableAudit": "true",
         "auditLevel": "low",
-        "auditMode": "all"
-      },
-      "SdkAnalysisLevel": "9.0.100"
+        "auditMode": "direct"
+      }
     },
     "frameworks": {
       "net8.0-windows7.0": {
@@ -582,7 +581,7 @@
             "privateAssets": "none"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.100/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files (x86)\\dotnet\\sdk\\8.0.412/PortableRuntimeIdentifierGraph.json"
       }
     }
   },
