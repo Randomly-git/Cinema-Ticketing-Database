@@ -155,6 +155,7 @@ namespace cinemaapp
                     movie.RecommendationScore.ToString("F1")
                 );
             }
+            //购票按钮
             dgvRecommendations.CellContentClick += (sender, e) =>
             {
                 // 检查是否点击了按钮列
@@ -182,7 +183,7 @@ namespace cinemaapp
                     filmDetailForm.ShowDialog();
                 }
             };
-            
+            //更多按钮
             dgvRecommendations.CellContentClick += (sender, e) =>
             {
                 // 检查是否点击了按钮列

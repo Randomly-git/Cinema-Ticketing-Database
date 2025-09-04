@@ -50,10 +50,25 @@ namespace cinemaapp
                 txtFilmSearch.Text = filmname;
                 // 触发搜索事件
                 TxtFilmSearch_TextChanged(this, EventArgs.Empty);
+                var matchedFilm = cmbOverviewFilms.Items.Cast<Film>().FirstOrDefault(f => f.FilmName.Equals(filmname, StringComparison.OrdinalIgnoreCase));
+
+                if (matchedFilm != null)
+                {
+                    cmbOverviewFilms.SelectedItem = matchedFilm;
+                    // 手动触发详情显示
+                    ShowFilmOverview();
+                }
+
 
                 // 可选：同时填充排挡页的搜索框
                 txtShowingsSearch.Text = filmname;
                 TxtShowingsSearch_TextChanged(this, EventArgs.Empty);
+                var matchedShowingsFilm = cmbShowingsFilms.Items.Cast<Film>().FirstOrDefault(f => f.FilmName.Equals(filmname, StringComparison.OrdinalIgnoreCase));
+                if (matchedShowingsFilm != null)
+                {
+                    cmbShowingsFilms.SelectedItem = matchedShowingsFilm;
+                    LoadShowingsForSelectedFilm();
+                }
             }
         }
 
