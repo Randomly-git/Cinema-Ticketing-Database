@@ -15,6 +15,7 @@ namespace cinemaapp
         private readonly MainForm _mainForm;
         private readonly DateTime _selectedDate;
 
+
         // 构造函数接收 Film 对象，以及其他可能需要的依赖
         public FilmDetailForm(Film selectedFilm, Customer loggedInCustomer, MainForm mainForm, DateTime selectedDate)
         {
@@ -24,6 +25,7 @@ namespace cinemaapp
             _mainForm = mainForm;
             _selectedDate = selectedDate;
             DisplayFilmDetails();
+            
         }
 
         private void DisplayFilmDetails()
@@ -84,6 +86,8 @@ namespace cinemaapp
             lblBoxOffice.Text = $"票房: {_selectedFilm.BoxOffice:C}";
             lblAdmissions.Text = $"观影人次: {_selectedFilm.Admissions:N0}";
             lblPrice.Text = $"票价: {_selectedFilm.NormalPrice:C}";
+            //加载评论
+            LoadCommentsWithFormat();
 
             // 设置日期选择器范围
             DateTime today = DateTime.Today;
@@ -92,6 +96,81 @@ namespace cinemaapp
             if (_selectedFilm.ReleaseDate.HasValue && _selectedFilm.ReleaseDate.Value.Date > today)
             {
                 minDate = _selectedFilm.ReleaseDate.Value.Date;
+            }
+        }
+        //显示评论
+        private void LoadCommentsWithFormat()
+        {
+            try
+            {
+                // 1. 从服务获取当前电影的所有评论（需确保IRatingService实现正确）
+                List<Rating> filmComments = Program._ratingService.GetFilmRatingDetails(_selectedFilm.FilmName)
+                                                          .ToList(); // 复用现有获取评论的方法
+
+                // 2. 清空RichTextBox原有内容
+                rtbComments.Clear();
+
+                // 3. 处理“无评论”场景
+                if (filmComments.Count == 0)
+                {
+                    // 设置“暂无评论”为灰色斜体，居中显示
+                    rtbComments.SelectionFont = new Font("微软雅黑",10f, FontStyle.Italic);
+                    rtbComments.SelectionColor = Color.Gray;
+                    // 居中对齐（需先设置对齐方式，再追加文本）
+                    rtbComments.SelectionAlignment = HorizontalAlignment.Center;
+                    rtbComments.AppendText("暂无评论");
+                    return;
+                }
+
+                // 4. 处理“有评论”场景：差异化字体展示CustomerId和评论文本
+                foreach (var comment in filmComments)
+                {
+                    // 格式1：CustomerId（加粗、深蓝色、10号字）
+                    rtbComments.SelectionFont = new Font("微软雅黑", 10f, FontStyle.Bold);
+                    rtbComments.SelectionColor = Color.DarkBlue;
+                    rtbComments.SelectionAlignment = HorizontalAlignment.Left; // 左对齐
+                    // 拼接CustomerId文本（处理空值，避免显示“null”）
+                    string customerid=Program._orderRepository.GetCustomerIDByTicketID(comment.TicketID);
+
+                    string customerIdText = $"用户ID：{customerid ?? "未知用户"}";
+                    rtbComments.AppendText(customerIdText);
+
+                    rtbComments.SelectionFont = new Font("微软雅黑", 10f, FontStyle.Bold);
+                    rtbComments.SelectionColor = Color.Red;
+                    rtbComments.AppendText($"  评分：{comment.Score}/10");
+
+
+                    // 格式2：评论文本（常规、黑色、9号字）+ 换行分隔
+                    rtbComments.SelectionFont = new Font("微软雅黑", 9f, FontStyle.Regular);
+                    rtbComments.SelectionColor = Color.Black;
+                    // 处理空评论（显示“无评论文字”）
+                    string commentText = comment.Comment ?? "无评论文字";
+                    // 追加评论文本 + 两次换行（每条评论间空一行分隔）
+                    rtbComments.AppendText($"\n{commentText}");
+
+                    // 格式化评论时间（例如：2023-10-01 15:30）
+                    string timeText = comment.RatingDate != DateTime.MinValue
+                        ? comment.RatingDate.ToString("yyyy-MM-dd HH:mm")
+                        : "未知时间";
+
+                    // 单独设置时间格式（灰色、斜体）
+                    rtbComments.SelectionFont = new Font("微软雅黑", 8f, FontStyle.Italic);
+                    rtbComments.SelectionColor = Color.Gray;
+                    rtbComments.AppendText($" （{timeText}）\n\n");
+                }
+
+                // 5. 重置光标位置到顶部（方便用户从第一条开始看）
+                rtbComments.SelectionStart = 0;
+                rtbComments.ScrollToCaret();
+            }
+            catch (Exception ex)
+            {
+                // 异常处理：显示“加载失败”提示
+                rtbComments.Clear();
+                rtbComments.SelectionFont = new Font("微软雅黑", 10f, FontStyle.Italic);
+                rtbComments.SelectionColor = Color.Red;
+                rtbComments.SelectionAlignment = HorizontalAlignment.Center;
+                rtbComments.AppendText($"评论加载失败：{ex.Message}");
             }
         }
 
@@ -107,5 +186,9 @@ namespace cinemaapp
             }
         }
 
+        private void lb1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

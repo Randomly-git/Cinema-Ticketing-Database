@@ -24,5 +24,8 @@ namespace test.Repositories
         Section GetFilmByOrderID(int sectionId); //根据sectionID获取filmID
 
         TimeSlot GetTimeslotByOrderID(int orderID);
+
+        //根据TicketID获取CustomerID
+        string GetCustomerIDByTicketID(string ticketID);
     }
 }

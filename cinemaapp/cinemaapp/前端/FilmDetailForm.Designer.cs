@@ -28,138 +28,164 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.pictureBoxPoster = new System.Windows.Forms.PictureBox();
-            this.lblFilmName = new System.Windows.Forms.Label();
-            this.lblGenre = new System.Windows.Forms.Label();
-            this.lblDuration = new System.Windows.Forms.Label();
-            this.lblScore = new System.Windows.Forms.Label();
-            this.lblBoxOffice = new System.Windows.Forms.Label();
-            this.lblAdmissions = new System.Windows.Forms.Label();
-            this.lblPrice = new System.Windows.Forms.Label();
-            //this.dateTimePicker = new System.Windows.Forms.DateTimePicker();
-            this.btnSearchSections = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPoster)).BeginInit();
-            this.SuspendLayout();
+            pictureBoxPoster = new PictureBox();
+            lblFilmName = new Label();
+            lblGenre = new Label();
+            lblDuration = new Label();
+            lblScore = new Label();
+            lblBoxOffice = new Label();
+            lblAdmissions = new Label();
+            lblPrice = new Label();
+            btnSearchSections = new Button();
+            lb1 = new Label();
+            rtbComments = new RichTextBox();
+            ((System.ComponentModel.ISupportInitialize)pictureBoxPoster).BeginInit();
+            SuspendLayout();
             // 
             // pictureBoxPoster
             // 
-            this.pictureBoxPoster.Location = new System.Drawing.Point(30, 30);
-            this.pictureBoxPoster.Name = "pictureBoxPoster";
-            this.pictureBoxPoster.Size = new System.Drawing.Size(250, 350);
-            this.pictureBoxPoster.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBoxPoster.TabIndex = 0;
-            this.pictureBoxPoster.TabStop = false;
+            pictureBoxPoster.Location = new Point(55, 60);
+            pictureBoxPoster.Margin = new Padding(6);
+            pictureBoxPoster.Name = "pictureBoxPoster";
+            pictureBoxPoster.Size = new Size(458, 700);
+            pictureBoxPoster.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBoxPoster.TabIndex = 0;
+            pictureBoxPoster.TabStop = false;
             // 
             // lblFilmName
             // 
-            this.lblFilmName.AutoSize = true;
-            this.lblFilmName.Font = new System.Drawing.Font("微软雅黑", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblFilmName.Location = new System.Drawing.Point(300, 30);
-            this.lblFilmName.Name = "lblFilmName";
-            this.lblFilmName.Size = new System.Drawing.Size(110, 31);
-            this.lblFilmName.TabIndex = 1;
-            this.lblFilmName.Text = "电影名称";
+            lblFilmName.AutoSize = true;
+            lblFilmName.Font = new Font("微软雅黑", 18F, FontStyle.Bold, GraphicsUnit.Point, 134);
+            lblFilmName.Location = new Point(550, 60);
+            lblFilmName.Margin = new Padding(6, 0, 6, 0);
+            lblFilmName.Name = "lblFilmName";
+            lblFilmName.Size = new Size(164, 47);
+            lblFilmName.TabIndex = 1;
+            lblFilmName.Text = "电影名称";
             // 
             // lblGenre
             // 
-            this.lblGenre.AutoSize = true;
-            this.lblGenre.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblGenre.Location = new System.Drawing.Point(300, 80);
-            this.lblGenre.Name = "lblGenre";
-            this.lblGenre.Size = new System.Drawing.Size(58, 21);
-            this.lblGenre.TabIndex = 2;
-            this.lblGenre.Text = "类型：";
+            lblGenre.AutoSize = true;
+            lblGenre.Font = new Font("微软雅黑", 12F, FontStyle.Regular, GraphicsUnit.Point, 134);
+            lblGenre.Location = new Point(550, 160);
+            lblGenre.Margin = new Padding(6, 0, 6, 0);
+            lblGenre.Name = "lblGenre";
+            lblGenre.Size = new Size(86, 31);
+            lblGenre.TabIndex = 2;
+            lblGenre.Text = "类型：";
             // 
             // lblDuration
             // 
-            this.lblDuration.AutoSize = true;
-            this.lblDuration.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblDuration.Location = new System.Drawing.Point(300, 110);
-            this.lblDuration.Name = "lblDuration";
-            this.lblDuration.Size = new System.Drawing.Size(58, 21);
-            this.lblDuration.TabIndex = 3;
-            this.lblDuration.Text = "时长：";
+            lblDuration.AutoSize = true;
+            lblDuration.Font = new Font("微软雅黑", 12F, FontStyle.Regular, GraphicsUnit.Point, 134);
+            lblDuration.Location = new Point(550, 220);
+            lblDuration.Margin = new Padding(6, 0, 6, 0);
+            lblDuration.Name = "lblDuration";
+            lblDuration.Size = new Size(86, 31);
+            lblDuration.TabIndex = 3;
+            lblDuration.Text = "时长：";
             // 
             // lblScore
             // 
-            this.lblScore.AutoSize = true;
-            this.lblScore.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblScore.Location = new System.Drawing.Point(300, 140);
-            this.lblScore.Name = "lblScore";
-            this.lblScore.Size = new System.Drawing.Size(58, 21);
-            this.lblScore.TabIndex = 4;
-            this.lblScore.Text = "评分：";
+            lblScore.AutoSize = true;
+            lblScore.Font = new Font("微软雅黑", 12F, FontStyle.Regular, GraphicsUnit.Point, 134);
+            lblScore.Location = new Point(550, 280);
+            lblScore.Margin = new Padding(6, 0, 6, 0);
+            lblScore.Name = "lblScore";
+            lblScore.Size = new Size(86, 31);
+            lblScore.TabIndex = 4;
+            lblScore.Text = "评分：";
             // 
             // lblBoxOffice
             // 
-            this.lblBoxOffice.AutoSize = true;
-            this.lblBoxOffice.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblBoxOffice.Location = new System.Drawing.Point(300, 170);
-            this.lblBoxOffice.Name = "lblBoxOffice";
-            this.lblBoxOffice.Size = new System.Drawing.Size(58, 21);
-            this.lblBoxOffice.TabIndex = 5;
-            this.lblBoxOffice.Text = "票房：";
+            lblBoxOffice.AutoSize = true;
+            lblBoxOffice.Font = new Font("微软雅黑", 12F, FontStyle.Regular, GraphicsUnit.Point, 134);
+            lblBoxOffice.Location = new Point(550, 340);
+            lblBoxOffice.Margin = new Padding(6, 0, 6, 0);
+            lblBoxOffice.Name = "lblBoxOffice";
+            lblBoxOffice.Size = new Size(86, 31);
+            lblBoxOffice.TabIndex = 5;
+            lblBoxOffice.Text = "票房：";
             // 
             // lblAdmissions
             // 
-            this.lblAdmissions.AutoSize = true;
-            this.lblAdmissions.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblAdmissions.Location = new System.Drawing.Point(300, 200);
-            this.lblAdmissions.Name = "lblAdmissions";
-            this.lblAdmissions.Size = new System.Drawing.Size(90, 21);
-            this.lblAdmissions.TabIndex = 6;
-            this.lblAdmissions.Text = "观影人次：";
+            lblAdmissions.AutoSize = true;
+            lblAdmissions.Font = new Font("微软雅黑", 12F, FontStyle.Regular, GraphicsUnit.Point, 134);
+            lblAdmissions.Location = new Point(550, 400);
+            lblAdmissions.Margin = new Padding(6, 0, 6, 0);
+            lblAdmissions.Name = "lblAdmissions";
+            lblAdmissions.Size = new Size(134, 31);
+            lblAdmissions.TabIndex = 6;
+            lblAdmissions.Text = "观影人次：";
             // 
             // lblPrice
             // 
-            this.lblPrice.AutoSize = true;
-            this.lblPrice.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblPrice.Location = new System.Drawing.Point(300, 230);
-            this.lblPrice.Name = "lblPrice";
-            this.lblPrice.Size = new System.Drawing.Size(58, 21);
-            this.lblPrice.TabIndex = 7;
-            this.lblPrice.Text = "票价：";
-            // 
-            // dateTimePicker
-            // 
-            //this.dateTimePicker.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            //this.dateTimePicker.Location = new System.Drawing.Point(30, 400);
-            //this.dateTimePicker.Name = "dateTimePicker";
-            //this.dateTimePicker.Size = new System.Drawing.Size(200, 23);
-            //this.dateTimePicker.TabIndex = 8;
+            lblPrice.AutoSize = true;
+            lblPrice.Font = new Font("微软雅黑", 12F, FontStyle.Regular, GraphicsUnit.Point, 134);
+            lblPrice.Location = new Point(550, 460);
+            lblPrice.Margin = new Padding(6, 0, 6, 0);
+            lblPrice.Name = "lblPrice";
+            lblPrice.Size = new Size(86, 31);
+            lblPrice.TabIndex = 7;
+            lblPrice.Text = "票价：";
             // 
             // btnSearchSections
             // 
-            this.btnSearchSections.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnSearchSections.Location = new System.Drawing.Point(240, 400);
-            this.btnSearchSections.Name = "btnSearchSections";
-            this.btnSearchSections.Size = new System.Drawing.Size(100, 23);
-            this.btnSearchSections.TabIndex = 9;
-            this.btnSearchSections.Text = "查询场次";
-            this.btnSearchSections.UseVisualStyleBackColor = true;
-            this.btnSearchSections.Click += new System.EventHandler(this.btnSearchSections_Click);
+            btnSearchSections.Font = new Font("微软雅黑", 9F, FontStyle.Regular, GraphicsUnit.Point, 134);
+            btnSearchSections.Location = new Point(440, 800);
+            btnSearchSections.Margin = new Padding(6);
+            btnSearchSections.Name = "btnSearchSections";
+            btnSearchSections.Size = new Size(183, 46);
+            btnSearchSections.TabIndex = 9;
+            btnSearchSections.Text = "查询场次";
+            btnSearchSections.UseVisualStyleBackColor = true;
+            btnSearchSections.Click += btnSearchSections_Click;
+            // 
+            // lb1
+            // 
+            lb1.AutoSize = true;
+            lb1.Font = new Font("Microsoft YaHei UI", 14F, FontStyle.Bold, GraphicsUnit.Point, 134);
+            lb1.Location = new Point(1078, 154);
+            lb1.Name = "lb1";
+            lb1.Size = new Size(101, 37);
+            lb1.TabIndex = 10;
+            lb1.Text = "评论区";
+            lb1.Click += lb1_Click;
+            // 
+            // rtbComments
+            // 
+            rtbComments.Location = new Point(935, 220);
+            rtbComments.Name = "rtbComments";
+            rtbComments.ReadOnly = true;
+            rtbComments.ScrollBars = RichTextBoxScrollBars.Vertical;
+            rtbComments.Size = new Size(386, 415);
+            rtbComments.TabIndex = 11;
+            rtbComments.Text = "";
             // 
             // FilmDetailForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 600);
-            this.Controls.Add(this.btnSearchSections);
-            //this.Controls.Add(this.dateTimePicker);
-            this.Controls.Add(this.lblPrice);
-            this.Controls.Add(this.lblAdmissions);
-            this.Controls.Add(this.lblBoxOffice);
-            this.Controls.Add(this.lblScore);
-            this.Controls.Add(this.lblDuration);
-            this.Controls.Add(this.lblGenre);
-            this.Controls.Add(this.lblFilmName);
-            this.Controls.Add(this.pictureBoxPoster);
-            this.Name = "FilmDetailForm";
-            this.Text = "电影详情";
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPoster)).EndInit();
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new SizeF(11F, 24F);
+            AutoScaleMode = AutoScaleMode.Font;
+            AutoScroll = true;
+            ClientSize = new Size(1467, 1200);
+            Controls.Add(rtbComments);
+            Controls.Add(lb1);
+            Controls.Add(btnSearchSections);
+            Controls.Add(lblPrice);
+            Controls.Add(lblAdmissions);
+            Controls.Add(lblBoxOffice);
+            Controls.Add(lblScore);
+            Controls.Add(lblDuration);
+            Controls.Add(lblGenre);
+            Controls.Add(lblFilmName);
+            Controls.Add(pictureBoxPoster);
+            Margin = new Padding(6);
+            Name = "FilmDetailForm";
+            ShowInTaskbar = false;
+            Text = "电影详情";
+            ((System.ComponentModel.ISupportInitialize)pictureBoxPoster).EndInit();
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -174,5 +200,7 @@
         private System.Windows.Forms.Label lblPrice;
         //private System.Windows.Forms.DateTimePicker dateTimePicker;
         private System.Windows.Forms.Button btnSearchSections;
+        private Label lb1;
+        private RichTextBox rtbComments;
     }
 }

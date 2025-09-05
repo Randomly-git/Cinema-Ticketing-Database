@@ -498,6 +498,31 @@ namespace test.Repositories
             }
             return timeslot;
         }
+
+        public string GetCustomerIDByTicketID(string ticketID)
+        {
+            string customerID = null;
+            string sql = @"
+            SELECT o.CUSTOMERID
+            FROM ORDERFORTICKETS o
+            WHERE o.TICKETID = :ticketID
+            ";
+            using (var connection = GetConnection())
+            {
+                using (var command = new OracleCommand(sql, connection))
+                {
+                    command.Parameters.Add(new OracleParameter("ticketID", ticketID));
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            customerID = reader["CUSTOMERID"].ToString();
+                        }
+                    }
+                }
+            }
+            return customerID;
+        }   
     }
 
 }
