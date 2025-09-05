@@ -3,35 +3,35 @@
   "WorkspaceRootPath": "E:\\cinemacode\\Cinema-Ticketing-Database\\cinemaapp\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|e:\\cinemacode\\cinema-ticketing-database\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\filmdashboard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|solutionrelative:cinemaapp\\\u524D\u7AEF\\filmdashboard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|E:\\cinemacode\\Cinema-Ticketing-Database\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\customerprofileform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|solutionrelative:cinemaapp\\\u524D\u7AEF\\customerprofileform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|e:\\cinemacode\\cinema-ticketing-database\\cinemaapp\\cinemaapp\\services\\ishowingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|E:\\cinemacode\\Cinema-Ticketing-Database\\cinemaapp\\cinemaapp\\services\\ishowingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|solutionrelative:cinemaapp\\services\\ishowingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|e:\\cinemacode\\cinema-ticketing-database\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\sectionselectionform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|E:\\cinemacode\\Cinema-Ticketing-Database\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\sectionselectionform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|solutionrelative:cinemaapp\\\u524D\u7AEF\\sectionselectionform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|E:\\cinemacode\\Cinema-Ticketing-Database\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\filmdashboard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|solutionrelative:cinemaapp\\\u524D\u7AEF\\filmdashboard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|e:\\cinemacode\\cinema-ticketing-database\\cinemaapp\\cinemaapp\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|E:\\cinemacode\\Cinema-Ticketing-Database\\cinemaapp\\cinemaapp\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|solutionrelative:cinemaapp\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|e:\\cinemacode\\cinema-ticketing-database\\cinemaapp\\cinemaapp\\repositories\\oracleshowingrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|E:\\cinemacode\\Cinema-Ticketing-Database\\cinemaapp\\cinemaapp\\repositories\\oracleshowingrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|solutionrelative:cinemaapp\\repositories\\oracleshowingrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|e:\\cinemacode\\cinema-ticketing-database\\cinemaapp\\cinemaapp\\repositories\\ishowingrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|E:\\cinemacode\\Cinema-Ticketing-Database\\cinemaapp\\cinemaapp\\repositories\\ishowingrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|solutionrelative:cinemaapp\\repositories\\ishowingrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|e:\\cinemacode\\cinema-ticketing-database\\cinemaapp\\cinemaapp\\services\\schedulingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|E:\\cinemacode\\Cinema-Ticketing-Database\\cinemaapp\\cinemaapp\\services\\schedulingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{93959810-5CE0-4748-B69D-ADB930F288BC}|cinemaapp\\cinemaapp.csproj|solutionrelative:cinemaapp\\services\\schedulingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -66,7 +66,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Document",
@@ -78,12 +78,11 @@
               "RelativeToolTip": "cinemaapp\\Repositories\\OracleShowingRepository.cs",
               "ViewState": "AQIAAMgAAAAAAAAAAADwv8wAAAAjAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-05T06:40:27.804Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-05T06:40:27.804Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "IShowingService.cs",
               "DocumentMoniker": "E:\\cinemacode\\Cinema-Ticketing-Database\\cinemaapp\\cinemaapp\\Services\\IShowingService.cs",
               "RelativeDocumentMoniker": "cinemaapp\\Services\\IShowingService.cs",
@@ -91,12 +90,11 @@
               "RelativeToolTip": "cinemaapp\\Services\\IShowingService.cs",
               "ViewState": "AQIAAAMAAAAAAAAAAAAAAAgAAAASAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-05T06:15:28.783Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-05T06:15:28.783Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "SectionSelectionForm.cs",
               "DocumentMoniker": "E:\\cinemacode\\Cinema-Ticketing-Database\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\SectionSelectionForm.cs",
               "RelativeDocumentMoniker": "cinemaapp\\\u524D\u7AEF\\SectionSelectionForm.cs",
@@ -104,18 +102,17 @@
               "RelativeToolTip": "cinemaapp\\\u524D\u7AEF\\SectionSelectionForm.cs",
               "ViewState": "AQIAAFAAAAAAAAAAAAAQwGQAAAAVAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-05T04:10:41.455Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-05T04:10:41.455Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 0,
               "Title": "FilmDashBoard.cs",
               "DocumentMoniker": "E:\\cinemacode\\Cinema-Ticketing-Database\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\FilmDashBoard.cs",
               "RelativeDocumentMoniker": "cinemaapp\\\u524D\u7AEF\\FilmDashBoard.cs",
               "ToolTip": "E:\\cinemacode\\Cinema-Ticketing-Database\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\FilmDashBoard.cs",
               "RelativeToolTip": "cinemaapp\\\u524D\u7AEF\\FilmDashBoard.cs",
-              "ViewState": "AQIAAPQAAAAAAAAAAAAkwP4AAAAQAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAB8AAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-09-04T02:46:58.8Z",
               "EditorCaption": ""
@@ -130,8 +127,7 @@
               "RelativeToolTip": "cinemaapp\\Program.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAF8AAAA2AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-05T06:20:55.157Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-05T06:20:55.157Z"
             },
             {
               "$type": "Document",
@@ -143,21 +139,19 @@
               "RelativeToolTip": "cinemaapp\\Repositories\\IShowingRepository.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAADwvxQAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-05T06:19:55.281Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-05T06:19:55.281Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "CustomerProfileForm.cs",
               "DocumentMoniker": "E:\\cinemacode\\Cinema-Ticketing-Database\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\CustomerProfileForm.cs",
               "RelativeDocumentMoniker": "cinemaapp\\\u524D\u7AEF\\CustomerProfileForm.cs",
               "ToolTip": "E:\\cinemacode\\Cinema-Ticketing-Database\\cinemaapp\\cinemaapp\\\u524D\u7AEF\\CustomerProfileForm.cs",
               "RelativeToolTip": "cinemaapp\\\u524D\u7AEF\\CustomerProfileForm.cs",
-              "ViewState": "AQIAAOIAAAAAAAAAAADwv08AAAAmAAAA",
+              "ViewState": "AQIAALsAAAAAAAAAAAAQwM0AAAAiAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-04T07:22:11.039Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-04T07:22:11.039Z"
             },
             {
               "$type": "Document",
@@ -169,8 +163,7 @@
               "RelativeToolTip": "cinemaapp\\Services\\SchedulingService.cs",
               "ViewState": "AQIAAOMAAAAAAAAAAAAgwAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-05T06:16:29.652Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-05T06:16:29.652Z"
             },
             {
               "$type": "Document",
@@ -206,8 +199,7 @@
               "RelativeToolTip": "cinemaapp\\Models\\OrderForTickets.cs",
               "ViewState": "AQIAAAYAAAAAAAAAAADwvwAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-05T02:20:06.38Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-05T02:20:06.38Z"
             },
             {
               "$type": "Document",

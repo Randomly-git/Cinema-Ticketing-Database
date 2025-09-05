@@ -31,6 +31,7 @@ namespace cinemaapp
         private DataGridView dgvCastResults;  
 
         private DataGridView dgvStatistics;
+        private DateTimePicker dtpShowingsDate;
         private IFilmService _filmService;
         private IRatingService _ratingService;
 
@@ -137,6 +138,17 @@ namespace cinemaapp
             };
             txtShowingsSearch.TextChanged += TxtShowingsSearch_TextChanged;
 
+            // 日期选择器
+            dtpShowingsDate = new DateTimePicker
+            {
+                Location = new Point(330, 20),
+                Width = 200,
+                Value = DateTime.Now, // 默认当前时间
+                Format = DateTimePickerFormat.Short, // 短日期格式
+                ShowUpDown = true // 允许上下调节日期
+            };
+            dtpShowingsDate.ValueChanged += (s, e) => DtpShowingsDate_ValueChanged(s, e);
+
             // 影片下拉框
             cmbShowingsFilms = new ComboBox
             {
@@ -157,12 +169,17 @@ namespace cinemaapp
             };
 
             tab.Controls.Add(txtShowingsSearch);
+            tab.Controls.Add(dtpShowingsDate);
             tab.Controls.Add(cmbShowingsFilms);
             tab.Controls.Add(dgvShowings);
             return tab;
         }
 
-
+        private void DtpShowingsDate_ValueChanged(object sender, EventArgs e)
+        {
+            // 当日期变更时重新加载当前选中电影的排挡
+            LoadShowingsForSelectedFilm();
+        }
         //
         private void LoadShowingsFilms()
         {
@@ -204,7 +221,14 @@ namespace cinemaapp
             try
             {
                 var sections = Program._showingService.GetFilmShowings(film.FilmName);
-                var showingData = sections.Select(s => new
+                //日期筛选
+                DateTime selectedDate = dtpShowingsDate.Value.Date;
+                var filteredSections = sections.Where(s =>
+                    s.TimeSlot.StartTime.Date >= selectedDate // 只比较日期部分
+                ).ToList();
+
+
+                var showingData = filteredSections.Select(s => new
                 {
                     场次ID = s.SectionID,
                     日期 = s.TimeSlot.StartTime.ToString("yyyy-MM-dd dddd"),

@@ -201,7 +201,9 @@ namespace cinemaapp
 
                     // 打开详情页面
                     var filmDashboard = new FilmDashboard(
-                        filmName
+                        filmName,
+                        _customer,
+                        _mainForm 
                     );
                     filmDashboard.ShowDialog();
                 }
