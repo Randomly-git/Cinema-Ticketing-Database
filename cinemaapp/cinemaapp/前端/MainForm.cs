@@ -325,7 +325,7 @@ namespace cinemaapp
         //查看电影排挡
         private void FilmDashBoard()
         {
-            using (var form = new FilmDashboard())
+            using (var form = new FilmDashboard("",_loggedInCustomer,this))
             {
                 form.ShowDialog();
             }

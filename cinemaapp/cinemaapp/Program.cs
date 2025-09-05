@@ -46,6 +46,7 @@
             public static IOrderForProductRepository _orderForProductRepository;
             public static ITicketRepository _ticketRepository;
             public static IRatingRepository _ratingRepository;// 影评仓库
+            public static IShowingRepository _showingRepository;
 
         /// <summary>
         /// 应用程序的主入口点。
@@ -78,7 +79,7 @@
                 _customerRepository = new OracleCustomerRepository(connectionString);
                 _orderRepository = new OracleOrderRepository(connectionString);
                 _filmRepository = new OracleFilmRepository(connectionString);
-                IShowingRepository showingRepository = new OracleShowingRepository(connectionString);
+                _showingRepository = new OracleShowingRepository(connectionString);
                 IAdministratorRepository adminRepository = new OracleAdministratorRepository(connectionString); // 管理员仓库
                 _relatedProductRepository = new OracleRelatedProductRepository(connectionString);
                 _orderForProductRepository = new OracleOrderForProductRepository(connectionString);
@@ -87,11 +88,12 @@
 
 
 
+
                 _dbService = new DatabaseService(connectionString);
                 _userService = new UserService(_customerRepository);
                 _filmService = new FilmService(_filmRepository);
-                _showingService = new ShowingService(showingRepository, _filmRepository);
-                _bookingService = new BookingService(showingRepository, _filmRepository, _customerRepository, _orderRepository, _dbService, connectionString);
+                _showingService = new ShowingService(_showingRepository, _filmRepository);
+                _bookingService = new BookingService(_showingRepository, _filmRepository, _customerRepository, _orderRepository, _dbService, connectionString);
 
                 _adminService = new AdministratorService(adminRepository, _orderRepository, _filmRepository, _relatedProductRepository, _orderForProductRepository); // 新增管理员服务
                 _schedulingService = new SchedulingService(connectionString);

@@ -62,7 +62,7 @@ namespace cinemaapp
             dgvGenreImpression = new DataGridView
             {
                 Location = new Point(20, 110),
-                Size = new Size(350, 200),
+                Size = new Size(250, 200),
                 ReadOnly = true,
                 AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
                 AllowUserToAddRows = false,
@@ -77,15 +77,15 @@ namespace cinemaapp
             Label lblRec = new Label
             {
                 Text = "推荐电影（未来两个月）：",
-                Location = new Point(400, 85),
+                Location = new Point(300, 85),
                 AutoSize = true
             };
             this.Controls.Add(lblRec);
 
             dgvRecommendations = new DataGridView
             {
-                Location = new Point(400, 110),
-                Size = new Size(370, 400),
+                Location = new Point(300, 110),
+                Size = new Size(470, 400),
                 ReadOnly = true,
                 AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
                 AllowUserToAddRows = false,

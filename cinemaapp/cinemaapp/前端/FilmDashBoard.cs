@@ -34,14 +34,27 @@ namespace cinemaapp
         private IFilmService _filmService;
         private IRatingService _ratingService;
 
-        public FilmDashboard(string? filmname = null)
+        private readonly Customer _loggedInCustomer;
+        private readonly MainForm _mainForm;
+
+        public FilmDashboard(string? filmname = null , Customer? loggedInCustomer = null, MainForm? mainForm=null)
         {
             _filmService = Program._filmService;  // 赋值
             _ratingService = Program._ratingService;  // 赋值
+            if (loggedInCustomer != null)
+            {
+                _loggedInCustomer = loggedInCustomer;
+            }
+            if (mainForm != null)
+            {
+                _mainForm = mainForm;
+            }
             InitializeComponent();
             LoadShowingsFilms();
             LoadOverviewFilms();
             AttachStatisticsRowClickEvent();  // 绑定事件
+
+            
 
             // 如果传入了电影名称，填充搜索框并触发搜索
             if (!string.IsNullOrEmpty(filmname))
@@ -191,13 +204,33 @@ namespace cinemaapp
             try
             {
                 var sections = Program._showingService.GetFilmShowings(film.FilmName);
-                dgvShowings.DataSource = sections.Select(s => new
+                var showingData = sections.Select(s => new
                 {
                     场次ID = s.SectionID,
                     日期 = s.TimeSlot.StartTime.ToString("yyyy-MM-dd dddd"),
                     时段 = $"{s.TimeSlot.StartTime:HH:mm} - {s.TimeSlot.EndTime:HH:mm}",
                     影厅 = $"{s.MovieHall.HallNo}号厅 ({s.MovieHall.Category})"
                 }).ToList();
+
+                dgvShowings.Columns.Clear();
+                dgvShowings.DataSource = showingData;
+                if (_loggedInCustomer == null || _mainForm == null)
+                {
+                    return;
+                }
+                // 添加购票按钮列
+                var buttonColumn = new DataGridViewButtonColumn
+                {
+                    Name = "btnBuyTicket",
+                    HeaderText = "购票",
+                    Text = "去选座",
+                    UseColumnTextForButtonValue = true
+                };
+                dgvShowings.Columns.Add(buttonColumn);
+
+                // 绑定按钮点击事件
+                dgvShowings.CellContentClick -= DgvShowings_CellContentClick; // 避免重复绑定
+                dgvShowings.CellContentClick += DgvShowings_CellContentClick;
             }
             catch (Exception ex)
             {
@@ -205,6 +238,39 @@ namespace cinemaapp
             }
         }
 
+        //按钮点击事件
+        private void DgvShowings_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // 检查是否点击了按钮列
+            if (e.ColumnIndex == dgvShowings.Columns["btnBuyTicket"].Index && e.RowIndex >= 0)
+            {
+                // 获取当前行的场次ID
+                var sectionId = dgvShowings.Rows[e.RowIndex].Cells["场次ID"].Value.ToString();
+                int sectionid = int.Parse(sectionId);
+
+
+                // 获取选中的电影
+                if (cmbShowingsFilms.SelectedItem is not Film selectedFilm) return;
+
+                if(sectionid!= 0 && selectedFilm != null)
+                {
+                    // 打开选座表单
+                    var seatsectionForm = new SeatSelectionForm(
+                        Program._showingRepository.GetSectionById(sectionid),
+                        selectedFilm,
+                        _loggedInCustomer,
+                        _mainForm
+
+                    );
+
+                    if (seatsectionForm.ShowDialog() == DialogResult.OK)
+                    {
+                        MessageBox.Show("购票成功!", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+               
+            }
+        }
 
         //影片概况
         private TabPage CreateFilmOverviewTab()
