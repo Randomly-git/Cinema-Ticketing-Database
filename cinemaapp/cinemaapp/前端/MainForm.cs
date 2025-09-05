@@ -465,6 +465,7 @@ namespace cinemaapp
                 _loggedInCustomer = null;    // 清除登录状态
                 RefreshMenu();
             }
+            RefreshMenu();
         }
 
 
