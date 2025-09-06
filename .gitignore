@@ -1,0 +1,460 @@
+# Visual Studio 生成的文件
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# 用户特定文件
+*.userprefs
+
+# 构建结果
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Visual Studio 2015/2017 缓存/选项目录
+.vs/
+
+# MSTest 测试结果
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+
+# NUnit
+*.VisualState.xml
+TestResult.xml
+nunit-*.xml
+
+# 构建结果的 NuGet 包
+*.nupkg
+# NuGet Symbol 包
+*.snupkg
+# NuGet 包文件夹
+**/[Pp]ackages/*
+# 除了 build/ 文件夹中的包
+!**/[Pp]ackages/build/
+# 如果使用 NuGet v3 的 project.json 文件，取消注释下一行
+#project.lock.json
+# 如果使用 NuGet v4 的 project.json 文件，取消注释下一行
+#project.fragment.lock.json
+
+# StyleCop
+StyleCopReport.xml
+
+# 由 DocProject 生成的文件
+DocProject/buildhelp/
+DocProject/Help/*.HxT
+DocProject/Help/*.HxC
+DocProject/Help/*.hhc
+DocProject/Help/*.hhk
+DocProject/Help/*.hhp
+DocProject/Help/Html2
+DocProject/Help/html
+
+# Click-Once 目录
+publish/
+
+# Publish Web Output
+*.[Pp]ublish.xml
+*.azurePubxml
+# 注意: 如果您有数据库设置，请注释下一行
+*.pubxml
+*.publishproj
+
+# Microsoft Azure Web App 发布设置
+PublishScripts/
+
+# NuGet 包
+*.nupkg
+# NuGet Symbol 包
+*.snupkg
+# NuGet 包文件夹
+**/[Pp]ackages/*
+# 除了 build/ 文件夹中的包
+!**/[Pp]ackages/build/
+
+# Microsoft Azure 构建输出
+csx/
+*.build.csdef
+
+# Microsoft Azure 模拟器
+ecf/
+rcf/
+
+# Windows Store 应用包目录和文件
+AppPackages/
+BundleArtifacts/
+Package.StoreAssociation.xml
+_pkginfo.txt
+*.appx
+*.appxbundle
+*.appxupload
+
+# Visual Studio 缓存文件
+# 以 "ipch" 结尾的文件
+*.ipch
+*.aps
+*.ncb
+*.opendb
+*.opensdf
+*.sdf
+*.cachefile
+*.VC.db
+*.VC.VC.opendb
+
+# Visual Studio 分析器
+*.psess
+*.vsp
+*.vspx
+*.sap
+
+# Visual Studio Trace Files
+*.e2e
+
+# TFS 2012 本地工作区
+$tf/
+
+# Guidance Automation Toolkit
+*.gpState
+
+# ReSharper 是 .NET 的编码插件
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# TeamCity 是构建插件
+_TeamCity*
+
+# DotCover 是代码覆盖工具
+*.dotCover
+
+# AxoCover 是代码覆盖工具
+.axoCover/*
+!.axoCover/settings.json
+
+# Coverlet 是免费的跨平台代码覆盖工具
+coverage*.json
+coverage*.xml
+coverage*.info
+
+# Visual Studio 代码覆盖结果
+*.coverage
+*.coveragexml
+
+# NCrunch
+_NCrunch_*
+.*crunch*.local.xml
+nCrunchTemp_*
+
+# MightyMoose
+*.mm.*
+AutoTest.Net/
+
+# Web workbench (sass)
+.sass-cache/
+
+# Installshield 输出文件夹
+[Ee]xpress/
+
+# DocProject 是文档生成器插件
+DocProject/buildhelp/
+DocProject/Help/*.HxT
+DocProject/Help/*.HxC
+DocProject/Help/*.hhc
+DocProject/Help/*.hhk
+DocProject/Help/*.hhp
+DocProject/Help/Html2
+DocProject/Help/html
+
+# Click-Once 目录
+publish/
+
+# Publish Web Output
+*.[Pp]ublish.xml
+*.azurePubxml
+# 注意: 如果您有数据库设置，请注释下一行
+*.pubxml
+*.publishproj
+
+# Microsoft Azure Web App 发布设置
+PublishScripts/
+
+# NuGet 包
+*.nupkg
+# NuGet Symbol 包
+*.snupkg
+
+# Microsoft Azure 构建输出
+csx/
+*.build.csdef
+
+# Microsoft Azure 模拟器
+ecf/
+rcf/
+
+# Windows Store 应用包目录和文件
+AppPackages/
+BundleArtifacts/
+Package.StoreAssociation.xml
+_pkginfo.txt
+*.appx
+*.appxbundle
+*.appxupload
+
+# Visual Studio 缓存文件
+*.ipch
+*.aps
+*.ncb
+*.opendb
+*.opensdf
+*.sdf
+*.cachefile
+*.VC.db
+*.VC.VC.opendb
+
+# Visual Studio 分析器
+*.psess
+*.vsp
+*.vspx
+*.sap
+
+# Visual Studio Trace Files
+*.e2e
+
+# TFS 2012 本地工作区
+$tf/
+
+# Guidance Automation Toolkit
+*.gpState
+
+# ReSharper 是 .NET 的编码插件
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# TeamCity 是构建插件
+_TeamCity*
+
+# DotCover 是代码覆盖工具
+*.dotCover
+
+# AxoCover 是代码覆盖工具
+.axoCover/*
+!.axoCover/settings.json
+
+# Coverlet 是免费的跨平台代码覆盖工具
+coverage*.json
+coverage*.xml
+coverage*.info
+
+# Visual Studio 代码覆盖结果
+*.coverage
+*.coveragexml
+
+# NCrunch
+_NCrunch_*
+.*crunch*.local.xml
+nCrunchTemp_*
+
+# MightyMoose
+*.mm.*
+AutoTest.Net/
+
+# Web workbench (sass)
+.sass-cache/
+
+# Installshield 输出文件夹
+[Ee]xpress/
+
+# DocProject 是文档生成器插件
+DocProject/buildhelp/
+DocProject/Help/*.HxT
+DocProject/Help/*.HxC
+DocProject/Help/*.hhc
+DocProject/Help/*.hhk
+DocProject/Help/*.hhp
+DocProject/Help/Html2
+DocProject/Help/html
+
+# Click-Once 目录
+publish/
+
+# Publish Web Output
+*.[Pp]ublish.xml
+*.azurePubxml
+*.pubxml
+*.publishproj
+
+# Microsoft Azure Web App 发布设置
+PublishScripts/
+
+# Microsoft Azure 构建输出
+csx/
+*.build.csdef
+
+# Microsoft Azure 模拟器
+ecf/
+rcf/
+
+# Windows Store 应用包目录和文件
+AppPackages/
+BundleArtifacts/
+Package.StoreAssociation.xml
+_pkginfo.txt
+*.appx
+*.appxbundle
+*.appxupload
+
+# Visual Studio 缓存文件
+*.ipch
+*.aps
+*.ncb
+*.opendb
+*.opensdf
+*.sdf
+*.cachefile
+*.VC.db
+*.VC.VC.opendb
+
+# Visual Studio 分析器
+*.psess
+*.vsp
+*.vspx
+*.sap
+
+# Visual Studio Trace Files
+*.e2e
+
+# TFS 2012 本地工作区
+$tf/
+
+# Guidance Automation Toolkit
+*.gpState
+
+# ReSharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# TeamCity
+_TeamCity*
+
+# DotCover
+*.dotCover
+
+# AxoCover
+.axoCover/*
+!.axoCover/settings.json
+
+# Coverlet
+coverage*.json
+coverage*.xml
+coverage*.info
+
+# Visual Studio 代码覆盖结果
+*.coverage
+*.coveragexml
+
+# NCrunch
+_NCrunch_*
+.*crunch*.local.xml
+nCrunchTemp_*
+
+# MightyMoose
+*.mm.*
+AutoTest.Net/
+
+# Web workbench (sass)
+.sass-cache/
+
+# Installshield 输出文件夹
+[Ee]xpress/
+
+# Windows 图像文件缓存
+Thumbs.db
+ehthumbs.db
+
+# 文件夹配置文件
+Desktop.ini
+
+# 回收站在 Windows 上使用的文件
+$RECYCLE.BIN/
+
+# VS Code 目录
+.vscode/
+
+# Windows Installer 文件
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+
+# Windows 快捷方式
+*.lnk
+
+# JetBrains Rider
+.idea/
+*.sln.iml
+
+# CodeRush 个人设置
+.cr/personal
+
+# Python 工具 for Visual Studio (PTVS)
+__pycache__/
+*.pyc
+
+# Cake - 取消注释如果您正在使用它
+# tools/**
+# !tools/packages.config
+
+# Tabs Studio
+*.tss
+
+# Telerik's JustMock 配置文件
+*.jmconfig
+
+# BizTalk 构建输出
+*.btp.cs
+*.btm.cs
+*.odx.cs
+*.xsd.cs
+
+# OpenCover UI 分析结果
+OpenCover/
+
+# Azure Stream Analytics 本地运行输出
+ASALocalRun/
+
+# MSBuild 二进制和结构化日志
+*.binlog
+
+# NVidia Nsight GPU 调试器配置文件
+*.nvuser
+
+# MFractors (Xamarin 生产力工具) 工作文件夹
+.mfractor/
+
+# 本地历史记录 for Visual Studio
+.localhistory/
+
+# BeatPulse 健康检查临时数据库
+healthchecksdb
+
+# Backup 文件夹 for Package Reference Convert tool in Visual Studio 2017
+MigrationBackup/
+
+# Ionide (跨平台 F# VS Code 工具) 工作文件夹
+.ionide/
+
+# Fody - 自动生成的 XML 架构
+FodyWeavers.xsd
