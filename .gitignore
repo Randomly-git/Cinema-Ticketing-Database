@@ -458,3 +458,38 @@ MigrationBackup/
 
 # Fody - 自动生成的 XML 架构
 FodyWeavers.xsd
+
+# SchedulingService 项目生成物与本地环境（子目录定向忽略）
+# 构建输出与中间文件
+/SchedulingService/bin/
+/SchedulingService/obj/
+/SchedulingService/Debug/
+/SchedulingService/Release/
+/SchedulingService/x64/
+/SchedulingService/x86/
+/SchedulingService/app.publish/
+
+# VS/IDE 本地缓存
+/SchedulingService/.vs/
+/SchedulingService/.vscode/
+/SchedulingService/.idea/
+
+# 测试输出（若将来添加测试） 
+/SchedulingService/TestResults/
+
+# 解决方案/项目用户态文件
+/SchedulingService/*.user
+/SchedulingService/*.suo
+/SchedulingService/*.userosscache
+/SchedulingService/*.sln.docstates
+/SchedulingService/*.DotSettings.user
+
+# NuGet 本地包缓存（packages.config 模式）
+# 注：此目录可通过 "Restore NuGet Packages" 重新生成
+/SchedulingService/packages/
+
+# 临时与日志（若在该项目下生成）
+/SchedulingService/*.log
+/SchedulingService/logs/
+/SchedulingService/*.tmp
+/SchedulingService/*.temp
