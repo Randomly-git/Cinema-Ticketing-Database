@@ -136,7 +136,8 @@ namespace cinemaapp
             try
             {
                 var result = await System.Threading.Tasks.Task.Run(() =>
-                    _schedulingService.SmartAutoScheduleFilm(startDate, endDate, targetSessions)
+                    // _schedulingService.SmartAutoScheduleFilm(startDate, endDate, targetSessions)
+                    _schedulingService.ImprovedSmartAutoScheduleFilm(startDate, endDate, targetSessions)
                 );
 
                 lblStatus.Text = "状态：操作完成";
