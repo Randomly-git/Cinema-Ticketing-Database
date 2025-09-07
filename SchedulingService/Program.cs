@@ -89,6 +89,7 @@ class Program
             Console.WriteLine("1. 添加新排片");
             Console.WriteLine("2. 查看排片");
             Console.WriteLine("3. 删除排片");
+            Console.WriteLine("4. 批量删除排片");
             Console.WriteLine("B. 返回主菜单");
             Console.Write("请选择一个操作: ");
             string choice = Console.ReadLine();
@@ -103,7 +104,10 @@ class Program
                 case "3":
                     DeleteSectionInteractive();
                     break;
-                case "B":
+                case "4":
+                    BatchDeleteSectionsInteractive();
+                    break;
+                case "5":
                     inMenu = false;
                     break;
                 default:
@@ -478,5 +482,59 @@ class Program
         Console.WriteLine($"\n正在 {startDate:yyyy-MM-dd} 到 {endDate:yyyy-MM-dd} 之间进行智能自动排片，每天每个影厅目标 {targetSessionsPerDay} 场...");
         var result = _schedulingService.SmartAutoScheduleFilm(startDate, endDate, targetSessionsPerDay);
         Console.WriteLine(result.Message);
+    }
+
+    /// <summary>
+    /// 交互式批量删除排片功能。
+    /// </summary>
+    static void BatchDeleteSectionsInteractive()
+    {
+        Console.Clear();
+        Console.WriteLine("--- 批量删除排片 ---");
+        
+        Console.Write("请输入删除开始日期 (YYYY-MM-DD，留空默认为今天): ");
+        string startDateStr = Console.ReadLine();
+        DateTime startDate = string.IsNullOrEmpty(startDateStr) ? DateTime.Today : (DateTime.TryParse(startDateStr, out DateTime sDate) ? sDate : DateTime.Today);
+
+        Console.Write("请输入排片结束日期 (YYYY-MM-DD，留空默认为未来7天): ");
+        string endDateStr = Console.ReadLine();
+        DateTime endDate = string.IsNullOrEmpty(endDateStr) ? DateTime.Today.AddDays(7) : (DateTime.TryParse(endDateStr, out DateTime eDate) ? eDate : DateTime.Today.AddDays(7));
+
+        if (endDate < startDate)
+        {
+            Console.WriteLine("结束日期不能早于开始日期。");
+            return;
+        }
+
+        // 先显示将要删除的排片
+        List<Section> sectionsToDelete = _schedulingService.GetSectionsByDateRange(startDate, endDate);
+        
+        if (!sectionsToDelete.Any())
+        {
+            Console.WriteLine($"在 {startDate:yyyy-MM-dd} 到 {endDate:yyyy-MM-dd} 之间没有找到排片。");
+            return;
+        }
+
+        Console.WriteLine($"\n在 {startDate:yyyy-MM-dd} 到 {endDate:yyyy-MM-dd} 之间找到 {sectionsToDelete.Count} 个排片：");
+        Console.WriteLine("场次ID\t电影名称\t\t影厅\t开始时间\t\t结束时间");
+        Console.WriteLine("--------------------------------------------------------------------------------------------------------------------");
+        
+        foreach (var section in sectionsToDelete)
+        {
+            Console.WriteLine($"{section.SectionID}\t{section.FilmName,-15}\t{section.HallNo}\t{section.ScheduleStartTime:yyyy-MM-dd HH:mm}\t{section.ScheduleEndTime:yyyy-MM-dd HH:mm}");
+        }
+
+        Console.Write($"\n确定要删除这 {sectionsToDelete.Count} 个排片吗？ (Y/N): ");
+        string confirmation = Console.ReadLine()?.ToUpper();
+
+        if (confirmation == "Y")
+        {
+            var result = _schedulingService.BatchDeleteSections(startDate, endDate);
+            Console.WriteLine(result.Message);
+        }
+        else
+        {
+            Console.WriteLine("批量删除操作已取消。");
+        }
     }
 }

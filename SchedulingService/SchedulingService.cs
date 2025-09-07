@@ -833,4 +833,108 @@ public class SchedulingService
             return (true, $"智能自动排片完成。共排片 {totalSessionsScheduled} 场。\n" + string.Join("\n", scheduledMessages));
         }
     }
+
+    /// <summary>
+    /// 批量删除指定日期范围内的排片。
+    /// </summary>
+    /// <param name="startDate">删除开始日期。</param>
+    /// <param name="endDate">删除结束日期。</param>
+    /// <returns>一个元组，表示操作是否成功以及相应的消息。</returns>
+    public (bool Success, string Message) BatchDeleteSections(DateTime startDate, DateTime endDate)
+    {
+        List<string> deleteMessages = new List<string>();
+        int totalDeletedCount = 0;
+        int skippedCount = 0;
+
+        using (OracleConnection connection = new OracleConnection(_connectionString))
+        {
+            connection.Open();
+
+            // 1. 获取指定日期范围内的所有排片
+            List<Section> sectionsToDelete = GetSectionsByDateRange(startDate, endDate);
+            
+            if (!sectionsToDelete.Any())
+            {
+                return (true, $"在 {startDate:yyyy-MM-dd} 到 {endDate:yyyy-MM-dd} 之间没有找到排片，无需删除。");
+            }
+
+            // 2. 逐个删除排片
+            foreach (var section in sectionsToDelete)
+            {
+                OracleTransaction transaction = null;
+                try
+                {
+                    transaction = connection.BeginTransaction();
+
+                    // 检查该场次是否有已售出的票，如果有，则跳过删除
+                    string checkTicketsSql = "SELECT COUNT(*) FROM ticket WHERE sectionID = :sectionID AND state = '已售出'";
+                    using (OracleCommand checkCmd = new OracleCommand(checkTicketsSql, connection))
+                    {
+                        checkCmd.Transaction = transaction;
+                        checkCmd.Parameters.Add(new OracleParameter("sectionID", section.SectionID));
+                        int soldTicketsCount = Convert.ToInt32(checkCmd.ExecuteScalar());
+                        if (soldTicketsCount > 0)
+                        {
+                            transaction.Rollback();
+                            deleteMessages.Add($"跳过删除场次 {section.SectionID} (电影: {section.FilmName}, 影厅: {section.HallNo}, 时间: {section.ScheduleStartTime:yyyy-MM-dd HH:mm})：该场次已有已售出的电影票");
+                            skippedCount++;
+                            continue;
+                        }
+                    }
+
+                    // 删除 ticket 表中依赖该场次的记录
+                    string deleteTicketsSql = "DELETE FROM ticket WHERE sectionID = :sectionID";
+                    using (OracleCommand deleteTicketsCmd = new OracleCommand(deleteTicketsSql, connection))
+                    {
+                        deleteTicketsCmd.Transaction = transaction;
+                        deleteTicketsCmd.Parameters.Add(new OracleParameter("sectionID", section.SectionID));
+                        deleteTicketsCmd.ExecuteNonQuery();
+                    }
+
+                    // 删除 section 表中的场次记录
+                    string deleteSectionSql = "DELETE FROM section WHERE sectionID = :sectionID";
+                    using (OracleCommand deleteSectionCmd = new OracleCommand(deleteSectionSql, connection))
+                    {
+                        deleteSectionCmd.Transaction = transaction;
+                        deleteSectionCmd.Parameters.Add(new OracleParameter("sectionID", section.SectionID));
+                        deleteSectionCmd.ExecuteNonQuery();
+                    }
+
+                    // 删除 timeslot 表中的时段记录
+                    string deleteTimeslotSql = "DELETE FROM timeslot WHERE timeID = :timeID";
+                    using (OracleCommand deleteTimeslotCmd = new OracleCommand(deleteTimeslotSql, connection))
+                    {
+                        deleteTimeslotCmd.Transaction = transaction;
+                        deleteTimeslotCmd.Parameters.Add(new OracleParameter("timeID", section.TimeID));
+                        deleteTimeslotCmd.ExecuteNonQuery();
+                    }
+
+                    transaction.Commit();
+                    deleteMessages.Add($"成功删除场次 {section.SectionID} (电影: {section.FilmName}, 影厅: {section.HallNo}, 时间: {section.ScheduleStartTime:yyyy-MM-dd HH:mm})");
+                    totalDeletedCount++;
+                }
+                catch (Exception ex)
+                {
+                    transaction?.Rollback();
+                    deleteMessages.Add($"删除场次 {section.SectionID} 失败: {ex.Message}");
+                    skippedCount++;
+                }
+            }
+        }
+
+        if (totalDeletedCount == 0)
+        {
+            return (false, $"批量删除失败。所有场次删除均失败。\n" + string.Join("\n", deleteMessages));
+        }
+        else
+        {
+            string summary = $"批量删除完成。成功删除 {totalDeletedCount} 个场次";
+            if (skippedCount > 0)
+            {
+                summary += $"，跳过 {skippedCount} 个场次";
+            }
+            summary += $"。\n" + string.Join("\n", deleteMessages);
+            return (true, summary);
+        }
+    }
 }
