@@ -90,7 +90,7 @@ class Program
             Console.WriteLine("2. 查看排片");
             Console.WriteLine("3. 删除排片");
             Console.WriteLine("4. 批量删除排片");
-            Console.WriteLine("B. 返回主菜单");
+            Console.WriteLine("5. 返回主菜单");
             Console.Write("请选择一个操作: ");
             string choice = Console.ReadLine();
             switch (choice.ToUpper())
@@ -480,7 +480,8 @@ class Program
         if (targetSessionsPerDay <= 0) targetSessionsPerDay = 1; // 至少1场
 
         Console.WriteLine($"\n正在 {startDate:yyyy-MM-dd} 到 {endDate:yyyy-MM-dd} 之间进行智能自动排片，每天每个影厅目标 {targetSessionsPerDay} 场...");
-        var result = _schedulingService.SmartAutoScheduleFilm(startDate, endDate, targetSessionsPerDay);
+        // var result = _schedulingService.SmartAutoScheduleFilm(startDate, endDate, targetSessionsPerDay);
+        var result = _schedulingService.ImprovedSmartAutoScheduleFilm(startDate, endDate, targetSessionsPerDay);
         Console.WriteLine(result.Message);
     }
 

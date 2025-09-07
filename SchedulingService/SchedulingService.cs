@@ -10,7 +10,7 @@ using System.Linq;
 public class SchedulingService
 {
     private readonly string _connectionString;
-    private const int BUFFER_MINUTES = 15; // 每场电影之间的缓冲时间（分钟）
+    private const int BUFFER_MINUTES = 25; // 每场电影之间的缓冲时间（分钟）
 
     /// <summary>
     /// 构造函数，需要传入数据库连接字符串。
@@ -421,8 +421,8 @@ public class SchedulingService
                 DateTime startOfDayOperatingHours = new DateTime(currentDay.Year, currentDay.Month, currentDay.Day, 9, 0, 0); // 9:00 AM
                 DateTime endOfDayOperatingHours = new DateTime(currentDay.Year, currentDay.Month, currentDay.Day, 23, 0, 0); // 11:00 PM
 
-                // 初始化当天排片的起始时间点
-                DateTime currentTimePointer = startOfDayOperatingHours;
+                // 初始化当天排片的起始时间点，确保为整5分钟
+                DateTime currentTimePointer = AlignToFiveMinutes(startOfDayOperatingHours);
 
                 // 在当前日期内循环，尝试在不同的影厅排片
                 // 这个循环条件保证了在达到最大场次或超出营业时间前持续尝试排片
@@ -521,13 +521,13 @@ public class SchedulingService
                     // 如果本轮（遍历所有影厅后）没有任何排片成功，那么推进时间，避免死循环
                     if (!scheduledInThisPass)
                     {
-                        currentTimePointer = currentTimePointer.AddMinutes(BUFFER_MINUTES);
+                        currentTimePointer = AlignToFiveMinutes(currentTimePointer.AddMinutes(BUFFER_MINUTES));
                     }
                     else
                     {
                         // 如果本轮有成功排片，将时间推进到所有成功排片的最晚结束时间 + 缓冲时间，或者简单推进 BUFFER_MINUTES
                         // 简单推进 BUFFER_MINUTES 在轮询影厅时效果可能更好，因为它允许在下一轮继续尝试所有影厅
-                        currentTimePointer = currentTimePointer.AddMinutes(BUFFER_MINUTES);
+                        currentTimePointer = AlignToFiveMinutes(currentTimePointer.AddMinutes(BUFFER_MINUTES));
                     }
                 }
             }
@@ -813,11 +813,11 @@ public class SchedulingService
                         // 移动到下一个潜在的开始时间，考虑缓冲时间
                         if (slotFilled && selectedFilmForSlot != null)
                         {
-                            currentSlotStartTime = potentialEndTime.AddMinutes(BUFFER_MINUTES); // 使用 potentialEndTime
+                            currentSlotStartTime = AlignToFiveMinutes(potentialEndTime.AddMinutes(BUFFER_MINUTES)); // 使用 potentialEndTime
                         }
                         else
                         {
-                            currentSlotStartTime = currentSlotStartTime.AddMinutes(BUFFER_MINUTES); // 如果当前时段没有电影能排，则尝试下一个固定间隔时间
+                            currentSlotStartTime = AlignToFiveMinutes(currentSlotStartTime.AddMinutes(BUFFER_MINUTES)); // 如果当前时段没有电影能排，则尝试下一个固定间隔时间
                         }
                     }
                 }
@@ -935,6 +935,273 @@ public class SchedulingService
             }
             summary += $"。\n" + string.Join("\n", deleteMessages);
             return (true, summary);
+        }
+    }
+
+    /// <summary>
+    /// 将时间对齐到最近的5分钟整点
+    /// </summary>
+    /// <param name="time">要对齐的时间</param>
+    /// <returns>对齐后的时间</returns>
+    private DateTime AlignToFiveMinutes(DateTime time)
+    {
+        int minutes = time.Minute;
+        int alignedMinutes = ((minutes + 4) / 5) * 5; // 向上取整到最近的5分钟
+        
+        if (alignedMinutes >= 60)
+        {
+            return new DateTime(time.Year, time.Month, time.Day, time.Hour + 1, 0, 0);
+        }
+        else
+        {
+            return new DateTime(time.Year, time.Month, time.Day, time.Hour, alignedMinutes, 0);
+        }
+    }
+
+    /// <summary>
+    /// 改进的智能自动排片功能。
+    /// </summary>
+    /// <param name="startDate">排片开始日期。</param>
+    /// <param name="endDate">排片结束日期。</param>
+    /// <param name="targetSessionsPerDay">每天每个影厅的目标场次数量。</param>
+    /// <returns>一个元组，表示操作是否成功以及相应的消息。</returns>
+    public (bool Success, string Message) ImprovedSmartAutoScheduleFilm(DateTime startDate, DateTime endDate, int targetSessionsPerDay = 3)
+    {
+        List<string> scheduledMessages = new List<string>();
+        int totalSessionsScheduled = 0;
+
+        using (OracleConnection connection = new OracleConnection(_connectionString))
+        {
+            connection.Open();
+
+            // 1. 获取所有电影，并按评分和观影人次降序排序
+            var films = GetAllFilms()
+                        .OrderByDescending(f => f.Score)
+                        .ThenByDescending(f => f.Admissions)
+                        .ToList();
+
+            if (!films.Any())
+            {
+                return (false, "数据库中没有可用的电影，无法进行智能自动排片。");
+            }
+
+            // 2. 获取所有影厅
+            List<MovieHall> halls = GetAllMovieHalls();
+            if (!halls.Any())
+            {
+                return (false, "数据库中没有可用的影厅，无法进行智能自动排片。");
+            }
+
+            // 3. 计算总目标场次和电影分配
+            int totalDays = (endDate.Date - startDate.Date).Days + 1;
+            int totalTargetSessions = totalDays * halls.Count * targetSessionsPerDay;
+
+            if (totalTargetSessions <= 0)
+            {
+                return (true, "没有目标场次或日期范围无效，无需排片。");
+            }
+
+            // 4. 改进的电影分配策略 - 只选择部分热门电影进行排片
+            Dictionary<string, int> filmTargetAllocation = new Dictionary<string, int>();
+            Dictionary<string, int> filmActualScheduledCount = new Dictionary<string, int>();
+            
+            // 根据影厅数量和目标场次，选择合适数量的电影
+            int maxFilmsToSchedule = Math.Min(films.Count, Math.Max(3, halls.Count * 2)); // 至少3部，最多影厅数*2
+            var selectedFilms = films.Take(maxFilmsToSchedule).ToList();
+            
+            foreach (var film in selectedFilms)
+            {
+                filmTargetAllocation[film.FilmName] = 0;
+                filmActualScheduledCount[film.FilmName] = 0;
+            }
+
+            // 平均分配场次给选中的电影
+            int baseSessionsPerFilm = totalTargetSessions / selectedFilms.Count;
+            int remainingSessions = totalTargetSessions % selectedFilms.Count;
+            
+            for (int i = 0; i < selectedFilms.Count; i++)
+            {
+                filmTargetAllocation[selectedFilms[i].FilmName] = baseSessionsPerFilm;
+                if (i < remainingSessions)
+                {
+                    filmTargetAllocation[selectedFilms[i].FilmName]++;
+                }
+            }
+
+            // 5. 预加载现有排片数据
+            Dictionary<int, List<Section>> existingSectionsByHall = new Dictionary<int, List<Section>>();
+            List<Section> allExistingSections = GetSectionsByDateRange(startDate, endDate);
+            foreach (var hall in halls)
+            {
+                existingSectionsByHall[hall.HallNo] = allExistingSections.Where(s => s.HallNo == hall.HallNo).ToList();
+            }
+
+            // 6. 全局电影轮询索引，确保电影在不同日期的分布
+            int globalFilmIndex = 0;
+
+            // 7. 改进的排片执行循环 - 错开影厅开始时间
+            for (DateTime currentDay = startDate.Date; currentDay <= endDate.Date; currentDay = currentDay.AddDays(1))
+            {
+                DateTime baseStartTime = AlignToFiveMinutes(new DateTime(currentDay.Year, currentDay.Month, currentDay.Day, 9, 0, 0));
+                DateTime endOfDayOperatingHours = new DateTime(currentDay.Year, currentDay.Month, currentDay.Day, 23, 0, 0);
+                
+                // 为每个影厅设置不同的开始时间，随机错开排片
+                Dictionary<int, DateTime> hallStartTimes = new Dictionary<int, DateTime>();
+                int[] possibleOffsets = { 0, 5, 10, 15, 20, 25 }; // 可能的分钟偏移量
+                Random random = new Random();
+                foreach (var hall in halls)
+                {
+                    // 从可能的偏移量中随机选择一个
+                    int randomOffset = possibleOffsets[random.Next(possibleOffsets.Length)];
+                    hallStartTimes[hall.HallNo] = AlignToFiveMinutes(baseStartTime.AddMinutes(randomOffset));
+                }
+                
+                // 跟踪每个影厅当天已排场次
+                Dictionary<int, int> sessionsScheduledPerHallToday = halls.ToDictionary(h => h.HallNo, h => 0);
+                Dictionary<int, DateTime> currentTimePerHall = new Dictionary<int, DateTime>(hallStartTimes);
+
+                // 继续排片直到所有影厅达到目标或无法继续
+                bool canContinueScheduling = true;
+                while (canContinueScheduling)
+                {
+                    canContinueScheduling = false;
+                    
+                    // 为每个影厅尝试排片
+                    foreach (var hall in halls)
+                    {
+                        // 检查该影厅是否还需要排片且时间允许
+                        if (sessionsScheduledPerHallToday[hall.HallNo] >= targetSessionsPerDay || 
+                            currentTimePerHall[hall.HallNo] >= endOfDayOperatingHours)
+                        {
+                            continue;
+                        }
+
+                        // 选择下一部要排的电影（全局轮询）
+                        Film selectedFilm = null;
+                        int attempts = 0;
+                        while (attempts < selectedFilms.Count)
+                        {
+                            var candidateFilm = selectedFilms[globalFilmIndex % selectedFilms.Count];
+                            if (filmActualScheduledCount[candidateFilm.FilmName] < filmTargetAllocation[candidateFilm.FilmName])
+                            {
+                                selectedFilm = candidateFilm;
+                                break;
+                            }
+                            globalFilmIndex++;
+                            attempts++;
+                        }
+
+                        if (selectedFilm == null)
+                        {
+                            continue; // 没有可排的电影
+                        }
+
+                        DateTime potentialStartTime = currentTimePerHall[hall.HallNo];
+                        DateTime potentialEndTime = potentialStartTime.AddMinutes(selectedFilm.FilmLength);
+
+                        // 检查时间是否超出营业时间
+                        if (potentialEndTime > endOfDayOperatingHours)
+                        {
+                            continue;
+                        }
+
+                        // 检查是否与现有排片冲突
+                        if (IsSectionConflicting(hall.HallNo, potentialStartTime, potentialEndTime, existingSectionsByHall[hall.HallNo]))
+                        {
+                            // 如果冲突，推进时间后继续
+                            currentTimePerHall[hall.HallNo] = AlignToFiveMinutes(currentTimePerHall[hall.HallNo].AddMinutes(BUFFER_MINUTES));
+                            continue;
+                        }
+
+                        // 执行排片
+                        OracleTransaction transaction = null;
+                        try
+                        {
+                            transaction = connection.BeginTransaction();
+
+                            // 获取新的TimeID和SectionID
+                            string getTimeIdSeqSql = "SELECT TIMESLOT_SEQ.NEXTVAL FROM DUAL";
+                            int nextTimeId;
+                            using (OracleCommand timeIdCmd = new OracleCommand(getTimeIdSeqSql, connection))
+                            {
+                                timeIdCmd.Transaction = transaction;
+                                nextTimeId = Convert.ToInt32(timeIdCmd.ExecuteScalar());
+                            }
+                            string newTimeID = $"TS{nextTimeId}";
+
+                            // 插入timeslot表
+                            string insertTimeslotSql = "INSERT INTO timeslot (timeID, startTime, endTime) VALUES (:timeID, :startTime, :endTime)";
+                            using (OracleCommand insertTimeslotCmd = new OracleCommand(insertTimeslotSql, connection))
+                            {
+                                insertTimeslotCmd.Transaction = transaction;
+                                insertTimeslotCmd.Parameters.Add(new OracleParameter("timeID", newTimeID));
+                                insertTimeslotCmd.Parameters.Add(new OracleParameter("startTime", potentialStartTime));
+                                insertTimeslotCmd.Parameters.Add(new OracleParameter("endTime", potentialEndTime));
+                                insertTimeslotCmd.ExecuteNonQuery();
+                            }
+
+                            // 获取新的SectionID
+                            string getSectionIdSeqSql = "SELECT SECTION_SEQ.NEXTVAL FROM DUAL";
+                            int nextSectionId;
+                            using (OracleCommand sectionIdCmd = new OracleCommand(getSectionIdSeqSql, connection))
+                            {
+                                sectionIdCmd.Transaction = transaction;
+                                nextSectionId = Convert.ToInt32(sectionIdCmd.ExecuteScalar());
+                            }
+
+                            // 插入section表
+                            string insertSectionSql = "INSERT INTO section (sectionID, filmName, hallNo, timeID) VALUES (:sectionID, :filmName, :hallNo, :timeID)";
+                            using (OracleCommand insertSectionCmd = new OracleCommand(insertSectionSql, connection))
+                            {
+                                insertSectionCmd.Transaction = transaction;
+                                insertSectionCmd.Parameters.Add(new OracleParameter("sectionID", nextSectionId));
+                                insertSectionCmd.Parameters.Add(new OracleParameter("filmName", selectedFilm.FilmName));
+                                insertSectionCmd.Parameters.Add(new OracleParameter("hallNo", hall.HallNo));
+                                insertSectionCmd.Parameters.Add(new OracleParameter("timeID", newTimeID));
+                                insertSectionCmd.ExecuteNonQuery();
+                            }
+
+                            transaction.Commit();
+                            scheduledMessages.Add($"成功排片 (改进智能): 电影 '{selectedFilm.FilmName}', 影厅 {hall.HallNo}, 开始时间 {potentialStartTime:yyyy-MM-dd HH:mm}");
+                            totalSessionsScheduled++;
+                            sessionsScheduledPerHallToday[hall.HallNo]++;
+                            filmActualScheduledCount[selectedFilm.FilmName]++;
+                            globalFilmIndex++; // 推进全局电影索引
+                            canContinueScheduling = true;
+
+                            // 更新内存中的排片列表
+                            existingSectionsByHall[hall.HallNo].Add(new Section
+                            {
+                                SectionID = nextSectionId,
+                                FilmName = selectedFilm.FilmName,
+                                HallNo = hall.HallNo,
+                                TimeID = newTimeID,
+                                ScheduleStartTime = potentialStartTime,
+                                ScheduleEndTime = potentialEndTime
+                            });
+
+                            // 更新该影厅的下次排片时间
+                            currentTimePerHall[hall.HallNo] = AlignToFiveMinutes(potentialEndTime.AddMinutes(BUFFER_MINUTES));
+                        }
+                        catch (Exception ex)
+                        {
+                            transaction?.Rollback();
+                            scheduledMessages.Add($"改进智能排片失败: 电影 '{selectedFilm.FilmName}', 影厅 {hall.HallNo}, 时间 {potentialStartTime:yyyy-MM-dd HH:mm} - {ex.Message}");
+                            // 推进时间以避免重复尝试相同时段
+                            currentTimePerHall[hall.HallNo] = AlignToFiveMinutes(currentTimePerHall[hall.HallNo].AddMinutes(BUFFER_MINUTES));
+                        }
+                    }
+                }
+            }
+        }
+
+        if (totalSessionsScheduled == 0)
+        {
+            return (false, $"未能在指定日期范围内找到可用的排片时段进行改进智能自动排片。");
+        }
+        else
+        {
+            return (true, $"改进智能自动排片完成。共排片 {totalSessionsScheduled} 场。\n" + string.Join("\n", scheduledMessages));
         }
     }
 }
