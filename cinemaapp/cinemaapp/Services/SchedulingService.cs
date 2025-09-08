@@ -448,32 +448,71 @@ namespace test.Services
                     existingSectionsByHall[hall.HallNo] = allExistingSections.Where(s => s.HallNo == hall.HallNo).ToList();
                 }
 
+                // 计算总天数
+                int totalDays = (endDate.Date - startDate.Date).Days + 1;
+
+                // 计算每天应该排片的场次数量（尽量均匀分布）
+                int sessionsPerDay = maxSessionsToSchedule / totalDays;
+                int extraSessions = maxSessionsToSchedule % totalDays;
+
+                // 创建每天的排片目标数组
+                Dictionary<DateTime, int> dailyTargets = new Dictionary<DateTime, int>();
+                for (int i = 0; i < totalDays; i++)
+                {
+                    DateTime currentDay = startDate.Date.AddDays(i);
+                    int target = sessionsPerDay + (i < extraSessions ? 1 : 0);
+                    dailyTargets[currentDay] = target;
+                }
+
                 // 遍历日期范围
                 for (DateTime currentDay = startDate.Date; currentDay <= endDate.Date; currentDay = currentDay.AddDays(1))
                 {
+                    int dailyScheduled = 0;
+                    int dailyTarget = dailyTargets[currentDay];
+
+                    if (dailyTarget <= 0) continue;
+
                     // 定义每天的营业时间范围
                     DateTime startOfDayOperatingHours = new DateTime(currentDay.Year, currentDay.Month, currentDay.Day, 9, 0, 0); // 9:00 AM
                     DateTime endOfDayOperatingHours = new DateTime(currentDay.Year, currentDay.Month, currentDay.Day, 23, 0, 0); // 11:00 PM
 
-                    // 初始化当天排片的起始时间点
-                    // DateTime currentTimePointer = startOfDayOperatingHours;
-                    DateTime currentTimePointer = AlignToFiveMinutes(startOfDayOperatingHours);
+                    // 计算时间间隔，将一天分成多个时间段
+                    int totalAvailableMinutes = (int)(endOfDayOperatingHours - startOfDayOperatingHours).TotalMinutes;
+                    int timeSlotInterval = Math.Max(30, totalAvailableMinutes / (dailyTarget * 2)); // 至少30分钟间隔
 
-                    // 在当前日期内循环，尝试在不同的影厅排片
-                    // 这个循环条件保证了在达到最大场次或超出营业时间前持续尝试排片
-                    while (sessionsScheduledCount < maxSessionsToSchedule && currentTimePointer < endOfDayOperatingHours)
+                    // 创建多个起始时间点，均匀分布在一天中
+                    List<DateTime> startTimeCandidates = new List<DateTime>();
+                    for (int i = 0; i < dailyTarget * 2; i++) // 生成比目标多的时间点候选
                     {
-                        bool scheduledInThisPass = false; // 标记本轮（所有影厅）是否有任何影厅成功排片
-
-                        // 优先在不同影厅排片 (轮询所有影厅)
-                        foreach (var hall in halls)
+                        DateTime candidate = startOfDayOperatingHours.AddMinutes(i * timeSlotInterval);
+                        if (candidate.AddMinutes(filmLength + BUFFER_MINUTES) <= endOfDayOperatingHours)
                         {
-                            if (sessionsScheduledCount >= maxSessionsToSchedule) break; // 如果已达到目标数量，立即退出
+                            startTimeCandidates.Add(AlignToFiveMinutes(candidate));
+                        }
+                    }
 
-                            DateTime potentialStartTime = currentTimePointer;
-                            DateTime potentialEndTime = potentialStartTime.AddMinutes(filmLength + BUFFER_MINUTES); // 考虑影片时长和缓冲
+                    // 随机打乱时间点顺序，避免总是从同一时间开始
+                    Random rng = new Random();
+                    startTimeCandidates = startTimeCandidates.OrderBy(x => rng.Next()).ToList();
 
-                            // 如果潜在结束时间超出营业时间，则跳过此影厅的此时间段
+                    // 尝试每个候选时间点
+                    foreach (DateTime candidateTime in startTimeCandidates)
+                    {
+                        if (dailyScheduled >= dailyTarget) break;
+                        if (sessionsScheduledCount >= maxSessionsToSchedule) break;
+
+                        bool scheduledForThisTime = false;
+
+                        // 尝试不同的影厅
+                        foreach (var hall in halls.OrderBy(x => rng.Next())) // 随机顺序尝试影厅
+                        {
+                            if (dailyScheduled >= dailyTarget) break;
+                            if (sessionsScheduledCount >= maxSessionsToSchedule) break;
+
+                            DateTime potentialStartTime = candidateTime;
+                            DateTime potentialEndTime = potentialStartTime.AddMinutes(filmLength + BUFFER_MINUTES);
+
+                            // 检查时间是否有效
                             if (potentialEndTime > endOfDayOperatingHours || potentialEndTime.Date > currentDay.Date)
                             {
                                 continue;
@@ -532,9 +571,10 @@ namespace test.Services
                                     transaction.Commit();
                                     scheduledMessages.Add($"成功批量排片: 电影 '{filmName}', 影厅 {hall.HallNo}, 开始时间 {potentialStartTime:yyyy-MM-dd HH:mm}");
                                     sessionsScheduledCount++;
-                                    scheduledInThisPass = true; // 标记本轮有排片成功
+                                    dailyScheduled++;
+                                    scheduledForThisTime = true;
 
-                                    // 立即更新内存中的排片列表，确保后续冲突检查的准确性
+                                    // 立即更新内存中的排片列表
                                     existingSectionsByHall[hall.HallNo].Add(new Section
                                     {
                                         SectionID = nextSectionId,
@@ -544,27 +584,15 @@ namespace test.Services
                                         ScheduleStartTime = potentialStartTime,
                                         ScheduleEndTime = potentialEndTime
                                     });
+
+                                    break; // 成功排片后跳出影厅循环，继续下一个时间点
                                 }
                                 catch (Exception ex)
                                 {
-                                    transaction?.Rollback(); // 如果事务已开始，则回滚
+                                    transaction?.Rollback();
                                     scheduledMessages.Add($"批量排片失败: 影厅 {hall.HallNo}, 时间 {potentialStartTime:yyyy-MM-dd HH:mm} - {ex.Message}");
                                 }
                             }
-                        }
-
-                        // 如果本轮（遍历所有影厅后）没有任何排片成功，那么推进时间，避免死循环
-                        if (!scheduledInThisPass)
-                        {
-                            // currentTimePointer = currentTimePointer.AddMinutes(BUFFER_MINUTES);
-                            currentTimePointer = AlignToFiveMinutes(currentTimePointer);
-                        }
-                        else
-                        {
-                            // 如果本轮有成功排片，将时间推进到所有成功排片的最晚结束时间 + 缓冲时间，或者简单推进 BUFFER_MINUTES
-                            // 简单推进 BUFFER_MINUTES 在轮询影厅时效果可能更好，因为它允许在下一轮继续尝试所有影厅
-                            // currentTimePointer = currentTimePointer.AddMinutes(BUFFER_MINUTES);
-                            currentTimePointer = AlignToFiveMinutes(currentTimePointer.AddMinutes(BUFFER_MINUTES));
                         }
                     }
                 }
