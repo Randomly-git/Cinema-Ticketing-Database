@@ -510,7 +510,7 @@ namespace test.Services
                             if (sessionsScheduledCount >= maxSessionsToSchedule) break;
 
                             DateTime potentialStartTime = candidateTime;
-                            DateTime potentialEndTime = potentialStartTime.AddMinutes(filmLength + BUFFER_MINUTES);
+                            DateTime potentialEndTime = potentialStartTime.AddMinutes(filmLength);
 
                             // 检查时间是否有效
                             if (potentialEndTime > endOfDayOperatingHours || potentialEndTime.Date > currentDay.Date)
@@ -519,7 +519,7 @@ namespace test.Services
                             }
 
                             // 使用内存中的数据进行冲突检查
-                            if (!IsSectionConflicting(hall.HallNo, potentialStartTime, potentialEndTime, existingSectionsByHall[hall.HallNo]))
+                            if (!IsSectionConflicting(hall.HallNo, potentialStartTime.AddMinutes(-BUFFER_MINUTES), potentialEndTime.AddMinutes(BUFFER_MINUTES), existingSectionsByHall[hall.HallNo]))
                             {
                                 OracleTransaction transaction = null;
                                 try
